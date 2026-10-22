@@ -1,4 +1,4 @@
-export type StageId = 'story' | 'visual' | 'shots' | 'set' | 'edit' | 'finish'
+export type StageId = 'concept' | 'prepare' | 'shoot' | 'edit' | 'publish'
 
 export type VisualKind =
   | 'beats'
@@ -25,6 +25,13 @@ export type VisualKind =
   | 'color-match'
   | 'subtitles'
   | 'export'
+  | 'brief'
+  | 'outline'
+  | 'shot-list'
+  | 'shoot-plan'
+  | 'shoot-log'
+  | 'release'
+  | 'review'
 
 export type CheatSheet = {
   id: string
@@ -47,6 +54,10 @@ export type Stage = {
   id: StageId
   index: string
   title: string
+  titleEn: string
   subtitle: string
+  output: string
+  outputEn: string
+  tasks: string[]
   accent: string
 }

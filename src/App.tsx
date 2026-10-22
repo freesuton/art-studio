@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import Fuse from 'fuse.js'
-import { ArrowRight, Bookmark, Camera, Check, ChevronLeft, Menu, Search, Sparkles, X } from 'lucide-react'
+import { ArrowRight, Bookmark, Camera, ChevronLeft, Menu, Search, X } from 'lucide-react'
 import { Route, Routes, useNavigate, useParams } from 'react-router-dom'
 import TechniqueVisual from './TechniqueVisual'
 import { sheets, stages } from './data'
@@ -97,15 +97,15 @@ function Home({ favorites, toggle }: { favorites: string[]; toggle: (id: string)
   const fuse = useMemo(() => new Fuse(sheets, { keys: ['title', 'titleEn', 'summary', 'category', 'tags'], threshold: .34, ignoreLocation: true }), [])
   const results = useMemo(() => {
     let list = query.trim() ? fuse.search(query.trim()).map((result) => result.item) : sheets
-    if (stage === 'saved') list = list.filter((item) => favorites.includes(item.id))
-    if (stage !== 'all' && stage !== 'saved') list = list.filter((item) => item.stage === stage)
+    if (!query.trim() && stage === 'saved') list = list.filter((item) => favorites.includes(item.id))
+    if (!query.trim() && stage !== 'all' && stage !== 'saved') list = list.filter((item) => item.stage === stage)
     return list
   }, [query, stage, favorites, fuse])
 
   const selectStage = (id: StageId | 'all' | 'saved') => {
     setStage(id)
     setMenuOpen(false)
-    window.scrollTo({ top: 0, behavior: 'smooth' })
+    window.requestAnimationFrame(() => document.getElementById(id === 'all' ? 'workflow' : 'library')?.scrollIntoView({ behavior: 'smooth', block: 'start' }))
   }
 
   return (
@@ -122,54 +122,56 @@ function Home({ favorites, toggle }: { favorites: string[]; toggle: (id: string)
       {menuOpen && <div className="mobile-menu"><button onClick={() => selectStage('all')}>全部</button>{stages.map((item) => <button key={item.id} onClick={() => selectStage(item.id)}>{item.index} {item.title}</button>)}</div>}
 
       <main>
-        <section className="hero">
+        <section className="hero" id="workflow">
           <div className="hero-copy">
-            <p className="hero-kicker"><Sparkles size={14} /> FROM STORY TO SCREEN</p>
-            <h1>从想法到画面，<br /><em>每一步都有据可查。</em></h1>
-            <p>为短片创作者准备的视觉现场手册。按制作阶段浏览，快速找到镜头、构图、灯光、收音与剪辑方法。</p>
+            <p className="hero-kicker">SOLO FILMMAKING WORKFLOW</p>
+            <h1>一部短片，<br /><em>五步完成。</em></h1>
+            <p>从创意到发布，每一步都围绕一份主要交付物展开。选中阶段，就能查看这一阶段该做什么，以及相关的视觉与技术速查卡片。</p>
           </div>
-          <div className="hero-board" aria-hidden="true">
-            <div className="board-frame"><span>SHOT 01</span><PersonScene /></div>
-            <div className="board-note"><span>ANGLE</span><ArrowSketch /></div>
-            <div className="board-note dark"><span>MOVEMENT</span><MovementSketch /></div>
+          <div className="hero-aside" aria-hidden="true"><span>01—05</span><p>IDEA<br />TO<br />SCREEN</p><div className="hero-aside-line" /></div>
+        </section>
+
+        <section className="workflow-panel" aria-label="单人短片制作流程">
+          <div className="workflow-intro"><div><p className="eyebrow">ONE-PERSON FILM PRODUCTION SYSTEM</p><h2>Solo Filmmaking Workflow</h2><p>每一阶段只产生一份主要交付物，完成后进入下一阶段。</p></div><span>05 STAGES</span></div>
+          <div className="workflow-list">
+            {stages.map((item) => <button className={`workflow-step ${stage === item.id ? 'selected' : ''}`} key={item.id} onClick={() => selectStage(item.id)} style={{ '--accent': item.accent } as React.CSSProperties}>
+              <span className="workflow-number">{item.index}</span>
+              <span className="workflow-step-copy"><strong><span>{item.titleEn}</span><span className="workflow-separator">·</span>{item.title}</strong><span className="workflow-description">{item.subtitle}</span><span className="workflow-output">输出 <b>{item.output}</b><small>{item.outputEn}</small></span></span>
+              <ArrowRight className="workflow-link" size={21} />
+            </button>)}
           </div>
+          <p className="workflow-note">简单作品可以合并步骤；复杂作品则在每阶段深入细化。</p>
         </section>
 
         <section className="search-zone">
-          <label className="search-box"><Search size={20} /><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="搜索景别、运镜、灯光、剪辑……" />{query && <button onClick={() => setQuery('')} aria-label="清空搜索"><X size={18} /></button>}</label>
+          <label className="search-box"><Search size={20} /><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="搜索阶段、景别、运镜、灯光、剪辑……" />{query && <button onClick={() => setQuery('')} aria-label="清空搜索"><X size={18} /></button>}</label>
           <button className={`saved-filter ${stage === 'saved' ? 'active' : ''}`} onClick={() => selectStage(stage === 'saved' ? 'all' : 'saved')}><Bookmark size={18} fill={stage === 'saved' ? 'currentColor' : 'none'} />收藏 {favorites.length > 0 && <span>{favorites.length}</span>}</button>
         </section>
 
-        {!query && stage === 'all' && <section className="stage-strip" aria-label="制作流程">
-          {stages.map((item, index) => <button key={item.id} onClick={() => selectStage(item.id)} style={{ '--accent': item.accent } as React.CSSProperties}>
-            <span className="stage-index">{item.index}</span><span><strong>{item.title}</strong><small>{item.subtitle}</small></span>{index < stages.length - 1 && <ArrowRight className="stage-arrow" size={17} />}
-          </button>)}
-        </section>}
-
-        <section className="library">
+        <section className="library" id="library">
           <div className="library-heading">
-            <div><p className="eyebrow">CHEAT SHEET LIBRARY</p><h2>{stage === 'all' ? '按流程浏览' : stage === 'saved' ? '我的收藏' : stages.find((item) => item.id === stage)?.title}</h2></div>
+            <div><p className="eyebrow">WORKFLOW CHEAT SHEETS</p><h2>{query ? '搜索结果' : stage === 'all' ? '每一步的速查卡片' : stage === 'saved' ? '我的收藏' : stages.find((item) => item.id === stage)?.title}</h2></div>
             <p>{results.length} 张卡片</p>
           </div>
 
           {stage === 'all' && !query ? stages.map((item) => {
             const stageSheets = results.filter((sheet) => sheet.stage === item.id)
             return <div className="stage-section" key={item.id}>
-              <div className="stage-heading"><span style={{ background: item.accent }}>{item.index}</span><div><h3>{item.title}</h3><p>{item.subtitle}</p></div><button onClick={() => selectStage(item.id)}>查看此阶段 <ArrowRight size={15} /></button></div>
+              <div className="stage-heading"><span style={{ background: item.accent }}>{item.index}</span><div><p className="stage-heading-en">{item.titleEn}</p><h3>{item.title}</h3><p>{item.subtitle}</p></div><button onClick={() => selectStage(item.id)}>查看此阶段 <ArrowRight size={15} /></button></div>
+              <div className="stage-deliverable"><span>本阶段交付物</span><strong>{item.output}</strong><small>{item.outputEn}</small></div>
               <div className="card-grid">{stageSheets.map((sheet) => <Card key={sheet.id} sheet={sheet} saved={favorites.includes(sheet.id)} onToggle={() => toggle(sheet.id)} onOpen={() => navigate(`/sheet/${sheet.id}`)} />)}</div>
             </div>
-          }) : results.length > 0 ? <div className="card-grid standalone">{results.map((sheet) => <Card key={sheet.id} sheet={sheet} saved={favorites.includes(sheet.id)} onToggle={() => toggle(sheet.id)} onOpen={() => navigate(`/sheet/${sheet.id}`)} />)}</div> : <div className="empty-state"><Search size={34} /><h3>还没有找到对应卡片</h3><p>试试搜索“推近”“近景”“轴线”或切换到其他阶段。</p></div>}
+          }) : results.length > 0 ? <>
+            {stage !== 'all' && stage !== 'saved' && !query && (() => { const item = stages.find((entry) => entry.id === stage)!; return <div className="selected-stage-intro" style={{ '--accent': item.accent } as React.CSSProperties}><div><p className="eyebrow">STAGE {item.index} / {item.titleEn}</p><h3>{item.subtitle}</h3><p>阶段交付物：<strong>{item.output}</strong> <span>{item.outputEn}</span></p></div><ul>{item.tasks.map((task) => <li key={task}>{task}</li>)}</ul></div> })()}
+            <div className="card-grid standalone">{results.map((sheet) => <Card key={sheet.id} sheet={sheet} saved={favorites.includes(sheet.id)} onToggle={() => toggle(sheet.id)} onOpen={() => navigate(`/sheet/${sheet.id}`)} />)}</div>
+          </> : <div className="empty-state"><Search size={34} /><h3>还没有找到对应卡片</h3><p>试试搜索“创作简报”“景别”“轴线”，或切换到其他阶段。</p></div>}
         </section>
       </main>
 
-      <footer><div><span className="brand-mark"><Camera size={18} /></span><strong>短片现场手册</strong></div><p>为拍摄现场而设计 · 支持离线访问</p></footer>
+      <footer><div><span className="brand-mark"><Camera size={18} /></span><strong>短片现场手册</strong></div><p>从创意到发布 · 五阶段单人短片流程</p></footer>
     </div>
   )
 }
-
-function PersonScene() { return <svg viewBox="0 0 250 140"><path d="M0 106L72 52l50 43 56-74 72 85" fill="none" stroke="#1a1b18" strokeWidth="2" opacity=".25" /><circle cx="132" cy="53" r="13" fill="#171815" /><path d="M132 66v43M132 78l-22 18M132 78l22 18" stroke="#171815" strokeWidth="4" strokeLinecap="round" /><path d="M15 111h220" stroke="#171815" strokeWidth="3" /></svg> }
-function ArrowSketch() { return <svg viewBox="0 0 130 80"><circle cx="24" cy="53" r="5" fill="#171815" /><path d="M32 50c22-31 49-35 76-15" fill="none" stroke="#171815" strokeWidth="2.5" strokeDasharray="5 4" /><path d="M103 27l8 9-12 2" fill="none" stroke="#171815" strokeWidth="2.5" /></svg> }
-function MovementSketch() { return <svg viewBox="0 0 130 80"><rect x="51" y="43" width="24" height="17" rx="2" fill="none" stroke="#f5f2e9" strokeWidth="2" /><path d="M57 60l-8 15M69 60l8 15M63 60v15M75 47l12-5v17l-12-5" fill="none" stroke="#f5f2e9" strokeWidth="2" /><path d="M20 34h92M27 27l-8 7 8 7M105 27l8 7-8 7" fill="none" stroke="#d8ff42" strokeWidth="3" /></svg> }
 
 export default function App() {
   const { favorites, toggle } = useFavorites()

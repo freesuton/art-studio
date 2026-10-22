@@ -39,6 +39,20 @@ function Arrow({ x1, y1, x2, y2, color = ink, dashed = false }: { x1: number; y1
 
 function VisualContent({ kind, accent }: Omit<Props, 'compact'>) {
   switch (kind) {
+    case 'brief':
+      return <><rect x="47" y="17" width="166" height="116" rx="6" fill="none" stroke={ink} strokeWidth="3" /><path d="M66 43h81M66 60h125M66 77h92M66 94h111" stroke={ink} strokeWidth="3" strokeLinecap="round" /><circle cx="179" cy="42" r="15" fill={accent} stroke={ink} strokeWidth="2" /><path d="M66 113h62" stroke={accent} strokeWidth="7" strokeLinecap="round" /></>
+    case 'outline':
+      return <><path d="M34 103h192" stroke={muted} strokeWidth="3" /><circle cx="43" cy="102" r="12" fill={accent} stroke={ink} strokeWidth="2" /><circle cx="101" cy="72" r="12" fill={paper} stroke={ink} strokeWidth="2" /><circle cx="159" cy="88" r="12" fill={paper} stroke={ink} strokeWidth="2" /><circle cx="216" cy="42" r="12" fill={accent} stroke={ink} strokeWidth="2" /><path d="M54 99l36-22m22-3 36 11m22-4 35-32" fill="none" stroke={ink} strokeWidth="3" /><text x="35" y="127" fontSize="10" fill={ink}>开场</text><text x="195" y="28" fontSize="10" fill={ink}>结尾</text></>
+    case 'shot-list':
+      return <><rect x="27" y="20" width="206" height="110" rx="5" fill="none" stroke={ink} strokeWidth="3" /><path d="M27 49h206M27 76h206M27 103h206M88 20v110" stroke={muted} strokeWidth="2" /><rect x="39" y="29" width="38" height="11" rx="2" fill={accent} /><circle cx="55" cy="62" r="7" fill={accent} stroke={ink} strokeWidth="2" /><circle cx="55" cy="89" r="7" fill={accent} stroke={ink} strokeWidth="2" /><path d="M103 62h98M103 89h80M103 116h110" stroke={ink} strokeWidth="3" strokeLinecap="round" /></>
+    case 'shoot-plan':
+      return <><rect x="25" y="26" width="210" height="101" rx="5" fill="none" stroke={ink} strokeWidth="3" /><path d="M25 51h210M79 26v101M131 26v101M183 26v101" stroke={muted} strokeWidth="2" /><rect x="37" y="62" width="31" height="19" rx="2" fill={accent} /><rect x="90" y="85" width="31" height="27" rx="2" fill={accent} /><rect x="143" y="62" width="31" height="47" rx="2" fill={accent} /><path d="M197 67l8 8 15-20" fill="none" stroke={ink} strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" /></>
+    case 'shoot-log':
+      return <><rect x="41" y="16" width="178" height="118" rx="6" fill="none" stroke={ink} strokeWidth="3" /><path d="M62 47h125M62 73h125M62 99h125" stroke={muted} strokeWidth="2" /><circle cx="72" cy="45" r="7" fill={accent} stroke={ink} strokeWidth="2" /><circle cx="72" cy="71" r="7" fill={paper} stroke={ink} strokeWidth="2" /><circle cx="72" cy="97" r="7" fill={accent} stroke={ink} strokeWidth="2" /><path d="M102 45l10 9 18-23M102 97l10 9 18-23" fill="none" stroke={ink} strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" /></>
+    case 'release':
+      return <><rect x="31" y="23" width="129" height="102" rx="5" fill="none" stroke={ink} strokeWidth="3" /><rect x="43" y="35" width="105" height="56" rx="2" fill={accent} stroke={ink} strokeWidth="2" /><path d="M75 50l33 14-33 14Z" fill={ink} /><path d="M45 104h82M174 50h59M174 75h59M174 100h59" stroke={ink} strokeWidth="3" strokeLinecap="round" /><path d="M180 42l5 5 10-11M180 67l5 5 10-11M180 92l5 5 10-11" fill="none" stroke={ink} strokeWidth="2" /></>
+    case 'review':
+      return <><rect x="37" y="24" width="186" height="107" rx="7" fill="none" stroke={ink} strokeWidth="3" /><path d="M54 102l40-30 38 12 52-43" fill="none" stroke={ink} strokeWidth="3" /><path d="M176 42h10v10" fill="none" stroke={ink} strokeWidth="3" /><circle cx="94" cy="72" r="8" fill={accent} stroke={ink} strokeWidth="2" /><circle cx="132" cy="84" r="8" fill={accent} stroke={ink} strokeWidth="2" /><path d="M57 112h146" stroke={muted} strokeWidth="2" /></>
     case 'objective':
       return <><Person x={48} y={52} scale={.72} /><circle cx="177" cy="66" r="28" fill={accent} /><circle cx="177" cy="66" r="13" fill="none" stroke={ink} strokeWidth="2" /><circle cx="177" cy="66" r="3" fill={ink} /><Arrow x1={84} y1={66} x2={140} y2={66} color={ink} /></>
     case 'beats':

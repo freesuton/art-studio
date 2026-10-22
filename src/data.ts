@@ -1,15 +1,19 @@
-import type { CheatSheet, Stage } from './types'
+import type { CheatSheet, Stage, StageId } from './types'
 
 export const stages: Stage[] = [
-  { id: 'story', index: '01', title: '故事', subtitle: '决定这一场为什么存在', accent: '#ff8d72' },
-  { id: 'visual', index: '02', title: '视觉设计', subtitle: '建立全片统一的观看感受', accent: '#f5c84c' },
-  { id: 'shots', index: '03', title: '镜头设计', subtitle: '把场景转译成镜头语言', accent: '#d8ff42' },
-  { id: 'set', index: '04', title: '现场拍摄', subtitle: '稳定地拍到可剪辑的素材', accent: '#82d8ff' },
-  { id: 'edit', index: '05', title: '剪辑与声音', subtitle: '用时间与声音重建场景', accent: '#b9a5ff' },
-  { id: 'finish', index: '06', title: '成片', subtitle: '统一、检查并正确输出', accent: '#ff91bd' },
+  { id: 'concept', index: '01', title: '创意与故事', titleEn: 'Concept & Story', subtitle: '决定拍什么、为什么拍、如何讲故事', output: '创作简报 + 故事大纲', outputEn: 'Creative Brief + Story Outline', tasks: ['确定形式与叙事方式', '找到核心问题与观众体验', '写出故事大纲'], accent: '#ff8d72' },
+  { id: 'prepare', index: '02', title: '拍摄准备', titleEn: 'Plan & Prepare', subtitle: '设计场景、视觉、镜头与拍摄顺序', output: '分场镜头表 + 拍摄计划', outputEn: 'Scene & Shot List + Shoot Plan', tasks: ['建立视觉规则', '拆分场景与镜头', '确认声音与器材需求'], accent: '#f5c84c' },
+  { id: 'shoot', index: '03', title: '正式拍摄', titleEn: 'Shoot', subtitle: '按镜头表执行，记录画面、动作和声音', output: '拍摄素材 + 现场记录', outputEn: 'Footage + Shoot Log', tasks: ['检查表演与构图', '拍摄可剪辑的镜头覆盖', '记录可用拍次与现场声音'], accent: '#82d8ff' },
+  { id: 'edit', index: '04', title: '剪辑与后期', titleEn: 'Edit & Finish', subtitle: '完成故事剪辑、声音、调色、字幕与输出', output: '最终成片', outputEn: 'Final Film', tasks: ['先剪清楚故事', '统一声画与节奏', '检查字幕并输出母版'], accent: '#b9a5ff' },
+  { id: 'publish', index: '05', title: '发布与复盘', titleEn: 'Publish & Review', subtitle: '发布作品，评估创作问题，归档项目', output: '发布清单 + 创作复盘', outputEn: 'Release Checklist + Review', tasks: ['检查发布版本与文案', '记录反馈与创作得失', '归档项目素材与文件'], accent: '#ff91bd' },
 ]
 
-export const sheets: CheatSheet[] = [
+type LegacyStageId = 'story' | 'visual' | 'shots' | 'set' | 'edit' | 'finish'
+const stageMap: Record<LegacyStageId, StageId> = {
+  story: 'concept', visual: 'prepare', shots: 'prepare', set: 'shoot', edit: 'edit', finish: 'edit',
+}
+
+const originalSheets: (Omit<CheatSheet, 'stage'> & { stage: LegacyStageId })[] = [
   {
     id: 'scene-objective', title: '场景目标', titleEn: 'Scene Objective', stage: 'story', category: '场景',
     tags: ['目标', '冲突', '人物'], summary: '用“谁想从谁那里得到什么”定义一场戏。',
@@ -179,4 +183,61 @@ export const sheets: CheatSheet[] = [
     steps: ['先导出高质量母版', '再生成平台版本', '用手机、电脑和耳机完整检查'],
     mistakes: ['只检查剪辑时间线', '直接把唯一文件交给平台压缩'], related: ['subtitles', 'color-match', 'sound-layers'], visual: 'export', accent: '#ff91bd'
   },
+]
+
+const workflowSheets: CheatSheet[] = [
+  {
+    id: 'creative-brief', title: '创作简报', titleEn: 'Creative Brief', stage: 'concept', category: '阶段交付物',
+    tags: ['题材', '类型', '叙事方式', '观众'], summary: '用一页纸确定作品形式、主题、观众体验和叙事选择。',
+    purpose: ['让后续创作有统一方向', '分清题材、类型和叙事方式'], usage: ['启动每一个新短片时'],
+    steps: ['写下题材、片长和主类型', '写下希望观众经历的感受', '决定时间顺序、视角与表达方式', '浓缩成一句话故事'],
+    mistakes: ['只写抽象主题，没有具体事件', '选择了类型，却没有兑现观众期待'], related: ['story-outline', 'scene-objective'], visual: 'brief', accent: '#ff8d72'
+  },
+  {
+    id: 'story-outline', title: '故事大纲', titleEn: 'Story Outline', stage: 'concept', category: '阶段交付物',
+    tags: ['大纲', '结构', '纪实', '节拍'], summary: '按顺序写出开场、触发、发展、关键变化与结尾。',
+    purpose: ['检验完整的因果或体验路线', '在写分场前发现结构空白'], usage: ['创作简报明确之后'],
+    steps: ['确定开场状态和核心问题', '列出关键事件或探索节点', '写出转折与结尾变化', '为每一步说明为什么会发生'],
+    mistakes: ['只有事件清单，没有递进', '结尾只写情绪，没有可见结果'], related: ['creative-brief', 'story-beats', 'scene-shot-list'], visual: 'outline', accent: '#ff8d72'
+  },
+  {
+    id: 'scene-shot-list', title: '分场镜头表', titleEn: 'Scene & Shot List', stage: 'prepare', category: '阶段交付物',
+    tags: ['分场', '镜头表', '景别', '运镜'], summary: '把故事大纲转换成逐场、逐镜头可执行的拍摄清单。',
+    purpose: ['避免重要信息漏拍', '让画面与声音都有明确功能'], usage: ['大纲完成、正式开拍前'],
+    steps: ['为每场写下目标、变化与地点', '列出交代空间、行动、反应和细节的镜头', '标明景别、机位、运镜和所需声音'],
+    mistakes: ['只列漂亮镜头，遗漏故事转折', '缺少反应镜头或转场素材'], related: ['shot-size', 'camera-movement', 'coverage', 'shoot-plan'], visual: 'shot-list', accent: '#f5c84c'
+  },
+  {
+    id: 'shoot-plan', title: '拍摄计划', titleEn: 'Shoot Plan', stage: 'prepare', category: '阶段交付物',
+    tags: ['顺序', '场景', '光线', '收音'], summary: '把镜头按场景和光线整理为可执行的拍摄顺序。',
+    purpose: ['清楚知道每段拍摄要完成什么', '在光线变化前优先拍到关键镜头'], usage: ['分场镜头表完成之后'],
+    steps: ['按场景集中镜头', '标出日光、夜景与声音条件', '先安排不可遗漏的主镜头', '为补拍、空镜和现场声音留位置'],
+    mistakes: ['严格按剧情顺序拍，反复更换场景', '没有留出补镜头的时间'], related: ['scene-shot-list', 'lighting-direction', 'shoot-log'], visual: 'shoot-plan', accent: '#f5c84c'
+  },
+  {
+    id: 'shoot-log', title: '现场记录', titleEn: 'Shoot Log', stage: 'shoot', category: '阶段交付物',
+    tags: ['拍次', '素材', '补拍', '声音'], summary: '记录每个镜头的可用拍次、问题和仍需补拍的素材。',
+    purpose: ['帮助剪辑快速找到好素材', '现场发现缺口并及时补拍'], usage: ['每拍完一个镜头之后'],
+    steps: ['记录场次、镜号与拍次', '标记表演、画面和声音是否可用', '记下连续性与补拍需求', '收工前核对镜头表'],
+    mistakes: ['只记拍过，没有记是否可用', '没有记录现场对白与动作变化'], related: ['coverage', 'room-tone', 'cut-on-action'], visual: 'shoot-log', accent: '#82d8ff'
+  },
+  {
+    id: 'release-checklist', title: '发布清单', titleEn: 'Release Checklist', stage: 'publish', category: '阶段交付物',
+    tags: ['发布', '封面', '简介', '检查'], summary: '确认成片、封面、简介、字幕和平台版本都可直接发布。',
+    purpose: ['让观众看到完整且清楚的作品', '避免错版、漏字和声音问题'], usage: ['正式发布前'],
+    steps: ['完整观看最终导出文件', '检查片名、字幕、封面和简介', '确认所用音乐与素材的使用权', '核对平台画幅与音量'],
+    mistakes: ['上传未经复看的文件', '只准备成片，没有准备封面与简介'], related: ['export-settings', 'subtitles', 'creative-review'], visual: 'release', accent: '#ff91bd'
+  },
+  {
+    id: 'creative-review', title: '创作复盘', titleEn: 'Creative Review', stage: 'publish', category: '阶段交付物',
+    tags: ['复盘', '反馈', '归档', '下一部'], summary: '记录作品实际效果、拍摄问题和下一次可改进的做法。',
+    purpose: ['把经验变成下一部短片的方法', '保存可复用的创作资料'], usage: ['发布后和收集反馈后'],
+    steps: ['写下最有效的一个段落', '记录观众看不懂或失去兴趣的位置', '区分剧本、拍摄和后期问题', '归档剧本、镜头表、项目文件和母版'],
+    mistakes: ['只看播放数据，不看具体观众反应', '没有保存可复用的模板与素材'], related: ['release-checklist', 'story-outline', 'shoot-log'], visual: 'review', accent: '#ff91bd'
+  },
+]
+
+export const sheets: CheatSheet[] = [
+  ...workflowSheets,
+  ...originalSheets.map((sheet) => ({ ...sheet, stage: stageMap[sheet.stage], accent: stages.find((stage) => stage.id === stageMap[sheet.stage])!.accent })),
 ]
