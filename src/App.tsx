@@ -2,7 +2,6 @@ import { useEffect, useMemo, useState } from 'react'
 import Fuse from 'fuse.js'
 import { ArrowRight, Bookmark, Camera, ChevronLeft, ExternalLink, Play, Search, X } from 'lucide-react'
 import { Route, Routes, useNavigate, useParams } from 'react-router-dom'
-import FilmArtwork from './FilmArtwork'
 import TechniqueVisual from './TechniqueVisual'
 import { sheets, stages } from './data'
 import { filmReferences } from './filmReferences'
@@ -49,33 +48,24 @@ function Card({ sheet, saved, onToggle, onOpen }: { sheet: CheatSheet; saved: bo
   )
 }
 
-function FilmCard({ film, onPlay }: { film: FilmReference; onPlay: () => void }) {
-  return <article className="film-card">
-    <button className="film-card-play" onClick={onPlay} aria-label={`在本站播放 ${film.title}`}>
-      <span className="film-card-art"><FilmArtwork film={film} /><span>画面示意 · 非影片截图</span><span className="film-duration">{film.duration}</span><span className="film-play-icon"><Play size={25} fill="currentColor" /></span></span>
-    </button>
+function FilmCard({ film, playing, onPlay, onStop }: { film: FilmReference; playing: boolean; onPlay: () => void; onStop: () => void }) {
+  const separator = film.embedUrl.includes('?') ? '&' : '?'
+  const playerUrl = `${film.embedUrl}${separator}autoplay=1&playsinline=1${film.id === 'body' ? '' : '&rel=0'}`
+
+  return <article className={`film-card ${playing ? 'playing' : ''}`}>
+    {playing ? <div className="film-card-art film-card-player"><iframe src={playerUrl} title={`播放 ${film.title}`} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen" allowFullScreen referrerPolicy="strict-origin-when-cross-origin" /></div> :
+      <button className="film-card-play" onClick={onPlay} aria-label={`播放 ${film.title}`}>
+        <span className="film-card-art"><img className="film-thumbnail" src={film.thumbnailUrl} alt={`${film.title} 的视频预览画面`} loading="lazy" /><span className="film-duration">{film.duration}</span><span className="film-play-icon"><Play size={25} fill="currentColor" /></span></span>
+      </button>}
     <div className="film-card-body">
       <p className="eyebrow">{film.source} / {film.year} / {film.category}</p>
       <h4>{film.title}<small>{film.titleZh}</small></h4>
       <p className="film-synopsis">{film.synopsis}</p>
       <p className="film-watch-for"><strong>观看重点</strong>{film.watchFor}</p>
-      <button className="film-link" onClick={onPlay}>在本站播放 <Play size={15} fill="currentColor" /></button>
+      <button className="film-link" onClick={playing ? onStop : onPlay}>{playing ? '停止播放' : '在此播放'} {playing ? <X size={15} /> : <Play size={15} fill="currentColor" />}</button>
       <a className="film-source-link" href={film.url} target="_blank" rel="noopener noreferrer">官方页面 <ExternalLink size={14} /></a>
     </div>
   </article>
-}
-
-function FilmPlayer({ film, onClose }: { film: FilmReference; onClose: () => void }) {
-  const separator = film.embedUrl.includes('?') ? '&' : '?'
-  const playerUrl = `${film.embedUrl}${separator}autoplay=1&playsinline=1${film.id === 'body' ? '' : '&rel=0'}`
-
-  return <div className="film-player-backdrop" role="presentation" onMouseDown={onClose}>
-    <section className="film-player-dialog" role="dialog" aria-modal="true" aria-label={`播放 ${film.title}`} onMouseDown={(event) => event.stopPropagation()}>
-      <div className="film-player-top"><div><span>NOW PLAYING</span><strong>{film.title}</strong></div><button onClick={onClose} aria-label="关闭影片播放器" autoFocus><X size={21} /></button></div>
-      <div className="film-player-frame"><iframe key={film.id} src={playerUrl} title={film.title} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen" allowFullScreen referrerPolicy="strict-origin-when-cross-origin" /></div>
-      <div className="film-player-bottom"><p><strong>观看重点</strong>{film.watchFor}</p><a href={film.url} target="_blank" rel="noopener noreferrer">在官方页面观看 <ExternalLink size={15} /></a></div>
-    </section>
-  </div>
 }
 
 function Detail({ favorites, toggle }: { favorites: string[]; toggle: (id: string) => void }) {
@@ -126,16 +116,7 @@ function Home({ favorites, toggle }: { favorites: string[]; toggle: (id: string)
   const navigate = useNavigate()
   const [query, setQuery] = useState('')
   const [stage, setStage] = useState<ViewId>('samples')
-  const [activeFilm, setActiveFilm] = useState<FilmReference | null>(null)
-
-  useEffect(() => {
-    if (!activeFilm) return
-    const previousOverflow = document.body.style.overflow
-    document.body.style.overflow = 'hidden'
-    const onKeyDown = (event: KeyboardEvent) => { if (event.key === 'Escape') setActiveFilm(null) }
-    window.addEventListener('keydown', onKeyDown)
-    return () => { document.body.style.overflow = previousOverflow; window.removeEventListener('keydown', onKeyDown) }
-  }, [activeFilm])
+  const [activeFilmId, setActiveFilmId] = useState<FilmReference['id'] | null>(null)
   const fuse = useMemo(() => new Fuse(sheets, { keys: ['title', 'titleEn', 'summary', 'category', 'tags'], threshold: .34, ignoreLocation: true }), [])
   const results = useMemo(() => {
     let list = query.trim() ? fuse.search(query.trim()).map((result) => result.item) : sheets
@@ -146,6 +127,7 @@ function Home({ favorites, toggle }: { favorites: string[]; toggle: (id: string)
 
   const selectStage = (id: ViewId) => {
     setStage(id)
+    setActiveFilmId(null)
     setQuery('')
     window.requestAnimationFrame(() => document.getElementById(id === 'all' || id === 'saved' ? 'library' : 'workflow-tabs')?.scrollIntoView({ behavior: 'smooth', block: 'start' }))
   }
@@ -189,9 +171,9 @@ function Home({ favorites, toggle }: { favorites: string[]; toggle: (id: string)
             </button>)}
           </div>
           {stage === 'samples' ? <div className="workflow-stage-panel samples-panel" id="workflow-stage-panel" role="tabpanel" aria-labelledby="tab-samples" style={{ '--accent': '#d8ff42' } as React.CSSProperties}>
-            <div className="samples-heading"><div><p className="eyebrow">WATCH & STUDY / 人与自然</p><h3>先看见，再开拍。</h3><p>五部短片可在本站直接播放。点开样片，带着观察重点看人物、环境和镜头如何一起讲故事。</p></div><span>05 FILMS</span></div>
-            <div className="film-grid">{filmReferences.map((film) => <FilmCard key={film.id} film={film} onPlay={() => setActiveFilm(film)} />)}</div>
-            <p className="samples-note">卡片插画是本站示意，影片通过发布方提供的播放器播放。若播放器受地区或浏览器设置限制，可使用卡片上的官方页面链接。</p>
+            <div className="samples-heading"><div><p className="eyebrow">WATCH & STUDY / 人与自然</p><h3>先看见，再开拍。</h3><p>预览真实影片画面，点击即可在卡片中播放。带着观察重点看人物、环境和镜头如何一起讲故事。</p></div><span>05 FILMS</span></div>
+            <div className="film-grid">{filmReferences.map((film) => <FilmCard key={film.id} film={film} playing={activeFilmId === film.id} onPlay={() => setActiveFilmId(film.id)} onStop={() => setActiveFilmId(null)} />)}</div>
+            <p className="samples-note">预览图与播放器来自影片发布平台。若播放受地区或浏览器设置限制，可使用卡片上的官方页面链接。</p>
           </div> : stage !== 'all' && stage !== 'saved' ? (() => { const item = stages.find((entry) => entry.id === stage)!; return <div className="workflow-stage-panel" id="workflow-stage-panel" role="tabpanel" aria-labelledby={`tab-${item.id}`} style={{ '--accent': item.accent } as React.CSSProperties}>
             <div className="workflow-stage-main"><span className="workflow-stage-number">{item.index} / 05</span><p className="eyebrow">{item.titleEn}</p><h3>{item.title}</h3><p className="workflow-stage-description">{item.subtitle}</p><div className="workflow-stage-output"><span>本阶段交付物</span><strong>{item.output}</strong><small>{item.outputEn}</small></div></div>
             <div className="workflow-stage-tasks"><p className="eyebrow">这一阶段要做</p><ol>{item.tasks.map((task) => <li key={task}>{task}</li>)}</ol><button onClick={() => document.getElementById('library')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}>查看相关卡片 <ArrowRight size={16} /></button></div>
@@ -224,7 +206,6 @@ function Home({ favorites, toggle }: { favorites: string[]; toggle: (id: string)
       </main>
 
       <footer><div><span className="brand-mark"><Camera size={18} /></span><strong>短片现场手册</strong></div><p>从创意到发布 · 五阶段单人短片流程</p></footer>
-      {activeFilm && <FilmPlayer film={activeFilm} onClose={() => setActiveFilm(null)} />}
     </div>
   )
 }
