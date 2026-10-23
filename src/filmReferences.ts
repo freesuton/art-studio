@@ -1,6 +1,6 @@
 export type FilmReference = {
   id: string
-  collection: 'womenNature' | 'fashion' | 'exploration'
+  collection: 'everyday' | 'womenNature' | 'fashion' | 'exploration'
   title: string
   titleZh: string
   source: string
@@ -16,6 +16,36 @@ export type FilmReference = {
 }
 
 export const filmReferences: FilmReference[] = [
+  {
+    id: 'morning-routine', collection: 'everyday', title: 'Morning Routine', titleZh: '一个人的早晨', source: 'Jeremy Hanson', year: '2024', duration: '55 秒', category: '独自拍摄 / 起居',
+    synopsis: '创作者在家中拍摄不那么规律的早晨，把起床后的混乱剪成一段简短的生活切片。',
+    watchFor: '留意如何只用一个空间、几个重复动作和声音节奏，就让普通早晨有画面感。',
+    url: 'https://vimeo.com/952857898', embedUrl: 'https://player.vimeo.com/video/952857898', thumbnailUrl: 'https://i.vimeocdn.com/video/1862876268-73c599b63cc61d7132855434e3df290875d23a21c2b8bc1d495bd260406576bb-d_640?region=us', color: '#d3bb9c',
+  },
+  {
+    id: 'love-mom', collection: 'everyday', title: 'Love, Mom', titleZh: '妈妈，我爱你', source: 'Michael Villalobos', year: '2019', duration: '5 分 30 秒', category: '家庭 / 室内',
+    synopsis: '一对母子生活在同一间小屋里，却渐渐失去亲近感；故事从相处中的细节展开。',
+    watchFor: '留意有限的居住空间、人物距离和停顿，如何让家庭关系变得可见。',
+    url: 'https://vimeo.com/346733330', embedUrl: 'https://player.vimeo.com/video/346733330', thumbnailUrl: 'https://i.vimeocdn.com/video/842064154-81b3bea5a2419aa38e920b76187064be94bb460c2ca044e30a98c815db3474e5-d_640?region=us', color: '#c6ad9b',
+  },
+  {
+    id: 'into-thin-air', collection: 'everyday', title: 'Into Thin Air', titleZh: '消失在空气中', source: 'Marc Oller', year: '2021', duration: '12 分 27 秒', category: '城市 / 情绪叙事',
+    synopsis: '东京女孩 Momo 度过一天，在城市日常与过去片段之间寻找一段关系突然结束的答案。',
+    watchFor: '留意普通街景如何承载人物心情，以及现在与回忆之间如何靠画面衔接。',
+    url: 'https://vimeo.com/727788057', embedUrl: 'https://player.vimeo.com/video/727788057', thumbnailUrl: 'https://i.vimeocdn.com/video/1465020519-0ae1ab893203baa24f192b16488a75cd6a5ec6659d9a92b4a3acdbda85f21d74-d_640?region=us', color: '#9ca8ae',
+  },
+  {
+    id: 'wednesday', collection: 'everyday', title: 'Wednesday', titleZh: '星期三', source: 'Al Kennington & Albert Hooi', year: '2016', duration: '10 分 29 秒', category: '城市 / 观察',
+    synopsis: '从早到晚观察都柏林的街道和行人，用一座城市普通的一天组成一部人物群像。',
+    watchFor: '留意陌生人的肖像、街头动作和时间顺序，如何替代传统主角与情节。',
+    url: 'https://vimeo.com/159292244', embedUrl: 'https://player.vimeo.com/video/159292244', thumbnailUrl: 'https://i.vimeocdn.com/video/686408130-1266e1215a7287ccbb95ff22467d67a09a1bc8e7e4dca5ab79a2589be426e49c-d_640?region=us', color: '#bcb7a3',
+  },
+  {
+    id: 'perfetto', collection: 'everyday', title: 'Perfetto', titleZh: '一杯咖啡的旅程', source: 'De’Longhi', year: '2021', duration: '1 分钟', category: '生活广告 / 咖啡',
+    synopsis: 'Brad Pitt 出门买咖啡豆，再回到家做一杯咖啡，把平常小事拍成完整旅程。',
+    watchFor: '留意“出门—寻找—回家—完成”的微型结构，以及光线、音效和特写怎样抬高日常仪式感。',
+    url: 'https://vimeo.com/596612477', embedUrl: 'https://player.vimeo.com/video/596612477', thumbnailUrl: 'https://i.vimeocdn.com/video/1730082625-f8a57b361ab9de528b0ac9b7b9616fe846661bf0a383e8926ff341bd3bee6917-d_640?region=us', color: '#c7a980',
+  },
   {
     id: 'daughter-sea', collection: 'womenNature', title: 'Daughter of the Sea', titleZh: '海之女儿', source: 'Patagonia Films', year: '2023', duration: '18 分钟', category: '女性 / 海洋',
     synopsis: 'Jaeyoun 回到韩国济州岛，跟随家族中的海女重新走入大海。影片也涉及抑郁与自杀议题。',

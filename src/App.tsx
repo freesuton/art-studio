@@ -11,6 +11,7 @@ import type { CheatSheet, StageId } from './types'
 const FAVORITES_KEY = 'short-film-guide-favorites'
 type ViewId = StageId | 'samples' | 'all' | 'saved'
 const filmCollections: { id: FilmReference['collection']; title: string; subtitle: string }[] = [
+  { id: 'everyday', title: '生活切片', subtitle: '从起居、家人和城市日常里找到电影感' },
   { id: 'womenNature', title: '女性与自然', subtitle: '海洋、旷野与人物的亲密关系' },
   { id: 'fashion', title: '时尚影像', subtitle: '用服装、身体与场景创造电影感' },
   { id: 'exploration', title: '探索与叙事', subtitle: '从环境与行动中寻找故事' },
@@ -176,7 +177,7 @@ function Home({ favorites, toggle }: { favorites: string[]; toggle: (id: string)
             </button>)}
           </div>
           {stage === 'samples' ? <div className="workflow-stage-panel samples-panel" id="workflow-stage-panel" role="tabpanel" aria-labelledby="tab-samples" style={{ '--accent': '#d8ff42' } as React.CSSProperties}>
-            <div className="samples-heading"><div><p className="eyebrow">WATCH & STUDY / 女性 × 自然 × 时尚</p><h3>先看见，再开拍。</h3><p>预览真实影片画面，点击即可在卡片中播放。带着观察重点看人物、环境、服装与镜头如何一起讲故事。</p></div><span>{String(filmReferences.length).padStart(2, '0')} FILMS</span></div>
+            <div className="samples-heading"><div><p className="eyebrow">WATCH & STUDY / 日常 × 自然 × 时尚</p><h3>先看见，再开拍。</h3><p>预览真实影片画面，点击即可在卡片中播放。带着观察重点看人物、日常、环境与镜头如何一起讲故事。</p></div><span>{String(filmReferences.length).padStart(2, '0')} FILMS</span></div>
             {filmCollections.map((collection) => <section className="film-collection" key={collection.id} aria-labelledby={`film-collection-${collection.id}`}>
               <div className="film-collection-heading"><div><h4 id={`film-collection-${collection.id}`}>{collection.title}</h4><p>{collection.subtitle}</p></div><span>{String(filmReferences.filter((film) => film.collection === collection.id).length).padStart(2, '0')}</span></div>
               <div className="film-grid">{filmReferences.filter((film) => film.collection === collection.id).map((film) => <FilmCard key={film.id} film={film} playing={activeFilmId === film.id} onPlay={() => setActiveFilmId(film.id)} onStop={() => setActiveFilmId(null)} />)}</div>
