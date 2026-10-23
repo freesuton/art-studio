@@ -84,12 +84,15 @@ main { max-width: 1540px; margin: 0 auto; }
 .film-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 15px; }
 .film-card { min-width: 0; display: flex; flex-direction: column; overflow: hidden; color: var(--ink); text-decoration: none; background: #fcfbf6; border: 1px solid #ced1c1; border-radius: 14px; box-shadow: 0 3px 0 rgba(25, 26, 23, .06); transition: transform .2s, box-shadow .2s; }
 .film-card:hover { transform: translateY(-4px); box-shadow: 0 16px 30px rgba(25, 26, 23, .11); }
-.film-card:focus-visible { outline: 3px solid #7e9d00; outline-offset: 3px; }
-.film-card-art { position: relative; aspect-ratio: 16 / 9; overflow: hidden; background: #c6d0c2; }
+.film-card-play { width: 100%; padding: 0; display: block; border: 0; background: transparent; cursor: pointer; }
+.film-card-art { position: relative; aspect-ratio: 16 / 9; display: block; overflow: hidden; background: #c6d0c2; }
 .film-artwork { width: 100%; height: 100%; display: block; transition: transform .45s ease; }
 .film-card:hover .film-artwork { transform: scale(1.04); }
 .film-card-art > span { position: absolute; bottom: 10px; left: 10px; padding: 5px 7px; background: rgba(25, 26, 23, .77); color: white; border-radius: 5px; font-size: 9px; font-weight: 700; letter-spacing: .03em; }
 .film-card-art .film-duration { left: auto; right: 10px; }
+.film-card-art .film-play-icon { top: 50%; left: 50%; bottom: auto; width: 58px; height: 58px; padding: 0; display: grid; place-items: center; background: rgba(25, 26, 23, .88); border: 1px solid white; border-radius: 50%; transform: translate(-50%, -50%); transition: transform .2s, background .2s; }
+.film-card-play:hover .film-play-icon { background: var(--ink); transform: translate(-50%, -50%) scale(1.1); }
+.film-play-icon svg { margin-left: 3px; }
 .film-card-body { padding: 19px 18px 18px; display: flex; flex: 1; flex-direction: column; }
 .film-card-body .eyebrow { margin-bottom: 10px; font-size: 9px; }
 .film-card h4 { margin: 0; font-size: 23px; line-height: 1.15; letter-spacing: -.035em; }
@@ -97,9 +100,26 @@ main { max-width: 1540px; margin: 0 auto; }
 .film-synopsis { min-height: 57px; margin: 13px 0 16px; color: #5c6056; font-size: 12px; line-height: 1.65; }
 .film-watch-for { margin: 0; padding-top: 14px; color: #4d5147; border-top: 1px solid #dedfd4; font-size: 12px; line-height: 1.6; }
 .film-watch-for strong { margin-right: 7px; color: var(--ink); }
-.film-link { margin-top: auto; padding-top: 22px; display: flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 800; }
-.film-card:hover .film-link { text-decoration: underline; }
+.film-link { margin-top: auto; padding: 20px 0 0; display: flex; align-items: center; gap: 6px; align-self: flex-start; background: none; border: 0; cursor: pointer; font-size: 12px; font-weight: 800; }
+.film-link:hover { text-decoration: underline; }
+.film-source-link { margin-top: 8px; display: inline-flex; align-items: center; gap: 6px; align-self: flex-start; color: #777b6e; text-decoration: none; font-size: 11px; }
+.film-source-link:hover { color: var(--ink); text-decoration: underline; }
 .samples-note { margin: 22px 0 0; color: #7a7e72; font-size: 11px; line-height: 1.6; }
+.film-player-backdrop { position: fixed; z-index: 100; inset: 0; padding: 24px; display: grid; place-items: center; background: rgba(12, 14, 12, .85); backdrop-filter: blur(9px); }
+.film-player-dialog { width: min(1080px, 100%); max-height: calc(100dvh - 48px); overflow-y: auto; background: #f8f7f0; border: 1px solid #7e8271; border-radius: 17px; box-shadow: 0 28px 80px rgba(0,0,0,.45); }
+.film-player-top { padding: 15px 20px; display: flex; align-items: center; justify-content: space-between; gap: 15px; }
+.film-player-top > div { display: flex; align-items: baseline; gap: 13px; min-width: 0; }
+.film-player-top span { color: #777a70; font-size: 10px; font-weight: 850; letter-spacing: .12em; white-space: nowrap; }
+.film-player-top strong { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; font-size: 17px; }
+.film-player-top button { width: 36px; height: 36px; flex: 0 0 auto; display: grid; place-items: center; background: transparent; border: 1px solid #c9cbc0; border-radius: 50%; cursor: pointer; }
+.film-player-top button:hover { background: #e6e9dc; }
+.film-player-frame { aspect-ratio: 16 / 9; width: 100%; background: #080908; }
+.film-player-frame iframe { width: 100%; height: 100%; display: block; border: 0; }
+.film-player-bottom { padding: 18px 23px 21px; display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+.film-player-bottom p { margin: 0; color: #51554b; font-size: 12px; line-height: 1.6; }
+.film-player-bottom p strong { margin-right: 10px; color: var(--ink); }
+.film-player-bottom a { display: inline-flex; align-items: center; gap: 7px; flex: 0 0 auto; color: var(--ink); font-size: 12px; font-weight: 800; text-decoration: none; }
+.film-player-bottom a:hover { text-decoration: underline; }
 
 .search-zone { padding: 24px clamp(22px, 5vw, 86px); display: flex; align-items: center; gap: 12px; background: var(--ink); }
 .search-box { flex: 1; height: 56px; max-width: 800px; padding: 0 18px; display: flex; align-items: center; gap: 12px; color: #aeadA5; background: #2a2b26; border: 1px solid #454640; border-radius: 11px; }
@@ -225,6 +245,13 @@ footer p { margin: 0; color: #96978f; font-size: 11px; }
   .film-grid { grid-template-columns: 1fr; gap: 13px; }
   .film-card-body { padding: 17px; }
   .film-synopsis { min-height: 0; }
+  .film-player-backdrop { padding: 0; align-items: end; }
+  .film-player-dialog { max-height: 96dvh; border-radius: 17px 17px 0 0; }
+  .film-player-top { padding: 12px 15px; }
+  .film-player-top > div { display: block; }
+  .film-player-top span { display: block; margin-bottom: 3px; font-size: 9px; }
+  .film-player-top strong { font-size: 14px; }
+  .film-player-bottom { padding: 16px; align-items: flex-start; flex-direction: column; gap: 10px; }
   .search-zone { position: sticky; z-index: 30; top: 66px; padding: 12px 15px; }
   .search-box { height: 48px; }
   .saved-filter { width: 48px; height: 48px; padding: 0; justify-content: center; font-size: 0; }
