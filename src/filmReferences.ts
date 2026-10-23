@@ -11,11 +11,60 @@ export type FilmReference = {
   watchFor: string
   url: string
   embedUrl: string
+  embedType?: 'iframe' | 'video'
   thumbnailUrl: string
   color: string
 }
 
 export const filmReferences: FilmReference[] = [
+  {
+    id: 'little-forest-korea', collection: 'everyday', title: 'Little Forest', titleZh: '小森林（韩版）', source: 'Korean Film Week', year: '2018', duration: '1 分 42 秒', category: '电影预告 / 乡村四季',
+    synopsis: '一位年轻女性回到故乡，在种菜、做饭和骑行中重新整理自己的生活。',
+    watchFor: '观察做饭与劳作的动作如何被拆成特写、中景和环境镜头，让真实日常形成节奏。',
+    url: 'https://www.youtube.com/watch?v=uKW0YaPUa2Y', embedUrl: 'https://www.youtube.com/embed/uKW0YaPUa2Y', thumbnailUrl: 'https://i.ytimg.com/vi/uKW0YaPUa2Y/hqdefault.jpg', color: '#9faf79',
+  },
+  {
+    id: 'little-forest-japan', collection: 'everyday', title: 'Little Forest: Summer/Autumn', titleZh: '小森林：夏秋篇', source: 'MUBI', year: '2014', duration: '1 分 12 秒', category: '电影预告 / 食物与独居',
+    synopsis: '女孩回到东北乡村独自生活，让耕作、采集和烹饪跟着季节变化慢慢展开。',
+    watchFor: '观察食物与植物特写怎样接回人物中景，以及手部动作如何成为自然转场。',
+    url: 'https://mubi.com/en/films/little-forest-summerautumn/trailer', embedUrl: 'https://trailers.mubicdn.net/120022/optimised/720p-t-little-forest-summerautumn_en_us_1702.949_1280_720_1705630038.mp4', embedType: 'video', thumbnailUrl: 'https://images.mubicdn.net/images/film/120022/cache-105256-1745492171/image-w1280.jpg', color: '#8f9e6d',
+  },
+  {
+    id: 'our-little-sister', collection: 'everyday', title: 'Our Little Sister', titleZh: '海街日记', source: 'Fuji TV', year: '2015', duration: '1 分 30 秒', category: '电影预告 / 家庭与季节',
+    synopsis: '四姐妹在海边小镇共同生活，家庭关系藏在吃饭、散步、通勤和季节变化里。',
+    watchFor: '观察多人在家中与街道里的自然站位，以及环境空镜如何给人物关系留出呼吸。',
+    url: 'https://www.youtube.com/watch?v=NRktvTd5KZo', embedUrl: 'https://www.youtube.com/embed/NRktvTd5KZo', thumbnailUrl: 'https://i.ytimg.com/vi/NRktvTd5KZo/hqdefault.jpg', color: '#b9b596',
+  },
+  {
+    id: 'zen-diary', collection: 'everyday', title: 'The Zen Diary', titleZh: '土を喰らう十二ヵ月', source: 'JCCC', year: '2022', duration: '1 分 03 秒', category: '电影预告 / 山居与烹饪',
+    synopsis: '一位作家在山间木屋种菜、采集并做饭，用十二个月感受土地和生活的变化。',
+    watchFor: '观察安静空间里的自然光、生活声音与动作细节，怎样建立沉稳而不空洞的节奏。',
+    url: 'https://www.youtube.com/watch?v=bCWkm2nxZgc', embedUrl: 'https://www.youtube.com/embed/bCWkm2nxZgc', thumbnailUrl: 'https://i.ytimg.com/vi/bCWkm2nxZgc/hqdefault.jpg', color: '#aa9b77',
+  },
+  {
+    id: 'bread-of-happiness', collection: 'everyday', title: 'Bread of Happiness', titleZh: '幸福的面包', source: 'JustWatch', year: '2012', duration: '1 分 49 秒', category: '电影预告 / 湖边咖啡馆',
+    synopsis: '一对夫妻在北海道湖边经营面包咖啡馆，透过食物和来客描绘温暖的日常。',
+    watchFor: '观察窗户、晨光、木质室内和食物特写如何配合，建立统一的温度与空间感。',
+    url: 'https://www.dailymotion.com/video/x8hqiw9', embedUrl: 'https://geo.dailymotion.com/player.html?video=x8hqiw9', thumbnailUrl: 'https://s2.dmcdn.net/v/UcxCf1eoxQWSAZG_X/x720', color: '#c69b73',
+  },
+  {
+    id: 'fragments-morning-evening', collection: 'everyday', title: 'Fragments… Morning, Evening', titleZh: '清晨、傍晚，再到清晨', source: 'Zhanna Tuygay', year: '2025', duration: '1 分 10 秒', category: '独立短片 / 时间片段',
+    synopsis: '影片用清晨、傍晚和第二天清晨的安静片段，让一天自然流向下一天。',
+    watchFor: '适合直接模仿：选三个时间节点，每段只拍少量动作，再用光线和声音连接。',
+    url: 'https://vimeo.com/1146637122', embedUrl: 'https://player.vimeo.com/video/1146637122', thumbnailUrl: 'https://i.vimeocdn.com/video/2096139577-47ff9a783d688259fea7da4049d6bca630db06cec3519ddecd916aa10b61c752-d_640?region=us', color: '#a89c90',
+  },
+  {
+    id: 'nyangsoop-summer', collection: 'everyday', title: 'A Summer Day', titleZh: '某个夏日的生活节奏', source: '냥숲 nyangsoop', year: '2020', duration: '23 分 07 秒', category: '生活记录 / 乡村独居',
+    synopsis: '韩国创作者记录夏日里的居住、做饭和户外活动，以固定机位保留真实动作的完整过程。',
+    watchFor: '观察固定机位、自然动作和环境声如何组合；尤其适合学习一个人怎样完成拍摄。',
+    url: 'https://www.youtube.com/watch?v=r0dckVaa4jM', embedUrl: 'https://www.youtube.com/embed/r0dckVaa4jM', thumbnailUrl: 'https://i.ytimg.com/vi/r0dckVaa4jM/hqdefault.jpg', color: '#92a58a',
+  },
+  {
+    id: 'getting-by', collection: 'everyday', title: 'Getting By', titleZh: '独自生活的日子', source: 'Caitlin Chescoe', year: '2026', duration: '1 分 41 秒', category: '人物纪录 / 居家观察',
+    synopsis: '摄影师温和地记录独居祖父的日常、衰老与孤独，让缓慢的生活节奏成为故事本身。',
+    watchFor: '观察不摆拍的动作、居家空间和停顿如何保留人物尊严，同时让情绪逐渐累积。',
+    url: 'https://vimeo.com/1151937107', embedUrl: 'https://player.vimeo.com/video/1151937107', thumbnailUrl: 'https://i.vimeocdn.com/video/2103309377-f9ac260b47c41f1a0c30be0bd57b6ed90fcf452e242a4314c2f45d41000d19f7-d_640?region=us', color: '#9e9588',
+  },
   {
     id: 'morning-routine', collection: 'everyday', title: 'Morning Routine', titleZh: '一个人的早晨', source: 'Jeremy Hanson', year: '2024', duration: '55 秒', category: '独自拍摄 / 起居',
     synopsis: '创作者在家中拍摄不那么规律的早晨，把起床后的混乱剪成一段简短的生活切片。',

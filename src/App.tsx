@@ -59,7 +59,7 @@ function FilmCard({ film, playing, onPlay, onStop }: { film: FilmReference; play
   const playerUrl = `${film.embedUrl}${separator}autoplay=1&playsinline=1${film.id === 'body' ? '' : '&rel=0'}`
 
   return <article className={`film-card ${playing ? 'playing' : ''}`}>
-    {playing ? <div className="film-card-art film-card-player"><iframe src={playerUrl} title={`播放 ${film.title}`} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen" allowFullScreen referrerPolicy="strict-origin-when-cross-origin" /></div> :
+    {playing ? <div className="film-card-art film-card-player">{film.embedType === 'video' ? <video src={film.embedUrl} title={`播放 ${film.title}`} controls autoPlay playsInline /> : <iframe src={playerUrl} title={`播放 ${film.title}`} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen" allowFullScreen referrerPolicy="strict-origin-when-cross-origin" />}</div> :
       <button className="film-card-play" onClick={onPlay} aria-label={`播放 ${film.title}`}>
         <span className="film-card-art"><img className="film-thumbnail" src={film.thumbnailUrl} alt={`${film.title} 的视频预览画面`} loading="lazy" /><span className="film-duration">{film.duration}</span><span className="film-play-icon"><Play size={25} fill="currentColor" /></span></span>
       </button>}
