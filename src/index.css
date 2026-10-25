@@ -21,21 +21,11 @@ button { color: inherit; }
 button:focus-visible, a:focus-visible, input:focus-visible { outline: 3px solid #7e9d00; outline-offset: 3px; }
 
 .app-shell { min-height: 100vh; }
-.topbar {
-  position: sticky; top: 0; z-index: 40; height: 74px; padding: 0 clamp(20px, 4vw, 64px);
-  display: flex; align-items: center; justify-content: space-between; gap: 28px;
-  background: rgba(248, 246, 239, .93); border-bottom: 1px solid var(--line); backdrop-filter: blur(16px);
-}
-.brand { display: flex; align-items: center; gap: 10px; color: var(--ink); text-decoration: none; font-weight: 850; letter-spacing: -.02em; white-space: nowrap; }
-.brand > span:last-child { display: flex; flex-direction: column; line-height: 1.05; }
-.brand small { margin-top: 5px; font-size: 8px; letter-spacing: .16em; color: var(--muted); font-weight: 700; }
 .brand-mark { width: 38px; height: 38px; display: inline-flex; align-items: center; justify-content: center; background: var(--ink); color: var(--acid); border-radius: 50%; }
-.header-action { padding: 10px 14px; display: flex; align-items: center; gap: 9px; border: 1px solid var(--ink); border-radius: 999px; background: transparent; font-size: 12px; font-weight: 750; cursor: pointer; white-space: nowrap; }
-.header-action:hover { background: var(--acid); }
 
 main { max-width: 1540px; margin: 0 auto; }
 .workflow-panel { margin: 0 0 56px; }
-.workflow-tabs { width: 100%; margin: 0; padding: 20px clamp(22px, 5vw, 86px) 0; display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 7px; background: #f8f6ef; border-bottom: 1px solid var(--line); scroll-margin-top: 74px; }
+.workflow-tabs { width: 100%; margin: 0; padding: 20px clamp(22px, 5vw, 86px) 0; display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 7px; background: #f8f6ef; border-bottom: 1px solid var(--line); scroll-margin-top: 0; }
 .workflow-tab { min-width: 0; min-height: 129px; padding: 16px 13px 14px; display: flex; flex-direction: column; align-items: flex-start; text-align: left; gap: 5px; border: 1px solid #d1d0c8; border-radius: 14px 14px 0 0; background: #eeede7; cursor: pointer; transition: background .2s, transform .2s; }
 .workflow-tab:hover { background: color-mix(in srgb, var(--accent) 20%, white); }
 .workflow-tab.selected { position: relative; z-index: 1; background: color-mix(in srgb, var(--accent) 23%, white); border-color: var(--ink); border-bottom-color: transparent; box-shadow: inset 0 5px 0 var(--accent); }
@@ -221,11 +211,8 @@ footer p { margin: 0; color: #96978f; font-size: 11px; }
 }
 
 @media (max-width: 620px) {
-  .topbar { height: 66px; padding: 0 15px; }
-  .brand-mark { width: 34px; height: 34px; }
-  .header-action { padding: 9px 11px; font-size: 11px; }
   .workflow-panel { margin-bottom: 32px; }
-  .workflow-tabs { width: 100%; margin: 0; padding: 12px 15px 4px; scroll-margin-top: 66px; }
+  .workflow-tabs { width: 100%; margin: 0; padding: 12px 15px 4px; scroll-margin-top: 0; }
   .workflow-tab { min-height: 105px; flex-basis: 137px; padding: 12px; }
   .workflow-tab-number { width: 28px; height: 28px; margin-bottom: 3px; font-size: 10px; }
   .workflow-tab-title { font-size: 15px; }
@@ -257,7 +244,7 @@ footer p { margin: 0; color: #96978f; font-size: 11px; }
   .film-grid { grid-template-columns: 1fr; gap: 13px; }
   .film-card-body { padding: 17px; }
   .film-synopsis { min-height: 0; }
-  .search-zone { position: sticky; z-index: 30; top: 66px; padding: 12px 15px; }
+  .search-zone { position: sticky; z-index: 30; top: 0; padding: 12px 15px; }
   .search-box { height: 48px; }
   .saved-filter { width: 48px; height: 48px; padding: 0; justify-content: center; font-size: 0; }
   .saved-filter span { display: none; }

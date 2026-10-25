@@ -193,11 +193,6 @@ function Home({ favorites, toggle }: { favorites: string[]; toggle: (id: string)
 
   return (
     <div className="app-shell">
-      <header className="topbar">
-        <a className="brand" href="#/" aria-label="短片现场手册首页"><span className="brand-mark"><Camera size={20} /></span><span>短片现场手册<small>SHORT FILM FIELD GUIDE</small></span></a>
-        <button className="header-action" onClick={() => selectStage('all')}>全部速查卡 <ArrowRight size={16} /></button>
-      </header>
-
       <main>
         <section className="workflow-panel" aria-label="单人短片制作流程">
           <div className="workflow-tabs" id="workflow-tabs" role="tablist" aria-label="制作阶段" onKeyDown={handleTabKeyDown}>
