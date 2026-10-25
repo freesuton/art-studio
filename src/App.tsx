@@ -200,8 +200,6 @@ function Home({ favorites, toggle }: { favorites: string[]; toggle: (id: string)
 
       <main>
         <section className="workflow-panel" aria-label="单人短片制作流程">
-          <div className="workflow-intro"><div><p className="eyebrow">ONE-PERSON FILM PRODUCTION SYSTEM</p><h2>Solo Filmmaking Workflow</h2><p>先看样片寻找方向，再按五个阶段完成自己的短片。</p></div><span>FILMS + 05 STAGES</span></div>
-          <p className="workflow-swipe-hint">左右滑动切换阶段 <ArrowRight size={14} /></p>
           <div className="workflow-tabs" id="workflow-tabs" role="tablist" aria-label="制作阶段" onKeyDown={handleTabKeyDown}>
             <button className={`workflow-tab sample-tab ${stage === 'samples' ? 'selected' : ''}`} id="tab-samples" role="tab" aria-controls="workflow-stage-panel" aria-selected={stage === 'samples'} tabIndex={stage === 'samples' || stage === 'all' || stage === 'saved' ? 0 : -1} onClick={() => selectStage('samples')} style={{ '--accent': '#d8ff42' } as React.CSSProperties}>
               <span className="workflow-tab-number">00</span><span className="workflow-tab-title">样片</span><span className="workflow-tab-en">Film References</span>

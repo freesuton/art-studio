@@ -34,13 +34,8 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline: 3px solid 
 .header-action:hover { background: var(--acid); }
 
 main { max-width: 1540px; margin: 0 auto; }
-.workflow-panel { margin: 28px clamp(22px, 5vw, 86px) 56px; padding: clamp(25px, 4vw, 54px); background: #f9f8f3; border: 1px solid #cac9c1; border-radius: 24px; box-shadow: 0 18px 55px rgba(28, 29, 25, .04); }
-.workflow-intro { display: flex; align-items: start; justify-content: space-between; gap: 20px; padding-bottom: 27px; border-bottom: 1px solid var(--line); }
-.workflow-intro h2 { margin: 0; font-size: clamp(28px, 3vw, 43px); line-height: 1.1; letter-spacing: -.045em; }
-.workflow-intro p:last-child { margin: 10px 0 0; color: #66675f; font-size: 14px; }
-.workflow-intro > span { padding: 8px 11px; border: 1px solid var(--ink); border-radius: 999px; white-space: nowrap; font-size: 10px; font-weight: 850; letter-spacing: .12em; }
-.workflow-swipe-hint { display: none; }
-.workflow-tabs { width: 100%; max-width: 1080px; margin: 30px auto 0; display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 7px; scroll-margin-top: 91px; }
+.workflow-panel { margin: 0 0 56px; }
+.workflow-tabs { width: 100%; margin: 0; padding: 20px clamp(22px, 5vw, 86px) 0; display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 7px; background: #f8f6ef; border-bottom: 1px solid var(--line); scroll-margin-top: 74px; }
 .workflow-tab { min-width: 0; min-height: 129px; padding: 16px 13px 14px; display: flex; flex-direction: column; align-items: flex-start; text-align: left; gap: 5px; border: 1px solid #d1d0c8; border-radius: 14px 14px 0 0; background: #eeede7; cursor: pointer; transition: background .2s, transform .2s; }
 .workflow-tab:hover { background: color-mix(in srgb, var(--accent) 20%, white); }
 .workflow-tab.selected { position: relative; z-index: 1; background: color-mix(in srgb, var(--accent) 23%, white); border-color: var(--ink); border-bottom-color: transparent; box-shadow: inset 0 5px 0 var(--accent); }
@@ -49,7 +44,7 @@ main { max-width: 1540px; margin: 0 auto; }
 .workflow-tab-en { color: #717269; font-size: clamp(9px, .8vw, 11px); line-height: 1.2; white-space: nowrap; }
 .sample-tab { background: #e8edd8; }
 .sample-tab.selected { background: #efffbd; }
-.workflow-stage-panel { width: 100%; max-width: 1080px; min-height: 286px; margin: -1px auto 0; padding: 30px 34px; display: grid; grid-template-columns: 1.15fr .85fr; gap: 40px; border: 1px solid var(--ink); border-top: 5px solid var(--accent); border-radius: 0 0 16px 16px; background: color-mix(in srgb, var(--accent) 9%, white); }
+.workflow-stage-panel { width: calc(100% - 2 * clamp(22px, 5vw, 86px)); max-width: 1080px; min-height: 286px; margin: 28px auto 0; padding: 30px 34px; display: grid; grid-template-columns: 1.15fr .85fr; gap: 40px; border: 1px solid var(--ink); border-top: 5px solid var(--accent); border-radius: 16px; background: color-mix(in srgb, var(--accent) 9%, white); }
 .workflow-stage-number { float: right; color: #8a8b82; font-size: 11px; font-weight: 800; letter-spacing: .12em; }
 .workflow-stage-main h3 { margin: 0; font-size: clamp(34px, 3.6vw, 54px); line-height: 1.05; letter-spacing: -.055em; }
 .workflow-stage-description { margin: 13px 0 23px; color: #4f5049; font-size: 16px; line-height: 1.6; }
@@ -64,7 +59,7 @@ main { max-width: 1540px; margin: 0 auto; }
 .workflow-stage-tasks button:hover, .workflow-stage-all button:hover { background: #3b3e32; }
 .workflow-stage-all { min-height: 170px; display: flex; align-items: center; justify-content: space-between; }
 .workflow-stage-all p { font-size: 20px; font-weight: 750; }
-.concept-area-selector { width: 100%; max-width: 1080px; margin: 28px auto 0; padding-top: 24px; border-top: 1px solid var(--line); }
+.concept-area-selector { width: calc(100% - 2 * clamp(22px, 5vw, 86px)); max-width: 1080px; margin: 28px auto 0; padding-top: 24px; border-top: 1px solid var(--line); }
 .concept-area-selector > div:first-child { margin-bottom: 14px; display: flex; align-items: baseline; justify-content: space-between; gap: 20px; }
 .concept-area-selector h3 { margin: 0; font-size: 21px; letter-spacing: -.025em; }
 .concept-area-tabs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
@@ -75,7 +70,7 @@ main { max-width: 1540px; margin: 0 auto; }
 .concept-area-tabs strong { min-width: 0; display: flex; flex-direction: column; gap: 4px; font-size: 17px; }
 .concept-area-tabs small { overflow: hidden; color: #77786f; font-size: 10px; font-weight: 650; white-space: nowrap; text-overflow: ellipsis; }
 .concept-area-tabs svg { color: #76776f; }
-.starter-template { width: 100%; max-width: 1080px; margin: 28px auto 0; padding: clamp(24px, 3.5vw, 42px); border: 1px solid var(--ink); border-radius: 18px; background: #fff; }
+.starter-template { width: calc(100% - 2 * clamp(22px, 5vw, 86px)); max-width: 1080px; margin: 28px auto 0; padding: clamp(24px, 3.5vw, 42px); border: 1px solid var(--ink); border-radius: 18px; background: #fff; }
 .starter-template-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 22px; }
 .starter-template-heading h3 { margin: 5px 0 0; font-size: clamp(28px, 3.1vw, 45px); line-height: 1.08; letter-spacing: -.045em; }
 .starter-template-heading > span { flex: 0 0 auto; padding: 8px 11px; border: 1px solid var(--ink); border-radius: 999px; font-size: 9px; font-weight: 850; letter-spacing: .12em; }
@@ -94,7 +89,7 @@ main { max-width: 1540px; margin: 0 auto; }
 .starter-template-note { margin-top: 27px; padding-top: 20px; display: grid; grid-template-columns: 110px 1fr; gap: 16px; border-top: 1px solid var(--line); }
 .starter-template-note strong { font-size: 12px; }
 .starter-template-note p { margin: 0; color: #4f5049; font-size: 14px; line-height: 1.7; }
-.workflow-note { max-width: 1080px; margin: 18px auto 0; color: #76776f; font-size: 12px; }
+.workflow-note { width: calc(100% - 2 * clamp(22px, 5vw, 86px)); max-width: 1080px; margin: 18px auto 0; color: #76776f; font-size: 12px; }
 .samples-panel { display: block; background: #f3f4e9; }
 .samples-heading { margin-bottom: 28px; display: flex; align-items: flex-start; justify-content: space-between; gap: 25px; }
 .samples-heading h3 { margin: 0 0 11px; font-size: clamp(32px, 3.8vw, 52px); line-height: 1.05; letter-spacing: -.055em; }
@@ -229,18 +224,14 @@ footer p { margin: 0; color: #96978f; font-size: 11px; }
   .topbar { height: 66px; padding: 0 15px; }
   .brand-mark { width: 34px; height: 34px; }
   .header-action { padding: 9px 11px; font-size: 11px; }
-  .workflow-panel { margin: 16px 15px 32px; padding: 22px 17px; border-radius: 18px; }
-  .workflow-intro { padding-bottom: 20px; }
-  .workflow-intro > span { display: none; }
-  .workflow-intro h2 { font-size: 27px; }
-  .workflow-intro p:last-child { font-size: 12px; line-height: 1.5; }
-  .workflow-swipe-hint { margin: 15px 0 0; display: flex; align-items: center; justify-content: flex-end; gap: 5px; color: #77786f; font-size: 11px; }
-  .workflow-tabs { width: auto; margin: 9px -17px 0; padding: 0 17px 4px; scroll-margin-top: 82px; }
+  .workflow-panel { margin-bottom: 32px; }
+  .workflow-tabs { width: 100%; margin: 0; padding: 12px 15px 4px; scroll-margin-top: 66px; }
   .workflow-tab { min-height: 105px; flex-basis: 137px; padding: 12px; }
   .workflow-tab-number { width: 28px; height: 28px; margin-bottom: 3px; font-size: 10px; }
   .workflow-tab-title { font-size: 15px; }
   .workflow-tab-en { font-size: 10px; }
-  .workflow-stage-panel { min-height: 0; padding: 23px 18px; }
+  .workflow-stage-panel { width: calc(100% - 30px); min-height: 0; margin-top: 18px; padding: 23px 18px; }
+  .concept-area-selector, .starter-template, .workflow-note { width: calc(100% - 30px); }
   .concept-area-selector { margin-top: 20px; padding-top: 18px; }
   .concept-area-selector > div:first-child { align-items: flex-start; flex-direction: column; gap: 2px; }
   .concept-area-tabs { grid-template-columns: 1fr; }
