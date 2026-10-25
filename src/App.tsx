@@ -22,12 +22,12 @@ const filmCollections: { id: FilmReference['collection']; title: string; subtitl
 ]
 
 const storyLevels = [
-  { title: 'Film', label: '完整电影', description: '一部完整的视听作品' },
-  { title: 'Act', label: '幕', description: '故事的主要发展阶段' },
-  { title: 'Sequence', label: '段落', description: '围绕阶段性目标组织的一组场景' },
-  { title: 'Scene', label: '场景', description: '特定时间、空间或戏剧行动的单位' },
-  { title: 'Shot', label: '镜头', description: '一次连续呈现的画面' },
-  { title: 'Frame', label: '画格', description: '动态影像中的单幅画面' },
+  { title: 'Film', label: '完整电影', description: '一部完整的视听作品', stage: '创意与故事', group: 'story' },
+  { title: 'Act', label: '幕', description: '故事的主要发展阶段', stage: '创意与故事', group: 'story' },
+  { title: 'Sequence', label: '段落', description: '围绕阶段性目标组织的一组场景', stage: '创意与故事', group: 'story' },
+  { title: 'Scene', label: '场景', description: '特定时间、空间或戏剧行动的单位', stage: '拍摄准备', group: 'production' },
+  { title: 'Shot', label: '镜头', description: '一次连续呈现的画面', stage: '拍摄准备 · 正式拍摄', group: 'production' },
+  { title: 'Frame', label: '画格', description: '动态影像中的单幅画面', stage: '正式拍摄 · 剪辑与后期', group: 'image' },
 ]
 
 const sundayShots = [
@@ -79,13 +79,12 @@ function Card({ sheet, saved, onToggle, onOpen }: { sheet: CheatSheet; saved: bo
 function StoryStructure() {
   return <section className="story-structure" aria-labelledby="story-structure-title">
     <div className="story-structure-heading">
-      <p className="eyebrow">STORY ARCHITECTURE</p>
-      <h1 id="story-structure-title">电影的叙事层级</h1>
-      <p>从完整短片的意图，逐步收束到每一个画面。用它定位你当下正在做的创作决定。</p>
+      <div><p className="eyebrow">STORY ARCHITECTURE / 06 LEVELS</p><h1 id="story-structure-title">电影的叙事层级</h1><p>从完整短片的意图，逐步收束到每一个画面。每一层都对应网站中的下一步工作。</p></div>
+      <div className="story-legend" aria-label="层级类别说明"><span className="story">故事</span><span className="production">制作</span><span className="image">画面</span></div>
     </div>
     <div className="story-structure-flow">
       {storyLevels.map((level, index) => <div className="story-level" key={level.title} style={{ '--level': index } as React.CSSProperties}>
-        <article className="story-node"><div><span>{level.label}</span><h2>{level.title}</h2></div><p>{level.description}</p></article>
+        <article className={`story-node ${level.group}`}><div className="story-node-main"><span className="story-index">{String(index + 1).padStart(2, '0')}</span><div><span className="story-label">{level.label}</span><h2>{level.title}</h2></div></div><div className="story-node-detail"><p>{level.description}</p><span>{level.stage}</span></div></article>
         {index < storyLevels.length - 1 && <span className="story-connector" aria-hidden="true">↓</span>}
       </div>)}
     </div>
