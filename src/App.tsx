@@ -156,15 +156,6 @@ function Home({ favorites, toggle }: { favorites: string[]; toggle: (id: string)
       </header>
 
       <main>
-        <section className="hero" id="workflow">
-          <div className="hero-copy">
-            <p className="hero-kicker">SOLO FILMMAKING WORKFLOW</p>
-            <h1>一部短片，<br /><em>五步完成。</em></h1>
-            <p>从创意到发布，每一步都围绕一份主要交付物展开。横向切换阶段，查看对应任务与视觉技术速查卡片。</p>
-          </div>
-          <div className="hero-aside" aria-hidden="true"><span>01—05</span><p>IDEA<br />TO<br />SCREEN</p><div className="hero-aside-line" /></div>
-        </section>
-
         <section className="workflow-panel" aria-label="单人短片制作流程">
           <div className="workflow-intro"><div><p className="eyebrow">ONE-PERSON FILM PRODUCTION SYSTEM</p><h2>Solo Filmmaking Workflow</h2><p>先看样片寻找方向，再按五个阶段完成自己的短片。</p></div><span>FILMS + 05 STAGES</span></div>
           <p className="workflow-swipe-hint">左右滑动切换阶段 <ArrowRight size={14} /></p>
