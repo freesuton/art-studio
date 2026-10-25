@@ -10,8 +10,8 @@ import type { FilmReference } from './filmReferences'
 import type { CheatSheet, StageId } from './types'
 
 const FAVORITES_KEY = 'short-film-guide-favorites'
-const VIEW_STATE_KEY = 'short-film-guide-view-state'
-const SCROLL_POSITION_KEY = 'short-film-guide-scroll-position'
+const VIEW_STATE_KEY = 'short-film-guide-view-state-v2'
+const SCROLL_POSITION_KEY = 'short-film-guide-scroll-position-v2'
 type ViewId = StageId | 'samples' | 'all' | 'saved'
 type ConceptArea = 'technique' | 'template'
 const filmCollections: { id: FilmReference['collection']; title: string; subtitle: string }[] = [
@@ -19,6 +19,15 @@ const filmCollections: { id: FilmReference['collection']; title: string; subtitl
   { id: 'womenNature', title: '女性与自然', subtitle: '海洋、旷野与人物的亲密关系' },
   { id: 'fashion', title: '时尚影像', subtitle: '用服装、身体与场景创造电影感' },
   { id: 'exploration', title: '探索与叙事', subtitle: '从环境与行动中寻找故事' },
+]
+
+const storyLevels = [
+  { title: 'Film', label: '完整电影', description: '一部完整的视听作品' },
+  { title: 'Act', label: '幕', description: '故事的主要发展阶段' },
+  { title: 'Sequence', label: '段落', description: '围绕阶段性目标组织的一组场景' },
+  { title: 'Scene', label: '场景', description: '特定时间、空间或戏剧行动的单位' },
+  { title: 'Shot', label: '镜头', description: '一次连续呈现的画面' },
+  { title: 'Frame', label: '画格', description: '动态影像中的单幅画面' },
 ]
 
 const sundayShots = [
@@ -65,6 +74,22 @@ function Card({ sheet, saved, onToggle, onOpen }: { sheet: CheatSheet; saved: bo
       <button className="read-more" onClick={onOpen}>打开卡片 <ArrowRight size={16} /></button>
     </article>
   )
+}
+
+function StoryStructure() {
+  return <section className="story-structure" aria-labelledby="story-structure-title">
+    <div className="story-structure-heading">
+      <p className="eyebrow">STORY ARCHITECTURE</p>
+      <h1 id="story-structure-title">电影的叙事层级</h1>
+      <p>从完整短片的意图，逐步收束到每一个画面。用它定位你当下正在做的创作决定。</p>
+    </div>
+    <div className="story-structure-flow">
+      {storyLevels.map((level, index) => <div className="story-level" key={level.title} style={{ '--level': index } as React.CSSProperties}>
+        <article className="story-node"><div><span>{level.label}</span><h2>{level.title}</h2></div><p>{level.description}</p></article>
+        {index < storyLevels.length - 1 && <span className="story-connector" aria-hidden="true">↓</span>}
+      </div>)}
+    </div>
+  </section>
 }
 
 function FilmCard({ film, playing, onPlay, onStop }: { film: FilmReference; playing: boolean; onPlay: () => void; onStop: () => void }) {
@@ -232,6 +257,7 @@ function Home({ favorites, toggle }: { favorites: string[]; toggle: (id: string)
   return (
     <div className="app-shell">
       <main>
+        <StoryStructure />
         <section className="workflow-panel" aria-label="单人短片制作流程">
           <div className="workflow-tabs" id="workflow-tabs" role="tablist" aria-label="制作阶段" onKeyDown={handleTabKeyDown}>
             <button className={`workflow-tab sample-tab ${stage === 'samples' ? 'selected' : ''}`} id="tab-samples" role="tab" aria-controls="workflow-stage-panel" aria-selected={stage === 'samples'} tabIndex={stage === 'samples' || stage === 'all' || stage === 'saved' ? 0 : -1} onClick={() => selectStage('samples')} style={{ '--accent': '#d8ff42' } as React.CSSProperties}>
