@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useLayoutEffect, useMemo, useState } from 'react'
 import Fuse from 'fuse.js'
 import { ArrowRight, Bookmark, Camera, ChevronLeft, ExternalLink, Play, Search, X } from 'lucide-react'
 import { Route, Routes, useNavigate, useParams } from 'react-router-dom'
@@ -10,6 +10,8 @@ import type { FilmReference } from './filmReferences'
 import type { CheatSheet, StageId } from './types'
 
 const FAVORITES_KEY = 'short-film-guide-favorites'
+const VIEW_STATE_KEY = 'short-film-guide-view-state'
+const SCROLL_POSITION_KEY = 'short-film-guide-scroll-position'
 type ViewId = StageId | 'samples' | 'all' | 'saved'
 type ConceptArea = 'technique' | 'template'
 const filmCollections: { id: FilmReference['collection']; title: string; subtitle: string }[] = [
@@ -156,9 +158,45 @@ function Detail({ favorites, toggle }: { favorites: string[]; toggle: (id: strin
 function Home({ favorites, toggle }: { favorites: string[]; toggle: (id: string) => void }) {
   const navigate = useNavigate()
   const [query, setQuery] = useState('')
-  const [stage, setStage] = useState<ViewId>('samples')
-  const [conceptArea, setConceptArea] = useState<ConceptArea>('technique')
+  const [stage, setStage] = useState<ViewId>(() => {
+    try {
+      const saved = JSON.parse(sessionStorage.getItem(VIEW_STATE_KEY) || '{}')
+      return saved.stage === 'samples' || saved.stage === 'all' || saved.stage === 'saved' || stages.some((item) => item.id === saved.stage) ? saved.stage : 'samples'
+    } catch { return 'samples' }
+  })
+  const [conceptArea, setConceptArea] = useState<ConceptArea>(() => {
+    try { return JSON.parse(sessionStorage.getItem(VIEW_STATE_KEY) || '{}').conceptArea === 'template' ? 'template' : 'technique' }
+    catch { return 'technique' }
+  })
   const [activeFilmId, setActiveFilmId] = useState<FilmReference['id'] | null>(null)
+
+  useEffect(() => {
+    sessionStorage.setItem(VIEW_STATE_KEY, JSON.stringify({ stage, conceptArea }))
+  }, [stage, conceptArea])
+
+  useLayoutEffect(() => {
+    const position = Number(sessionStorage.getItem(SCROLL_POSITION_KEY))
+    if (!Number.isFinite(position) || position <= 0) return
+    const restore = () => window.scrollTo({ top: position, left: 0, behavior: 'auto' })
+    const frame = window.requestAnimationFrame(() => window.requestAnimationFrame(restore))
+    const timer = window.setTimeout(restore, 250)
+    window.addEventListener('load', restore, { once: true })
+    return () => {
+      window.cancelAnimationFrame(frame)
+      window.clearTimeout(timer)
+      window.removeEventListener('load', restore)
+    }
+  }, [])
+
+  useEffect(() => {
+    const save = () => sessionStorage.setItem(SCROLL_POSITION_KEY, String(Math.round(window.scrollY)))
+    window.addEventListener('scroll', save, { passive: true })
+    window.addEventListener('pagehide', save)
+    return () => {
+      window.removeEventListener('scroll', save)
+      window.removeEventListener('pagehide', save)
+    }
+  }, [])
   const fuse = useMemo(() => new Fuse(sheets, { keys: ['title', 'titleEn', 'summary', 'category', 'tags'], threshold: .34, ignoreLocation: true }), [])
   const results = useMemo(() => {
     let list = query.trim() ? fuse.search(query.trim()).map((result) => result.item) : sheets
