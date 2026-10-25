@@ -5,6 +5,7 @@ import { Route, Routes, useNavigate, useParams } from 'react-router-dom'
 import TechniqueVisual from './TechniqueVisual'
 import { sheets, stages } from './data'
 import { filmReferences } from './filmReferences'
+import sundayStoryboard from './assets/sunday-storyboard.jpg'
 import type { FilmReference } from './filmReferences'
 import type { CheatSheet, StageId } from './types'
 
@@ -15,6 +16,15 @@ const filmCollections: { id: FilmReference['collection']; title: string; subtitl
   { id: 'womenNature', title: '女性与自然', subtitle: '海洋、旷野与人物的亲密关系' },
   { id: 'fashion', title: '时尚影像', subtitle: '用服装、身体与场景创造电影感' },
   { id: 'exploration', title: '探索与叙事', subtitle: '从环境与行动中寻找故事' },
+]
+
+const sundayShots = [
+  { number: '01', title: '清晨 / 起床', position: '0% 0%' },
+  { number: '02', title: '森林 / 行走', position: '50% 0%' },
+  { number: '03', title: '细节 / 触摸', position: '100% 0%' },
+  { number: '04', title: '海边 / 停留', position: '0% 100%' },
+  { number: '05', title: '情绪 / 近景', position: '50% 100%' },
+  { number: '06', title: '黄昏 / 结束', position: '100% 100%' },
 ]
 
 function useFavorites() {
@@ -72,6 +82,30 @@ function FilmCard({ film, playing, onPlay, onStop }: { film: FilmReference; play
       <a className="film-source-link" href={film.url} target="_blank" rel="noopener noreferrer">官方页面 <ExternalLink size={14} /></a>
     </div>
   </article>
+}
+
+function StarterTemplate() {
+  return <section className="starter-template" aria-labelledby="starter-template-title">
+    <div className="starter-template-heading">
+      <div><p className="eyebrow">STARTER TEMPLATE / 可直接套用</p><h3 id="starter-template-title">《某个星期天》· 2 分钟短片</h3></div>
+      <span>01 / FIRST FILM</span>
+    </div>
+    <p className="starter-template-lead">一个女生独自去森林或海边度过一天。没有对白，也不需要宏大的情节，只观察她与周围世界的关系。</p>
+    <div className="starter-template-fields" aria-label="创作简报模板">
+      <p><span>人物</span><strong>一个独处的人</strong></p>
+      <p><span>时间</span><strong>一天之内</strong></p>
+      <p><span>地点</span><strong>森林 / 海边</strong></p>
+      <p><span>对白</span><strong>无</strong></p>
+      <p className="starter-template-change"><span>细微变化</span><strong>从 ________ 到 ________</strong></p>
+    </div>
+    <div className="starter-shot-grid">
+      {sundayShots.map((shot) => <figure key={shot.number} className="starter-shot">
+        <div className="starter-shot-image" role="img" aria-label={shot.title} style={{ backgroundImage: `url(${sundayStoryboard})`, backgroundPosition: shot.position }} />
+        <figcaption><span>{shot.number}</span>{shot.title}</figcaption>
+      </figure>)}
+    </div>
+    <div className="starter-template-note"><strong>练习重点</strong><p>先别追求六个漂亮镜头。决定她在这一天的开始与结束时，发生了什么细微变化——这就是导演和编剧思维的起点。</p></div>
+  </section>
 }
 
 function Detail({ favorites, toggle }: { favorites: string[]; toggle: (id: string) => void }) {
@@ -178,6 +212,7 @@ function Home({ favorites, toggle }: { favorites: string[]; toggle: (id: string)
             <div className="workflow-stage-main"><span className="workflow-stage-number">{item.index} / 05</span><p className="eyebrow">{item.titleEn}</p><h3>{item.title}</h3><p className="workflow-stage-description">{item.subtitle}</p><div className="workflow-stage-output"><span>本阶段交付物</span><strong>{item.output}</strong><small>{item.outputEn}</small></div></div>
             <div className="workflow-stage-tasks"><p className="eyebrow">这一阶段要做</p><ol>{item.tasks.map((task) => <li key={task}>{task}</li>)}</ol><button onClick={() => document.getElementById('library')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}>查看相关卡片 <ArrowRight size={16} /></button></div>
           </div> })() : <div className="workflow-stage-panel workflow-stage-all" id="workflow-stage-panel"><p>五个阶段，一份份完成主要交付物。</p><button onClick={() => selectStage('concept')}>从创意与故事开始 <ArrowRight size={16} /></button></div>}
+          {stage === 'concept' && <StarterTemplate />}
           <p className="workflow-note">简单作品可以合并步骤；复杂作品则在每阶段深入细化。</p>
         </section>
 
