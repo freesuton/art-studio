@@ -64,6 +64,17 @@ main { max-width: 1540px; margin: 0 auto; }
 .workflow-stage-tasks button:hover, .workflow-stage-all button:hover { background: #3b3e32; }
 .workflow-stage-all { min-height: 170px; display: flex; align-items: center; justify-content: space-between; }
 .workflow-stage-all p { font-size: 20px; font-weight: 750; }
+.concept-area-selector { width: 100%; max-width: 1080px; margin: 28px auto 0; padding-top: 24px; border-top: 1px solid var(--line); }
+.concept-area-selector > div:first-child { margin-bottom: 14px; display: flex; align-items: baseline; justify-content: space-between; gap: 20px; }
+.concept-area-selector h3 { margin: 0; font-size: 21px; letter-spacing: -.025em; }
+.concept-area-tabs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.concept-area-tabs button { min-width: 0; padding: 17px 18px; display: grid; grid-template-columns: 35px 1fr auto; align-items: center; gap: 12px; color: var(--ink); text-align: left; background: #eeede7; border: 1px solid #cfcec5; border-radius: 12px; cursor: pointer; transition: transform .2s, background .2s, border-color .2s; }
+.concept-area-tabs button:hover { transform: translateY(-2px); border-color: #98998f; }
+.concept-area-tabs button.selected { background: #fff1ed; border-color: var(--ink); box-shadow: inset 5px 0 0 #ff8d72; }
+.concept-area-tabs button > span { width: 32px; height: 32px; display: grid; place-items: center; background: #ff8d72; border: 1px solid var(--ink); border-radius: 50%; font-size: 10px; font-weight: 850; }
+.concept-area-tabs strong { min-width: 0; display: flex; flex-direction: column; gap: 4px; font-size: 17px; }
+.concept-area-tabs small { overflow: hidden; color: #77786f; font-size: 10px; font-weight: 650; white-space: nowrap; text-overflow: ellipsis; }
+.concept-area-tabs svg { color: #76776f; }
 .starter-template { width: 100%; max-width: 1080px; margin: 28px auto 0; padding: clamp(24px, 3.5vw, 42px); border: 1px solid var(--ink); border-radius: 18px; background: #fff; }
 .starter-template-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 22px; }
 .starter-template-heading h3 { margin: 5px 0 0; font-size: clamp(28px, 3.1vw, 45px); line-height: 1.08; letter-spacing: -.045em; }
@@ -230,6 +241,10 @@ footer p { margin: 0; color: #96978f; font-size: 11px; }
   .workflow-tab-title { font-size: 15px; }
   .workflow-tab-en { font-size: 10px; }
   .workflow-stage-panel { min-height: 0; padding: 23px 18px; }
+  .concept-area-selector { margin-top: 20px; padding-top: 18px; }
+  .concept-area-selector > div:first-child { align-items: flex-start; flex-direction: column; gap: 2px; }
+  .concept-area-tabs { grid-template-columns: 1fr; }
+  .concept-area-tabs button { padding: 14px; }
   .starter-template { margin-top: 18px; padding: 22px 16px; border-radius: 14px; }
   .starter-template-heading > span { display: none; }
   .starter-template-heading h3 { font-size: 28px; }

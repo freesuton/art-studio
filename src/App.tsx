@@ -11,6 +11,7 @@ import type { CheatSheet, StageId } from './types'
 
 const FAVORITES_KEY = 'short-film-guide-favorites'
 type ViewId = StageId | 'samples' | 'all' | 'saved'
+type ConceptArea = 'technique' | 'template'
 const filmCollections: { id: FilmReference['collection']; title: string; subtitle: string }[] = [
   { id: 'everyday', title: '生活切片', subtitle: '从起居、家人和城市日常里找到电影感' },
   { id: 'womenNature', title: '女性与自然', subtitle: '海洋、旷野与人物的亲密关系' },
@@ -85,7 +86,7 @@ function FilmCard({ film, playing, onPlay, onStop }: { film: FilmReference; play
 }
 
 function StarterTemplate() {
-  return <section className="starter-template" aria-labelledby="starter-template-title">
+  return <section className="starter-template" id="concept-content" role="tabpanel" aria-labelledby="concept-area-template">
     <div className="starter-template-heading">
       <div><p className="eyebrow">STARTER TEMPLATE / 可直接套用</p><h3 id="starter-template-title">《某个星期天》· 2 分钟短片</h3></div>
       <span>01 / FIRST FILM</span>
@@ -156,6 +157,7 @@ function Home({ favorites, toggle }: { favorites: string[]; toggle: (id: string)
   const navigate = useNavigate()
   const [query, setQuery] = useState('')
   const [stage, setStage] = useState<ViewId>('samples')
+  const [conceptArea, setConceptArea] = useState<ConceptArea>('technique')
   const [activeFilmId, setActiveFilmId] = useState<FilmReference['id'] | null>(null)
   const fuse = useMemo(() => new Fuse(sheets, { keys: ['title', 'titleEn', 'summary', 'category', 'tags'], threshold: .34, ignoreLocation: true }), [])
   const results = useMemo(() => {
@@ -166,10 +168,17 @@ function Home({ favorites, toggle }: { favorites: string[]; toggle: (id: string)
   }, [query, stage, favorites, fuse])
 
   const selectStage = (id: ViewId) => {
+    if (id === 'concept' && stage !== 'concept') setConceptArea('technique')
     setStage(id)
     setActiveFilmId(null)
     setQuery('')
     window.requestAnimationFrame(() => document.getElementById(id === 'all' || id === 'saved' ? 'library' : 'workflow-tabs')?.scrollIntoView({ behavior: 'smooth', block: 'start' }))
+  }
+
+  const selectConceptArea = (area: ConceptArea) => {
+    setConceptArea(area)
+    setQuery('')
+    window.requestAnimationFrame(() => window.requestAnimationFrame(() => document.getElementById('concept-content')?.scrollIntoView({ behavior: 'smooth', block: 'start' })))
   }
 
   const handleTabKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
@@ -210,20 +219,31 @@ function Home({ favorites, toggle }: { favorites: string[]; toggle: (id: string)
             <p className="samples-note">预览图与播放器来自影片发布平台。若播放受地区或浏览器设置限制，可使用卡片上的官方页面链接。</p>
           </div> : stage !== 'all' && stage !== 'saved' ? (() => { const item = stages.find((entry) => entry.id === stage)!; return <div className="workflow-stage-panel" id="workflow-stage-panel" role="tabpanel" aria-labelledby={`tab-${item.id}`} style={{ '--accent': item.accent } as React.CSSProperties}>
             <div className="workflow-stage-main"><span className="workflow-stage-number">{item.index} / 05</span><p className="eyebrow">{item.titleEn}</p><h3>{item.title}</h3><p className="workflow-stage-description">{item.subtitle}</p><div className="workflow-stage-output"><span>本阶段交付物</span><strong>{item.output}</strong><small>{item.outputEn}</small></div></div>
-            <div className="workflow-stage-tasks"><p className="eyebrow">这一阶段要做</p><ol>{item.tasks.map((task) => <li key={task}>{task}</li>)}</ol><button onClick={() => document.getElementById('library')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}>查看相关卡片 <ArrowRight size={16} /></button></div>
+            <div className="workflow-stage-tasks"><p className="eyebrow">这一阶段要做</p><ol>{item.tasks.map((task) => <li key={task}>{task}</li>)}</ol><button onClick={() => item.id === 'concept' ? selectConceptArea('technique') : document.getElementById('library')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}>查看相关卡片 <ArrowRight size={16} /></button></div>
           </div> })() : <div className="workflow-stage-panel workflow-stage-all" id="workflow-stage-panel"><p>五个阶段，一份份完成主要交付物。</p><button onClick={() => selectStage('concept')}>从创意与故事开始 <ArrowRight size={16} /></button></div>}
-          {stage === 'concept' && <StarterTemplate />}
+          {stage === 'concept' && <section className="concept-area-selector" aria-label="创意与故事内容分区">
+            <div><p className="eyebrow">CONCEPT & STORY AREAS</p><h3>选择你的工作区</h3></div>
+            <div className="concept-area-tabs" role="tablist" aria-label="创意与故事分区">
+              <button id="concept-area-technique" role="tab" aria-controls="concept-content" aria-selected={conceptArea === 'technique'} className={conceptArea === 'technique' ? 'selected' : ''} onClick={() => selectConceptArea('technique')}>
+                <span>01</span><strong>Technique<small>技术速查 · 5 张卡片</small></strong><ArrowRight size={18} />
+              </button>
+              <button id="concept-area-template" role="tab" aria-controls="concept-content" aria-selected={conceptArea === 'template'} className={conceptArea === 'template' ? 'selected' : ''} onClick={() => selectConceptArea('template')}>
+                <span>02</span><strong>Template<small>可套用的短片练习</small></strong><ArrowRight size={18} />
+              </button>
+            </div>
+          </section>}
+          {stage === 'concept' && conceptArea === 'template' && <StarterTemplate />}
           <p className="workflow-note">简单作品可以合并步骤；复杂作品则在每阶段深入细化。</p>
         </section>
 
-        {stage !== 'samples' && <><section className="search-zone">
+        {stage !== 'samples' && (stage !== 'concept' || conceptArea === 'technique') && <div id={stage === 'concept' ? 'concept-content' : undefined} role={stage === 'concept' ? 'tabpanel' : undefined} aria-labelledby={stage === 'concept' ? 'concept-area-technique' : undefined}><section className="search-zone">
           <label className="search-box"><Search size={20} /><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="搜索阶段、景别、运镜、灯光、剪辑……" />{query && <button onClick={() => setQuery('')} aria-label="清空搜索"><X size={18} /></button>}</label>
           <button className={`saved-filter ${stage === 'saved' ? 'active' : ''}`} onClick={() => selectStage(stage === 'saved' ? 'all' : 'saved')}><Bookmark size={18} fill={stage === 'saved' ? 'currentColor' : 'none'} />收藏 {favorites.length > 0 && <span>{favorites.length}</span>}</button>
         </section>
 
         <section className="library" id="library">
           <div className="library-heading">
-            <div><p className="eyebrow">WORKFLOW CHEAT SHEETS</p><h2>{query ? '搜索结果' : stage === 'all' ? '每一步的速查卡片' : stage === 'saved' ? '我的收藏' : stages.find((item) => item.id === stage)?.title}</h2></div>
+            <div><p className="eyebrow">WORKFLOW CHEAT SHEETS</p><h2>{query ? '搜索结果' : stage === 'all' ? '每一步的速查卡片' : stage === 'saved' ? '我的收藏' : stage === 'concept' ? '创意与故事 · 技术' : stages.find((item) => item.id === stage)?.title}</h2></div>
             <p>{results.length} 张卡片</p>
           </div>
 
@@ -237,7 +257,7 @@ function Home({ favorites, toggle }: { favorites: string[]; toggle: (id: string)
           }) : results.length > 0 ? <>
             <div className="card-grid standalone">{results.map((sheet) => <Card key={sheet.id} sheet={sheet} saved={favorites.includes(sheet.id)} onToggle={() => toggle(sheet.id)} onOpen={() => navigate(`/sheet/${sheet.id}`)} />)}</div>
           </> : <div className="empty-state"><Search size={34} /><h3>还没有找到对应卡片</h3><p>试试搜索“创作简报”“景别”“轴线”，或切换到其他阶段。</p></div>}
-        </section></>}
+        </section></div>}
       </main>
 
       <footer><div><span className="brand-mark"><Camera size={18} /></span><strong>短片现场手册</strong></div><p>从创意到发布 · 五阶段单人短片流程</p></footer>
