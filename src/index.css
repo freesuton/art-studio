@@ -275,6 +275,214 @@ footer p { margin: 0; color: #96978f; font-size: 11px; }
   footer p { display: none; }
 }
 
+/* Desktop layout system */
+@media (min-width: 821px) {
+  :root {
+    --desktop-gutter: max(28px, calc((100vw - 1280px) / 2));
+    --surface: #fbfaf6;
+    --surface-raised: #ffffff;
+    --soft-shadow: 0 18px 50px rgba(25, 26, 23, .075);
+  }
+
+  body {
+    background:
+      radial-gradient(circle at 8% 0%, rgba(216, 255, 66, .08), transparent 24rem),
+      #f2f1ec;
+  }
+
+  main { max-width: none; }
+
+  .workflow-tabs {
+    position: sticky;
+    z-index: 35;
+    top: 0;
+    padding: 14px var(--desktop-gutter);
+    gap: 10px;
+    background: rgba(248, 247, 242, .9);
+    border-bottom: 1px solid rgba(25, 26, 23, .1);
+    box-shadow: 0 8px 28px rgba(25, 26, 23, .045);
+    backdrop-filter: blur(18px) saturate(140%);
+  }
+
+  .workflow-tab {
+    min-height: 94px;
+    padding: 13px 14px;
+    gap: 3px;
+    border-color: #d8d7cf;
+    border-radius: 17px;
+    background: rgba(239, 238, 232, .86);
+    transition: transform .2s ease, border-color .2s ease, background .2s ease, box-shadow .2s ease;
+  }
+
+  .workflow-tab:hover {
+    transform: translateY(-2px);
+    border-color: #aaa99f;
+    box-shadow: 0 10px 22px rgba(25, 26, 23, .07);
+  }
+
+  .workflow-tab.selected {
+    border-color: var(--ink);
+    border-bottom-color: var(--ink);
+    box-shadow: inset 0 4px 0 var(--accent), 0 12px 28px rgba(25, 26, 23, .1);
+  }
+
+  .workflow-tab-number {
+    width: 30px;
+    height: 30px;
+    margin-bottom: 4px;
+    font-size: 10px;
+  }
+
+  .workflow-tab-title { font-size: clamp(14px, 1.15vw, 17px); }
+  .workflow-tab-en { font-size: 9px; }
+
+  .workflow-stage-panel,
+  .concept-area-selector,
+  .starter-template,
+  .workflow-note {
+    width: min(1280px, calc(100% - 56px));
+    max-width: none;
+  }
+
+  .workflow-stage-panel {
+    min-height: 260px;
+    margin-top: 36px;
+    padding: 44px 48px;
+    gap: 64px;
+    border: 0;
+    border-top: 6px solid var(--accent);
+    border-radius: 24px;
+    background: color-mix(in srgb, var(--accent) 7%, var(--surface-raised));
+    box-shadow: var(--soft-shadow), inset 0 0 0 1px rgba(25, 26, 23, .08);
+  }
+
+  .workflow-stage-panel.samples-panel {
+    padding: 38px 0 0;
+    border-top: 0;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .workflow-stage-main h3 { font-size: clamp(42px, 4vw, 62px); }
+  .workflow-stage-description { max-width: 620px; font-size: 17px; }
+  .workflow-stage-output { padding-top: 17px; }
+  .workflow-stage-tasks { padding-left: 42px; }
+  .workflow-stage-tasks ol { font-size: 15px; }
+
+  .concept-area-selector {
+    margin-top: 32px;
+    padding-top: 28px;
+  }
+
+  .concept-area-tabs { gap: 14px; }
+  .concept-area-tabs button {
+    padding: 20px 22px;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, .72);
+  }
+  .concept-area-tabs button.selected { box-shadow: inset 5px 0 0 #ff8d72, 0 12px 28px rgba(25, 26, 23, .07); }
+
+  .starter-template {
+    margin-top: 32px;
+    padding: 46px;
+    border: 0;
+    border-radius: 24px;
+    box-shadow: var(--soft-shadow), inset 0 0 0 1px rgba(25, 26, 23, .08);
+  }
+
+  .samples-heading {
+    margin-bottom: 34px;
+    padding-bottom: 28px;
+    border-bottom: 1px solid rgba(25, 26, 23, .12);
+  }
+
+  .samples-heading h3 { font-size: clamp(42px, 4vw, 60px); }
+  .samples-heading p:last-child { max-width: 760px; font-size: 15px; }
+  .film-collection + .film-collection { margin-top: 56px; }
+  .film-collection-heading { margin-bottom: 20px; padding-bottom: 14px; }
+  .film-collection-heading h4 { font-size: 24px; }
+  .film-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+
+  .film-card {
+    border-color: rgba(25, 26, 23, .12);
+    border-radius: 20px;
+    background: var(--surface-raised);
+    box-shadow: 0 4px 16px rgba(25, 26, 23, .045);
+  }
+  .film-card:hover { box-shadow: 0 20px 44px rgba(25, 26, 23, .12); }
+  .film-card-body { padding: 22px; }
+  .film-card h4 { font-size: 24px; }
+  .film-play-icon { box-shadow: 0 8px 22px rgba(0, 0, 0, .28); }
+
+  .search-zone {
+    position: sticky;
+    z-index: 30;
+    top: 136px;
+    width: min(1280px, calc(100% - 56px));
+    margin: 32px auto 0;
+    padding: 10px;
+    border: 1px solid rgba(25, 26, 23, .12);
+    border-radius: 18px;
+    background: rgba(251, 250, 246, .9);
+    box-shadow: 0 12px 34px rgba(25, 26, 23, .08);
+    backdrop-filter: blur(16px);
+  }
+
+  .search-box {
+    height: 52px;
+    max-width: none;
+    color: #73746c;
+    background: #f0efe9;
+    border-color: transparent;
+  }
+  .search-box:focus-within { border-color: #829b22; box-shadow: 0 0 0 3px rgba(126, 157, 0, .14); }
+  .search-box input { color: var(--ink); }
+  .search-box input::placeholder { color: #85867e; }
+  .search-box button { color: var(--ink); }
+  .saved-filter {
+    height: 52px;
+    color: var(--ink);
+    background: white;
+    border-color: #cfcec6;
+  }
+
+  .library {
+    width: min(1280px, calc(100% - 56px));
+    margin: 0 auto;
+    padding: 68px 0 110px;
+  }
+  .library-heading { margin-bottom: 48px; }
+  .library-heading h2 { font-size: clamp(42px, 4vw, 60px); }
+  .stage-section { margin-bottom: 96px; }
+  .stage-deliverable { border: 0; border-left: 5px solid var(--ink); border-radius: 12px; background: #e7e6df; }
+
+  .sheet-card {
+    padding: 12px 12px 18px;
+    border-color: rgba(25, 26, 23, .12);
+    border-radius: 20px;
+    background: var(--surface-raised);
+    box-shadow: 0 4px 16px rgba(25, 26, 23, .045);
+  }
+  .sheet-card:hover { box-shadow: 0 20px 44px rgba(25, 26, 23, .11); }
+  .visual-button { border-radius: 14px; }
+  .card-copy { padding: 18px 6px 0; }
+  .summary { margin: 13px 6px; }
+  .read-more { margin-left: 6px; }
+
+  .detail-backdrop { padding: 40px; }
+  .detail-panel { width: min(1180px, 100%); border-radius: 26px; box-shadow: 0 36px 100px rgba(0, 0, 0, .38); }
+  .detail-topbar { padding: 17px 22px; }
+
+  footer {
+    max-width: none;
+    padding-inline: var(--desktop-gutter);
+  }
+}
+
+@media (min-width: 1380px) {
+  .film-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+
 @media (prefers-reduced-motion: reduce) {
   * { scroll-behavior: auto !important; transition: none !important; }
 }
