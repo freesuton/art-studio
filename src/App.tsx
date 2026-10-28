@@ -4,6 +4,7 @@ import { ArrowRight, Bookmark, Camera, ChevronLeft, Clapperboard, ExternalLink, 
 import { Route, Routes, useNavigate, useParams } from 'react-router-dom'
 import TechniqueVisual from './TechniqueVisual'
 import MotionLibrary from './MotionLibrary'
+import { motions } from './motionData'
 import { sheets, stages } from './data'
 import { filmReferences } from './filmReferences'
 import sundayStoryboard from './assets/sunday-storyboard.jpg'
@@ -103,7 +104,7 @@ function StoryStructure() {
 function DirectingKnowledgeBase({ onOpenMotions }: { onOpenMotions: () => void }) {
   return <section className="directing-knowledge" id="directing-knowledge" aria-labelledby="directing-knowledge-title">
     <div className="directing-knowledge-heading"><div><p className="eyebrow">DIRECTING KNOWLEDGE BASE</p><h3 id="directing-knowledge-title">导演的五个判断点</h3><p>用这一页在写、拍、剪的每一步确认：这个选择有没有服务于同一个创作意图？</p></div><span>05 AREAS</span></div>
-    <button className="motion-entry" style={{ width: '100%' }} onClick={onOpenMotions}><span><span className="motion-entry-label">DIRECTING TOOLKIT / 64 ANIMATED GUIDES</span><strong>人物动作与镜头引导库</strong><small>站姿、行走、回望、手部与环境互动 · 按环境和景别筛选，收藏成现场清单</small></span><ArrowRight size={22}/></button>
+    <button className="motion-entry" style={{ width: '100%' }} onClick={onOpenMotions}><span><span className="motion-entry-label">DIRECTING TOOLKIT / REAL VIDEO REFERENCES</span><strong>人物动作与镜头引导库</strong><small>真人视频参考 · 按环境和景别筛选，收藏成现场清单</small></span><ArrowRight size={22}/></button>
     <div className="directing-knowledge-grid">{directingKnowledge.map((area) => <section key={area.number}>
       <span>{area.number} / {area.subtitle}</span><h4>{area.title}</h4><ul>{area.points.map((point) => <li key={point}>{point}</li>)}</ul>
     </section>)}</div>
@@ -299,7 +300,7 @@ function Home({ favorites, toggle }: { favorites: string[]; toggle: (id: string)
             <div className="workflow-stage-main"><span className="workflow-stage-number">{item.index} / 05</span><p className="eyebrow">{item.titleEn}</p><h3>{item.title}</h3><p className="workflow-stage-description">{item.subtitle}</p><div className="workflow-stage-output"><span>本阶段交付物</span><strong>{item.output}</strong><small>{item.outputEn}</small></div></div>
             <div className="workflow-stage-tasks"><p className="eyebrow">这一阶段要做</p><ol>{item.tasks.map((task) => <li key={task}>{task}</li>)}</ol><button onClick={() => item.id === 'concept' ? selectConceptArea('technique') : document.getElementById('library')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}>查看相关卡片 <ArrowRight size={16} /></button></div>
           </div> })() : <div className="workflow-stage-panel workflow-stage-all" id="workflow-stage-panel"><p>五个阶段，一份份完成主要交付物。</p><button onClick={() => selectStage('concept')}>从创意与故事开始 <ArrowRight size={16} /></button></div>}
-          {stage === 'shoot' && <button className="motion-entry" onClick={() => selectStage('motions')}><span><span className="motion-entry-label">ON-SET QUICK ACCESS</span><strong>现场速查：人物动作与镜头引导</strong><small>64 个动态示意 · 找到自然动作，直接照着指令引导人物</small></span><ArrowRight size={22}/></button>}
+          {stage === 'shoot' && <button className="motion-entry" onClick={() => selectStage('motions')}><span><span className="motion-entry-label">ON-SET QUICK ACCESS</span><strong>现场速查：人物动作与镜头引导</strong><small>{motions.length} 段真人视频 · 观察真实动作，直接照着指令引导人物</small></span><ArrowRight size={22}/></button>}
           {stage === 'concept' && <section className="concept-area-selector" aria-label="创意与故事内容分区">
             <div><p className="eyebrow">CONCEPT & STORY AREAS</p><h3>选择你的工作区</h3></div>
             <div className="concept-area-tabs" role="tablist" aria-label="创意与故事分区">
