@@ -12,7 +12,7 @@ import type { CheatSheet, StageId } from './types'
 const FAVORITES_KEY = 'short-film-guide-favorites'
 const VIEW_STATE_KEY = 'short-film-guide-view-state-v2'
 const SCROLL_POSITION_KEY = 'short-film-guide-scroll-position-v2'
-type ViewId = StageId | 'samples' | 'all' | 'saved'
+type ViewId = StageId | 'samples' | 'all' | 'saved' | 'directing'
 type ConceptArea = 'technique' | 'template'
 const filmCollections: { id: FilmReference['collection']; title: string; subtitle: string }[] = [
   { id: 'everyday', title: '生活切片', subtitle: '从起居、家人和城市日常里找到电影感' },
@@ -30,12 +30,12 @@ const storyLevels = [
   { title: 'Frame', label: '画格', description: '动态影像中的单幅画面', stage: '正式拍摄 · 剪辑与后期', group: 'image' },
 ]
 
-const directingStages = [
-  { number: '01', title: 'Concept', label: '创意与故事', focus: '故事意图' },
-  { number: '02', title: 'Prepare', label: '拍摄准备', focus: '镜头设计' },
-  { number: '03', title: 'Shoot', label: '正式拍摄', focus: '现场执导' },
-  { number: '04', title: 'Edit', label: '剪辑与后期', focus: '叙事控制' },
-  { number: '05', title: 'Publish', label: '发布与复盘', focus: '最终呈现' },
+const directingKnowledge = [
+  { number: '01', title: '创作意图', subtitle: 'Concept', points: ['一句话说清作品想让观众感受什么', '明确人物开始与结束的细微变化', '为每个场景写下它必须完成的叙事任务'] },
+  { number: '02', title: '场面与镜头', subtitle: 'Prepare', points: ['先决定人物在空间中的行动，再决定镜头位置', '让景别、机位和运动服务于观看关系', '每场至少准备一个环境镜头、动作镜头与情绪镜头'] },
+  { number: '03', title: '现场判断', subtitle: 'Shoot', points: ['确认表演或真实动作是否自然且可用', '优先拍到故事所需动作，再寻找意外和细节', '每次调整前只给一个清楚、可执行的指令'] },
+  { number: '04', title: '节奏与声音', subtitle: 'Edit', points: ['用镜头长度控制观众停留与呼吸', '让动作、视线或声音带领转场', '删掉好看但没有推动体验的画面'] },
+  { number: '05', title: '完成与复盘', subtitle: 'Publish', points: ['检查第一眼是否传达出作品的基调', '确认字幕、声音与画面没有分散注意力', '记录下次要保留与要修正的一个决定'] },
 ]
 
 const sundayShots = [
@@ -99,21 +99,12 @@ function StoryStructure() {
   </section>
 }
 
-function DirectingMap() {
-  return <section className="directing-map" aria-labelledby="directing-map-title">
-    <div className="directing-map-intro">
-      <span className="directing-map-icon"><Clapperboard size={22} strokeWidth={2.15} /></span>
-      <div>
-        <p className="eyebrow">DIRECTING / 05 TOUCHPOINTS</p>
-        <h2 id="directing-map-title">导演贯穿整个制作流程</h2>
-        <p>导演的工作不是只在片场喊开始；每个阶段都在为同一个创作意图做判断。</p>
-      </div>
-    </div>
-    <ol className="directing-stage-list">
-      {directingStages.map((stage) => <li key={stage.number}>
-        <span>{stage.number}</span><strong>{stage.title}</strong><small>{stage.label}</small><em>{stage.focus}</em>
-      </li>)}
-    </ol>
+function DirectingKnowledgeBase() {
+  return <section className="directing-knowledge" id="directing-knowledge" aria-labelledby="directing-knowledge-title">
+    <div className="directing-knowledge-heading"><div><p className="eyebrow">DIRECTING KNOWLEDGE BASE</p><h3 id="directing-knowledge-title">导演的五个判断点</h3><p>用这一页在写、拍、剪的每一步确认：这个选择有没有服务于同一个创作意图？</p></div><span>05 AREAS</span></div>
+    <div className="directing-knowledge-grid">{directingKnowledge.map((area) => <section key={area.number}>
+      <span>{area.number} / {area.subtitle}</span><h4>{area.title}</h4><ul>{area.points.map((point) => <li key={point}>{point}</li>)}</ul>
+    </section>)}</div>
   </section>
 }
 
@@ -211,7 +202,7 @@ function Home({ favorites, toggle }: { favorites: string[]; toggle: (id: string)
   const [stage, setStage] = useState<ViewId>(() => {
     try {
       const saved = JSON.parse(sessionStorage.getItem(VIEW_STATE_KEY) || '{}')
-      return saved.stage === 'samples' || saved.stage === 'all' || saved.stage === 'saved' || stages.some((item) => item.id === saved.stage) ? saved.stage : 'samples'
+      return saved.stage === 'samples' || saved.stage === 'all' || saved.stage === 'saved' || saved.stage === 'directing' || stages.some((item) => item.id === saved.stage) ? saved.stage : 'samples'
     } catch { return 'samples' }
   })
   const [conceptArea, setConceptArea] = useState<ConceptArea>(() => {
@@ -251,7 +242,7 @@ function Home({ favorites, toggle }: { favorites: string[]; toggle: (id: string)
   const results = useMemo(() => {
     let list = query.trim() ? fuse.search(query.trim()).map((result) => result.item) : sheets
     if (!query.trim() && stage === 'saved') list = list.filter((item) => favorites.includes(item.id))
-    if (!query.trim() && stage !== 'all' && stage !== 'saved') list = list.filter((item) => item.stage === stage)
+    if (!query.trim() && stage !== 'all' && stage !== 'saved' && stage !== 'directing') list = list.filter((item) => item.stage === stage)
     return list
   }, [query, stage, favorites, fuse])
 
@@ -283,8 +274,10 @@ function Home({ favorites, toggle }: { favorites: string[]; toggle: (id: string)
     <div className="app-shell">
       <main>
         <StoryStructure />
-        <DirectingMap />
         <section className="workflow-panel" aria-label="单人短片制作流程">
+          <button className={`directing-trigger ${stage === 'directing' ? 'selected' : ''}`} onClick={() => selectStage('directing')} aria-current={stage === 'directing' ? 'page' : undefined}>
+            <span className="directing-trigger-icon"><Clapperboard size={21} strokeWidth={2.15} /></span><span><small>DIRECTING / 05 TOUCHPOINTS</small><strong>导演贯穿整个制作流程</strong><em>点击查看导演知识库</em></span><ArrowRight size={19} aria-hidden="true" />
+          </button>
           <div className="workflow-tabs" id="workflow-tabs" role="tablist" aria-label="制作阶段" onKeyDown={handleTabKeyDown}>
             <button className={`workflow-tab sample-tab ${stage === 'samples' ? 'selected' : ''}`} id="tab-samples" role="tab" aria-controls="workflow-stage-panel" aria-selected={stage === 'samples'} tabIndex={stage === 'samples' || stage === 'all' || stage === 'saved' ? 0 : -1} onClick={() => selectStage('samples')} style={{ '--accent': '#d8ff42' } as React.CSSProperties}>
               <span className="workflow-tab-number">00</span><span className="workflow-tab-title">样片</span><span className="workflow-tab-en">Film References</span>
@@ -293,7 +286,7 @@ function Home({ favorites, toggle }: { favorites: string[]; toggle: (id: string)
               <span className="workflow-tab-number">{item.index}</span><span className="workflow-tab-title">{item.title}</span><span className="workflow-tab-en">{item.titleEn}</span>
             </button>)}
           </div>
-          {stage === 'samples' ? <div className="workflow-stage-panel samples-panel" id="workflow-stage-panel" role="tabpanel" aria-labelledby="tab-samples" style={{ '--accent': '#d8ff42' } as React.CSSProperties}>
+          {stage === 'directing' ? <DirectingKnowledgeBase /> : stage === 'samples' ? <div className="workflow-stage-panel samples-panel" id="workflow-stage-panel" role="tabpanel" aria-labelledby="tab-samples" style={{ '--accent': '#d8ff42' } as React.CSSProperties}>
             <div className="samples-heading"><div><p className="eyebrow">WATCH & STUDY / 日常 × 自然 × 时尚</p><h3>先看见，再开拍。</h3><p>预览真实影片画面，点击即可在卡片中播放。带着观察重点看人物、日常、环境与镜头如何一起讲故事。</p></div><span>{String(filmReferences.length).padStart(2, '0')} FILMS</span></div>
             {filmCollections.map((collection) => <section className="film-collection" key={collection.id} aria-labelledby={`film-collection-${collection.id}`}>
               <div className="film-collection-heading"><div><h4 id={`film-collection-${collection.id}`}>{collection.title}</h4><p>{collection.subtitle}</p></div><span>{String(filmReferences.filter((film) => film.collection === collection.id).length).padStart(2, '0')}</span></div>
@@ -319,7 +312,7 @@ function Home({ favorites, toggle }: { favorites: string[]; toggle: (id: string)
           <p className="workflow-note">简单作品可以合并步骤；复杂作品则在每阶段深入细化。</p>
         </section>
 
-        {stage !== 'samples' && (stage !== 'concept' || conceptArea === 'technique') && <div id={stage === 'concept' ? 'concept-content' : undefined} role={stage === 'concept' ? 'tabpanel' : undefined} aria-labelledby={stage === 'concept' ? 'concept-area-technique' : undefined}><section className="search-zone">
+        {stage !== 'samples' && stage !== 'directing' && (stage !== 'concept' || conceptArea === 'technique') && <div id={stage === 'concept' ? 'concept-content' : undefined} role={stage === 'concept' ? 'tabpanel' : undefined} aria-labelledby={stage === 'concept' ? 'concept-area-technique' : undefined}><section className="search-zone">
           <label className="search-box"><Search size={20} /><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="搜索阶段、景别、运镜、灯光、剪辑……" />{query && <button onClick={() => setQuery('')} aria-label="清空搜索"><X size={18} /></button>}</label>
           <button className={`saved-filter ${stage === 'saved' ? 'active' : ''}`} onClick={() => selectStage(stage === 'saved' ? 'all' : 'saved')}><Bookmark size={18} fill={stage === 'saved' ? 'currentColor' : 'none'} />收藏 {favorites.length > 0 && <span>{favorites.length}</span>}</button>
         </section>
