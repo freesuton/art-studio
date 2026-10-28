@@ -126,6 +126,36 @@ export const filmReferences: FilmReference[] = [
     url: 'https://www.youtube.com/watch?v=fo4LLux-tfM', embedUrl: 'https://www.youtube.com/embed/fo4LLux-tfM', thumbnailUrl: 'https://i.ytimg.com/vi/fo4LLux-tfM/hqdefault.jpg', color: '#ddbba5',
   },
   {
+    id: 'astr-summer', collection: 'fashion', title: 'ASTR the Label: Summer 2021', titleZh: '夏日自然光时尚短片', source: 'Kevin Reyes', year: '2021', duration: '约 2 分钟', category: '时尚影像 / 自然光',
+    synopsis: '以轻盈服装、自然光和人物在户外的细微动作，组成一支接近生活片段的夏日时尚短片。',
+    watchFor: '重点看人物不要直视镜头时，行走、停下、转身和衣料随风变化如何形成自然的电影感。',
+    url: 'https://www.youtube.com/watch?v=6vm56tVnqk0', embedUrl: 'https://www.youtube.com/embed/6vm56tVnqk0', thumbnailUrl: 'https://i.ytimg.com/vi/6vm56tVnqk0/hqdefault.jpg', color: '#d6b69f',
+  },
+  {
+    id: 'urban-legends', collection: 'fashion', title: 'Urban Legends', titleZh: '城市里的自然动作', source: 'Peter Marin', year: '2015', duration: '约 3 分钟', category: '时尚影像 / 街头',
+    synopsis: '两位女性在城市街道与室内移动，让服装、步伐和场景共同建立轻松的时尚叙事。',
+    watchFor: '观察侧面行走、靠墙停留、人物经过镜头等简单动作，如何在手持镜头里仍然保持自然。',
+    url: 'https://www.youtube.com/watch?v=a-fhH4fVeEQ', embedUrl: 'https://www.youtube.com/embed/a-fhH4fVeEQ', thumbnailUrl: 'https://i.ytimg.com/vi/a-fhH4fVeEQ/hqdefault.jpg', color: '#b6a6a2',
+  },
+  {
+    id: 'alexandra-cavazos', collection: 'fashion', title: 'Alexandra Cavazos', titleZh: '肖像与服装动作练习', source: 'Cinematic Portraits', year: '2024', duration: '约 3 分钟', category: '时尚肖像 / 自然动作',
+    synopsis: '一支以女性肖像、服装和轻微身体移动为核心的摄影短片，适合研究单人拍摄时的动作节奏。',
+    watchFor: '观察近景、中景与全身之间如何切换；每个动作都很小，但衣服、视线和身体方向让画面持续变化。',
+    url: 'https://www.youtube.com/watch?v=9R9a5vwNqOU', embedUrl: 'https://www.youtube.com/embed/9R9a5vwNqOU', thumbnailUrl: 'https://i.ytimg.com/vi/9R9a5vwNqOU/hqdefault.jpg', color: '#c7aa9e',
+  },
+  {
+    id: 'beautiful-strangers', collection: 'fashion', title: 'Beautiful Strangers', titleZh: '阳光与服装叙事', source: 'Reno Mezger', year: '2017', duration: '40 秒', category: '时尚叙事 / 阳光',
+    synopsis: '一位女性在西班牙阳光与开放空间中穿行，服装和人物关系共同构成具有故事感的时尚短片。',
+    watchFor: '观察暖色日光、人物进入和离开画面，以及远景如何让服装和环境一起讲故事。',
+    url: 'https://vimeo.com/208820079', embedUrl: 'https://player.vimeo.com/video/208820079', thumbnailUrl: 'https://i.vimeocdn.com/video/624287956-88b9ef12b9cb987a7c55cc043f3ac373980a44e0d4f69f7c277bceba1fca77fa-d_640?region=us', color: '#d1ab81',
+  },
+  {
+    id: 'topanga', collection: 'fashion', title: 'Topanga', titleZh: '午后约会', source: 'Stewart Maclennan', year: '2016', duration: '7 分 24 秒', category: '时尚短片 / 生活叙事',
+    synopsis: '一对年轻人在日常场景中相遇与游走，影片用服装、光线和关系变化建立含蓄的时尚故事。',
+    watchFor: '留意人物不是摆姿，而是在走、等、看与互动；每个自然动作都被镜头安排成有节奏的段落。',
+    url: 'https://vimeo.com/156107994', embedUrl: 'https://player.vimeo.com/video/156107994', thumbnailUrl: 'https://i.vimeocdn.com/video/578955668-1df7dbcc289794459c952dada550fa18f6b9f7a9d4810bf749ceaaf0181007cb-d_295x166?region=us', color: '#b79a87',
+  },
+  {
     id: 'closer', collection: 'exploration', title: 'Closer To Home', titleZh: '从身边开始探索', source: 'Patagonia Films', year: '2019', duration: '8 分钟', category: '日常探索',
     synopsis: '一位滑雪者搭乘火车，从熟悉的城镇出发，重新发现附近的自然。',
     watchFor: '留意“出发—路途—抵达”如何让很近的地方也有探索感。',
