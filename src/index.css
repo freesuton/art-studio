@@ -45,6 +45,19 @@ main { max-width: 1540px; margin: 0 auto; }
 .story-node-detail p { margin: 0; color: #66675f; font-size: 11px; line-height: 1.45; text-align: left; }
 .story-node.story .story-node-detail span { background: #eff9cd; }.story-node.production .story-node-detail span { background: #dceff9; }.story-node.image .story-node-detail span { background: #eee8ff; }
 .story-connector { width: 22px; flex: 0 0 22px; align-self: center; display: grid; place-items: center; color: #989990; font-size: 14px; line-height: 1; transform: rotate(-90deg); }
+.directing-map { width: min(1280px, calc(100% - 44px)); margin: 0 auto 28px; padding: 22px; display: grid; grid-template-columns: minmax(270px, .8fr) minmax(0, 1.7fr); gap: 26px; align-items: center; border: 1px solid #d5d4cc; border-radius: 18px; background: rgba(251, 250, 246, .74); box-shadow: 0 12px 30px rgba(25, 26, 23, .035); }
+.directing-map-intro { display: grid; grid-template-columns: 38px 1fr; gap: 12px; align-items: start; }
+.directing-map-icon { width: 38px; height: 38px; display: grid; place-items: center; color: #191a17; background: #d8ff42; border: 1px solid #191a17; border-radius: 11px; }
+.directing-map h2 { margin: 2px 0 5px; font-size: clamp(20px, 2vw, 28px); line-height: 1.05; letter-spacing: -.04em; }
+.directing-map-intro .eyebrow { margin: 0; }
+.directing-map-intro p:last-child { margin: 0; color: #686961; font-size: 12px; line-height: 1.55; }
+.directing-stage-list { min-width: 0; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 7px; list-style: none; }
+.directing-stage-list li { min-width: 0; min-height: 100px; padding: 13px; display: flex; flex-direction: column; align-items: flex-start; justify-content: space-between; border: 1px solid #d5d4cc; border-radius: 12px; background: rgba(255, 255, 255, .78); transition: transform .2s, border-color .2s, box-shadow .2s; }
+.directing-stage-list li:hover { transform: translateY(-2px); border-color: #a2a39b; box-shadow: 0 7px 14px rgba(25, 26, 23, .07); }
+.directing-stage-list span { color: #7b7c73; font-size: 10px; font-weight: 850; letter-spacing: .1em; }
+.directing-stage-list strong { margin-top: auto; font-size: 16px; line-height: 1; letter-spacing: -.03em; }
+.directing-stage-list small { margin-top: 5px; color: #707169; font-size: 10px; }
+.directing-stage-list em { margin-top: 9px; color: #3f403b; font-size: 11px; font-style: normal; font-weight: 750; }
 .workflow-panel { margin: 0 0 56px; }
 .workflow-tabs { width: 100%; margin: 0; padding: 20px clamp(22px, 5vw, 86px) 0; display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 7px; background: #f8f6ef; border-bottom: 1px solid var(--line); scroll-margin-top: 0; }
 .workflow-tab { min-width: 0; min-height: 129px; padding: 16px 13px 14px; display: flex; flex-direction: column; align-items: flex-start; text-align: left; gap: 5px; border: 1px solid #d1d0c8; border-radius: 14px 14px 0 0; background: #eeede7; cursor: pointer; transition: background .2s, transform .2s; }
@@ -220,6 +233,7 @@ footer p { margin: 0; color: #96978f; font-size: 11px; }
 }
 
 @media (max-width: 820px) {
+  .directing-map { grid-template-columns: 1fr; gap: 18px; }
   .workflow-tabs { display: flex; gap: 8px; overflow-x: auto; scroll-snap-type: x proximity; scrollbar-width: thin; padding-bottom: 4px; }
   .workflow-tab { flex: 0 0 150px; scroll-snap-align: start; }
   .workflow-stage-panel { grid-template-columns: 1fr; gap: 22px; }
@@ -246,6 +260,12 @@ footer p { margin: 0; color: #96978f; font-size: 11px; }
   .story-node-detail p { font-size: 12px; text-align: left; }
   .story-node-detail span { font-size: 9px; }
   .story-connector { width: 16px; flex-basis: 16px; font-size: 12px; }
+  .directing-map { width: calc(100% - 30px); margin-bottom: 20px; padding: 16px; border-radius: 14px; }
+  .directing-map-intro { grid-template-columns: 33px 1fr; gap: 10px; }
+  .directing-map-icon { width: 33px; height: 33px; border-radius: 9px; }
+  .directing-map h2 { font-size: 22px; }
+  .directing-stage-list { display: flex; overflow-x: auto; padding-bottom: 2px; scroll-snap-type: x proximity; scrollbar-width: thin; }
+  .directing-stage-list li { min-width: 125px; min-height: 96px; flex: 0 0 125px; scroll-snap-align: start; }
   .workflow-panel { margin-bottom: 32px; }
   .workflow-tabs { width: 100%; margin: 0; padding: 12px 15px 4px; scroll-margin-top: 0; }
   .workflow-tab { min-height: 105px; flex-basis: 137px; padding: 12px; }

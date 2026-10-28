@@ -1,6 +1,6 @@
 import { useEffect, useLayoutEffect, useMemo, useState } from 'react'
 import Fuse from 'fuse.js'
-import { ArrowRight, Bookmark, Camera, ChevronLeft, ExternalLink, Play, Search, X } from 'lucide-react'
+import { ArrowRight, Bookmark, Camera, ChevronLeft, Clapperboard, ExternalLink, Play, Search, X } from 'lucide-react'
 import { Route, Routes, useNavigate, useParams } from 'react-router-dom'
 import TechniqueVisual from './TechniqueVisual'
 import { sheets, stages } from './data'
@@ -28,6 +28,14 @@ const storyLevels = [
   { title: 'Scene', label: '场景', description: '特定时间、空间或戏剧行动的单位', stage: '拍摄准备', group: 'production' },
   { title: 'Shot', label: '镜头', description: '一次连续呈现的画面', stage: '拍摄准备 · 正式拍摄', group: 'production' },
   { title: 'Frame', label: '画格', description: '动态影像中的单幅画面', stage: '正式拍摄 · 剪辑与后期', group: 'image' },
+]
+
+const directingStages = [
+  { number: '01', title: 'Concept', label: '创意与故事', focus: '故事意图' },
+  { number: '02', title: 'Prepare', label: '拍摄准备', focus: '镜头设计' },
+  { number: '03', title: 'Shoot', label: '正式拍摄', focus: '现场执导' },
+  { number: '04', title: 'Edit', label: '剪辑与后期', focus: '叙事控制' },
+  { number: '05', title: 'Publish', label: '发布与复盘', focus: '最终呈现' },
 ]
 
 const sundayShots = [
@@ -88,6 +96,24 @@ function StoryStructure() {
         {index < storyLevels.length - 1 && <span className="story-connector" aria-hidden="true">↓</span>}
       </div>)}
     </div>
+  </section>
+}
+
+function DirectingMap() {
+  return <section className="directing-map" aria-labelledby="directing-map-title">
+    <div className="directing-map-intro">
+      <span className="directing-map-icon"><Clapperboard size={22} strokeWidth={2.15} /></span>
+      <div>
+        <p className="eyebrow">DIRECTING / 05 TOUCHPOINTS</p>
+        <h2 id="directing-map-title">导演贯穿整个制作流程</h2>
+        <p>导演的工作不是只在片场喊开始；每个阶段都在为同一个创作意图做判断。</p>
+      </div>
+    </div>
+    <ol className="directing-stage-list">
+      {directingStages.map((stage) => <li key={stage.number}>
+        <span>{stage.number}</span><strong>{stage.title}</strong><small>{stage.label}</small><em>{stage.focus}</em>
+      </li>)}
+    </ol>
   </section>
 }
 
@@ -257,6 +283,7 @@ function Home({ favorites, toggle }: { favorites: string[]; toggle: (id: string)
     <div className="app-shell">
       <main>
         <StoryStructure />
+        <DirectingMap />
         <section className="workflow-panel" aria-label="单人短片制作流程">
           <div className="workflow-tabs" id="workflow-tabs" role="tablist" aria-label="制作阶段" onKeyDown={handleTabKeyDown}>
             <button className={`workflow-tab sample-tab ${stage === 'samples' ? 'selected' : ''}`} id="tab-samples" role="tab" aria-controls="workflow-stage-panel" aria-selected={stage === 'samples'} tabIndex={stage === 'samples' || stage === 'all' || stage === 'saved' ? 0 : -1} onClick={() => selectStage('samples')} style={{ '--accent': '#d8ff42' } as React.CSSProperties}>
