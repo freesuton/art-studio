@@ -108,6 +108,12 @@ export const filmReferences: FilmReference[] = [
     url: 'https://www.patagonia.com/stories/right-to-roam/video-86247.html', embedUrl: 'https://www.youtube.com/embed/ilmhR_EgK8Y', thumbnailUrl: 'https://i.ytimg.com/vi/ilmhR_EgK8Y/hqdefault.jpg', color: '#a6b6b6',
   },
   {
+    id: 'chanel-ready-set-monaco', collection: 'fashion', title: 'READY, SET, MONACO!', titleZh: 'CHANEL 2022/23 早春度假系列短片', source: 'CHANEL', year: '2022', duration: '56 秒', category: '时尚短片 / 海滨度假',
+    synopsis: 'Sofia 与 Roman Coppola 执导，以摩纳哥的泳池、游船、海滩与夏日运动片段，呈现轻松的度假氛围和服装。',
+    watchFor: '观察人物如何通过玩水、乘船和运动融入环境；再留意服装细节、人物镜头与场景切换怎样在不到一分钟内建立夏日节奏。',
+    url: 'https://www.youtube.com/watch?v=03KBpJqRt74', embedUrl: 'https://www.youtube.com/embed/03KBpJqRt74', thumbnailUrl: 'https://i.ytimg.com/vi/03KBpJqRt74/hqdefault.jpg', color: '#8ab6c5',
+  },
+  {
     id: 'veiled-water', collection: 'fashion', title: 'Veiled Water', titleZh: '水之面纱', source: 'Nicola Saint-Marc', year: '2012', duration: '2 分 34 秒', category: '时尚叙事 / 海洋',
     synopsis: '一位海豹精灵在人类生活与海洋之间作出选择，用服装和海岸构成神话般的短片。',
     watchFor: '留意服装如何成为角色的一部分，海水、风和身体动作如何推动叙事。',
