@@ -108,6 +108,48 @@ export const filmReferences: FilmReference[] = [
     url: 'https://www.patagonia.com/stories/right-to-roam/video-86247.html', embedUrl: 'https://www.youtube.com/embed/ilmhR_EgK8Y', thumbnailUrl: 'https://i.ytimg.com/vi/ilmhR_EgK8Y/hqdefault.jpg', color: '#a6b6b6',
   },
   {
+    id: 'indomina-summer-2026', collection: 'fashion', title: 'INDOMINA SUMMER 2026', titleZh: 'INDOMINA 2026 夏日系列', source: 'I N D O M I N A', year: '2026', duration: '时尚短片', category: '时尚影像 / 夏日穿搭',
+    synopsis: '以夏日服装、自然动作和轻松的户外氛围呈现新季系列，让人物状态与穿搭共同成为画面重点。',
+    watchFor: '观察全身镜头怎样交代造型，人物在行走、停留和转身时如何让服装自然产生线条与节奏。',
+    url: 'https://www.youtube.com/watch?v=2141J9RwctM', embedUrl: 'https://www.youtube.com/embed/2141J9RwctM', thumbnailUrl: 'https://i.ytimg.com/vi/2141J9RwctM/hqdefault.jpg', color: '#d6b79c',
+  },
+  {
+    id: 'chanel-coco-beach-2023', collection: 'fashion', title: 'CHANEL COCO BEACH 2023', titleZh: '香奈儿 COCO BEACH 2023', source: 'CHANEL', year: '2023', duration: '时尚短片', category: '品牌短片 / 海滨度假',
+    synopsis: 'CHANEL 以泳装、海岸与度假动作呈现 COCO BEACH 系列，把服装放进轻松而明亮的夏日场景。',
+    watchFor: '观察模特与海水、阳光和建筑的互动，以及全身、半身和服装细节之间的剪辑比例。',
+    url: 'https://www.youtube.com/watch?v=wxvhn9cA27o', embedUrl: 'https://www.youtube.com/embed/wxvhn9cA27o', thumbnailUrl: 'https://i.ytimg.com/vi/wxvhn9cA27o/hqdefault.jpg', color: '#9fc8d0',
+  },
+  {
+    id: 'gorjana-beauty-within', collection: 'fashion', title: 'Gorjana — Beauty Within', titleZh: 'Gorjana：内在之美', source: 'Kevin Reyes', year: '—', duration: '时尚短片', category: '珠宝广告 / 女性肖像',
+    synopsis: '以细腻的女性肖像、珠宝细节和柔和动作组成品牌影像，在精致感与自然状态之间保持平衡。',
+    watchFor: '观察中近景如何突出珠宝但不失人物情绪，以及眼神、触碰头发和轻微转身怎样成为连续动作。',
+    url: 'https://www.youtube.com/watch?v=-9F6nWnedVc', embedUrl: 'https://www.youtube.com/embed/-9F6nWnedVc', thumbnailUrl: 'https://i.ytimg.com/vi/-9F6nWnedVc/hqdefault.jpg', color: '#c6a58f',
+  },
+  {
+    id: 'gorjana-under-the-palms', collection: 'fashion', title: 'Gorjana — Under The Palms', titleZh: 'Gorjana：棕榈树下', source: 'Kevin Reyes', year: '2022', duration: '时尚短片', category: '珠宝广告 / 棕榈海岸',
+    synopsis: '模特在棕榈树与暖色自然光中移动，春日穿搭、珠宝和环境共同构成轻盈的度假画面。',
+    watchFor: '观察逆光、树影和前景遮挡如何增加层次，并留意模特从静止到行走时镜头如何衔接。',
+    url: 'https://www.youtube.com/watch?v=na5uA1PbOW8', embedUrl: 'https://www.youtube.com/embed/na5uA1PbOW8', thumbnailUrl: 'https://i.ytimg.com/vi/na5uA1PbOW8/hqdefault.jpg', color: '#d4ad7f',
+  },
+  {
+    id: 'ethereal-beach-film', collection: 'fashion', title: 'Ethereal', titleZh: '空灵海岸', source: 'Adam Nevoani', year: '—', duration: '电影感短片', category: '电影感时尚 / 海边',
+    synopsis: '一支以女性、海岸、风和自然光为核心的电影感短片，让人物动作与开阔环境共同建立空灵气质。',
+    watchFor: '观察远景如何保留环境尺度，风如何带动头发和衣料，以及慢动作应放在哪些动作节点。',
+    url: 'https://www.youtube.com/watch?v=GDOlv-3jLck', embedUrl: 'https://www.youtube.com/embed/GDOlv-3jLck', thumbnailUrl: 'https://i.ytimg.com/vi/GDOlv-3jLck/hqdefault.jpg', color: '#a9c5ce',
+  },
+  {
+    id: 'chanel-coco-beach-2022', collection: 'fashion', title: 'CHANEL COCO BEACH 2022', titleZh: '香奈儿 COCO BEACH 2022', source: 'CHANEL', year: '2022', duration: '时尚短片', category: '品牌短片 / 夏日泳装',
+    synopsis: 'CHANEL 用泳池、海岸和度假生活片段展示 COCO BEACH 系列，保持高级感同时保留人物的轻松状态。',
+    watchFor: '比较人物面对镜头与沉浸在环境中的两种状态，并观察品牌短片怎样快速交替造型、动作和场景。',
+    url: 'https://www.youtube.com/watch?v=q1h168ae3fk', embedUrl: 'https://www.youtube.com/embed/q1h168ae3fk', thumbnailUrl: 'https://i.ytimg.com/vi/q1h168ae3fk/hqdefault.jpg', color: '#73aebc',
+  },
+  {
+    id: 'lv-leather-goods-ss24', collection: 'fashion', title: 'Leather Goods Campaign Spring–Summer 2024', titleZh: '路易威登 2024 春夏皮具广告', source: 'LOUIS VUITTON', year: '2024', duration: '品牌短片', category: '时尚广告 / 皮具与造型',
+    synopsis: 'Louis Vuitton 以完整造型、皮具和简洁有力的身体姿态呈现春夏系列，强调人物轮廓与配件关系。',
+    watchFor: '观察包袋在人物动作中的位置、全身构图如何留出造型空间，以及静态姿态怎样通过剪辑获得节奏。',
+    url: 'https://www.youtube.com/watch?v=4VjJw0g8OOc', embedUrl: 'https://www.youtube.com/embed/4VjJw0g8OOc', thumbnailUrl: 'https://i.ytimg.com/vi/4VjJw0g8OOc/hqdefault.jpg', color: '#c6b397',
+  },
+  {
     id: 'chanel-ready-set-monaco', collection: 'fashion', title: 'READY, SET, MONACO!', titleZh: 'CHANEL 2022/23 早春度假系列短片', source: 'CHANEL', year: '2022', duration: '56 秒', category: '时尚短片 / 海滨度假',
     synopsis: 'Sofia 与 Roman Coppola 执导，以摩纳哥的泳池、游船、海滩与夏日运动片段，呈现轻松的度假氛围和服装。',
     watchFor: '观察人物如何通过玩水、乘船和运动融入环境；再留意服装细节、人物镜头与场景切换怎样在不到一分钟内建立夏日节奏。',
