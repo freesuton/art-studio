@@ -156,6 +156,121 @@ export function buildSet(scene: THREE.Scene) {
 
 export function onLayer(object: THREE.Object3D, layer: number) { object.traverse((child) => child.layers.set(layer)) }
 
+// Glossy faceless mannequin built on a Mixamo skeleton (from three.js's Michelle),
+// animated with walk/idle clips retargeted from Xbot. Body parts are rigid meshes
+// parented to bones, sized in the rig's centimetre units.
+const MODEL_HEIGHT = 1.7
+const RIG_HEIGHT = 1.66
+const STRIDE = 1.4 // metres travelled per walk cycle
+type RigBone = { name: string; parent: number; p: number[]; q: number[]; s: number[] }
+type Model = { bones: RigBone[]; clips: THREE.AnimationClip[] }
+let modelPromise: Promise<Model> | null = null
+export function loadModel() {
+  modelPromise ??= Promise.all([
+    fetch('/models/mannequin-rig.json').then((response) => response.json()),
+    fetch('/models/mannequin-clips.json').then((response) => response.json()),
+  ]).then(([bones, clips]) => ({ bones, clips: (clips as THREE.AnimationClipJSON[]).map((clip) => THREE.AnimationClip.parse(clip)) }))
+  return modelPromise
+}
+
+const Y_AXIS = new THREE.Vector3(0, 1, 0)
+const gloss = new THREE.MeshPhysicalMaterial({ color: '#f4f4f2', roughness: .14, clearcoat: 1, clearcoatRoughness: .06 })
+const knit = new THREE.MeshStandardMaterial({ color: '#ebe8df', roughness: .95, bumpMap: ribTexture(), bumpScale: 1.5 })
+
+// Vertical ribbing for the knit top, wrapped around the lathe.
+function ribTexture() {
+  const canvas = document.createElement('canvas')
+  canvas.width = 64; canvas.height = 4
+  const ctx = canvas.getContext('2d')!
+  for (let x = 0; x < 64; x++) { const v = 128 + Math.round(Math.sin(x / 64 * Math.PI * 2 * 4) * 110); ctx.fillStyle = `rgb(${v},${v},${v})`; ctx.fillRect(x, 0, 1, 4) }
+  const texture = new THREE.CanvasTexture(canvas)
+  texture.wrapS = texture.wrapT = THREE.RepeatWrapping
+  texture.repeat.set(14, 1)
+  return texture
+}
+
+function dressMannequin(bone: (name: string) => THREE.Object3D) {
+  const add = (parent: THREE.Object3D, mesh: THREE.Mesh) => { mesh.castShadow = true; parent.add(mesh); return mesh }
+  // Tapered limb from a bone to its child, along the child's local offset.
+  const limb = (from: string, to: string, r1: number, r2: number, material: THREE.Material = gloss) => {
+    const offset = bone(to).position.clone()
+    const mesh = add(bone(from), new THREE.Mesh(new THREE.CylinderGeometry(r2, r1, offset.length(), 24), material))
+    mesh.position.copy(offset).multiplyScalar(.5)
+    mesh.quaternion.setFromUnitVectors(Y_AXIS, offset.normalize())
+  }
+  const blob = (on: string, at: [number, number, number], half: [number, number, number], material: THREE.Material = gloss) => {
+    const mesh = add(bone(on), new THREE.Mesh(new THREE.SphereGeometry(1, 32, 20), material))
+    mesh.position.set(...at); mesh.scale.set(...half)
+  }
+  const joint = (on: string, r: number) => blob(on, [0, 0, 0], [r, r, r])
+
+  // One smooth turned torso (half-widths in cm, heights relative to the hips joint), slightly flattened front to back.
+  const lathe = (on: string, profile: [number, number][], depth: number, material: THREE.Material, grow = 1) => {
+    const mesh = add(bone(on), new THREE.Mesh(new THREE.LatheGeometry(profile.map(([y, r]) => new THREE.Vector2(r * grow, y)), 56), material))
+    mesh.scale.z = depth
+  }
+  const torso: [number, number][] = [[-14.5, .5], [-13.5, 4.5], [-11.5, 8.8], [-8.5, 11.6], [-5.5, 12.1], [-2.5, 11.6], [.5, 10.2], [4, 8.6], [7.5, 7.6], [11, 7.5], [14, 8.2], [17, 9.2], [20, 10], [24, 10.3], [27.5, 9.5], [29.5, 6.5], [31, 4.3], [31.5, 3.9]]
+  lathe('Hips', torso, .7, gloss)
+  // Neck and faceless egg head.
+  limb('Neck', 'Head', 3.8, 3.5)
+  blob('Head', [0, 9.8, 1.2], [7, 10.6, 8.4])
+  for (const side of ['Left', 'Right']) {
+    joint(`${side}Arm`, 3.6)
+    limb(`${side}Arm`, `${side}ForeArm`, 3.6, 2.9)
+    joint(`${side}ForeArm`, 2.8)
+    limb(`${side}ForeArm`, `${side}Hand`, 2.8, 2)
+    blob(`${side}Hand`, [0, 5.5, 0], [1.9, 5.8, 2.6])
+    limb(`${side}UpLeg`, `${side}Leg`, 6.6, 4.3)
+    joint(`${side}Leg`, 4.1)
+    limb(`${side}Leg`, `${side}Foot`, 4.2, 2.4)
+    joint(`${side}Foot`, 2.5)
+    limb(`${side}Foot`, `${side}ToeBase`, 2.9, 2.7)
+    blob(`${side}ToeBase`, [0, 2.5, 0], [2.8, 4.8, 2.2])
+  }
+  // White ribbed crop top: a thin shell over the chest.
+  lathe('Hips', torso.filter(([y]) => y >= 17 && y <= 29.5), .72, knit, 1.05)
+}
+
+function createFigure(model: Model) {
+  const root = new THREE.Group()
+  const nodes = model.bones.map((item) => {
+    const node = new THREE.Bone()
+    node.name = item.name
+    node.position.fromArray(item.p); node.quaternion.fromArray(item.q); node.scale.fromArray(item.s)
+    return node
+  })
+  model.bones.forEach((item, i) => (item.parent >= 0 ? nodes[item.parent] : root).add(nodes[i]))
+  const byName = new Map(nodes.map((node) => [node.name, node]))
+  dressMannequin((name) => byName.get(`mixamorig${name}`)!)
+  root.scale.setScalar(MODEL_HEIGHT / RIG_HEIGHT)
+  const mixer = new THREE.AnimationMixer(root)
+  const action = (name: string) => { const clip = model.clips.find((item) => item.name === name)!; const a = mixer.clipAction(clip); a.play(); return a }
+  const walk = action('walk'), idle = action('idle')
+  const apply = (walking: boolean, travelled: number, time: number) => {
+    walk.setEffectiveWeight(walking ? 1 : 0); idle.setEffectiveWeight(walking ? 0 : 1)
+    walk.time = (travelled / STRIDE % 1) * walk.getClip().duration
+    idle.time = time % idle.getClip().duration
+    mixer.update(0)
+  }
+  return { root, apply }
+}
+
+// Soft studio reflections so the gloss reads; an equirect texture works with every renderer.
+function studioEnvironment() {
+  const canvas = document.createElement('canvas')
+  canvas.width = 256; canvas.height = 128
+  const ctx = canvas.getContext('2d')!
+  const sky = ctx.createLinearGradient(0, 0, 0, 128)
+  sky.addColorStop(0, '#ffffff'); sky.addColorStop(.48, '#e9e7e0'); sky.addColorStop(.52, '#cfc8b4'); sky.addColorStop(1, '#a89d84')
+  ctx.fillStyle = sky; ctx.fillRect(0, 0, 256, 128)
+  ctx.fillStyle = '#ffffff'
+  ctx.fillRect(20, 22, 46, 26); ctx.fillRect(150, 18, 60, 22)
+  const texture = new THREE.CanvasTexture(canvas)
+  texture.mapping = THREE.EquirectangularReflectionMapping
+  texture.colorSpace = THREE.SRGBColorSpace
+  return texture
+}
+
 export type WorldFrame = { kind: Kind; u: number; sec: number; rig: Rig; focal: number; aspect: number; time: number; limbs: boolean }
 
 // One shared set: model, props and the shot camera on layer 0; camera body, frustum and path on layer 1 (overview only).
@@ -163,14 +278,27 @@ export function createWorld() {
   const scene = new THREE.Scene()
   scene.background = new THREE.Color('#dfe7e6')
   scene.fog = new THREE.Fog('#dfe7e6', 25, 60)
-  scene.add(new THREE.HemisphereLight('#ffffff', '#b9ae8f', 1.4))
+  scene.environment = studioEnvironment()
+  scene.environmentIntensity = .45
+  scene.add(new THREE.HemisphereLight('#ffffff', '#b9ae8f', 1.1))
   const sun = new THREE.DirectionalLight('#fff4de', 2.2)
   sun.position.set(6, 10, 5); sun.castShadow = true; sun.shadow.mapSize.set(1024, 1024)
   Object.assign(sun.shadow.camera, { left: -15, right: 15, top: 15, bottom: -15 })
   scene.add(sun)
+  const fill = new THREE.DirectionalLight('#ffffff', .9)
+  fill.position.set(-3, 4, 8); scene.add(fill)
   buildSet(scene)
 
-  const mannequin = buildMannequin(); scene.add(mannequin.group)
+  const figure = new THREE.Group(); scene.add(figure)
+  const mannequin = buildMannequin(); figure.add(mannequin.group)
+  let person: ReturnType<typeof createFigure> | null = null
+  let disposed = false
+  loadModel().then((model) => {
+    if (disposed) return
+    person = createFigure(model)
+    figure.remove(mannequin.group)
+    figure.add(person.root)
+  }).catch(() => { /* keep the simple mannequin */ })
   const car = new THREE.Mesh(new THREE.BoxGeometry(1.7, .8, 3.8), new THREE.MeshStandardMaterial({ color: '#f5c84c', roughness: .5 }))
   car.castShadow = true; scene.add(car)
   const water = new THREE.Mesh(new THREE.PlaneGeometry(80, 80), new THREE.MeshStandardMaterial({ color: '#5fa9c2', transparent: true, opacity: .65, roughness: .2 }))
@@ -200,9 +328,10 @@ export function createWorld() {
   const update = (s: WorldFrame) => {
     const p = pose(s.kind, s.u, s.sec, s.rig, s.focal)
     const walkTime = s.time
-    mannequin.group.position.copy(p.subject)
-    mannequin.group.position.y = s.kind === 'car' ? .35 : 0
-    mannequin.group.rotation.y = p.facing
+    figure.position.copy(p.subject)
+    figure.position.y = s.kind === 'car' ? .35 : 0
+    figure.rotation.y = p.facing
+    if (person) person.apply(p.walking, p.subject.distanceTo(pose(s.kind, 0, 0, s.rig, s.focal).subject), s.limbs ? walkTime : 0)
     const swing = p.walking && s.limbs ? Math.sin(walkTime * 7) * .45 : 0
     mannequin.legs[0].rotation.x = swing; mannequin.legs[1].rotation.x = -swing
     mannequin.arms[0].rotation.x = -swing * .6; mannequin.arms[1].rotation.x = swing * .6
@@ -232,12 +361,12 @@ export function createWorld() {
     return { p, distance }
   }
 
-  const dispose = () => scene.traverse((object) => {
+  const dispose = () => { disposed = true; scene.traverse((object) => {
     const mesh = object as THREE.Mesh
     mesh.geometry?.dispose()
     const material = mesh.material as THREE.Material | THREE.Material[] | undefined
     if (Array.isArray(material)) material.forEach((item) => item.dispose()); else material?.dispose()
-  })
+  }) }
 
   return { scene, shotCam, path, update, dispose }
 }

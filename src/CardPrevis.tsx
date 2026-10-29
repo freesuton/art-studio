@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 import * as THREE from 'three'
-import { createWorld, DEFAULT_RIG, HOLD, kindOf, lensOf, pose, V } from './previsWorld'
+import { createWorld, DEFAULT_RIG, HOLD, kindOf, lensOf, loadModel, pose, V } from './previsWorld'
 import type { Kind, World } from './previsWorld'
 
 // Browsers cap WebGL contexts (~16), so every card shares one offscreen renderer
@@ -23,6 +23,8 @@ function getShared() {
     renderer.shadowMap.type = THREE.PCFSoftShadowMap
     renderer.setScissorTest(false)
     shared = { renderer, world: createWorld() }
+    // Still frames (reduced motion) need one redraw once the model arrives.
+    if (reducedMotion) loadModel().then(() => entries.forEach((entry) => draw(entry, performance.now()))).catch(() => {})
   }
   return shared
 }
