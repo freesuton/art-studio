@@ -562,3 +562,36 @@ footer p { margin: 0; color: #96978f; font-size: 11px; }
 @media (prefers-reduced-motion: reduce) {
   * { scroll-behavior: auto !important; transition: none !important; }
 }
+
+.language-bar {
+  position: fixed;
+  z-index: 120;
+  top: 14px;
+  right: 18px;
+  display: flex;
+  gap: 3px;
+  padding: 4px;
+  border: 1px solid rgba(25, 26, 23, .18);
+  border-radius: 999px;
+  background: rgba(248, 247, 241, .92);
+  box-shadow: 0 8px 24px rgba(25, 26, 23, .1);
+  backdrop-filter: blur(14px);
+}
+.language-bar button {
+  min-width: 66px;
+  padding: 8px 12px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: #62645b;
+  cursor: pointer;
+  font: inherit;
+  font-size: 11px;
+  font-weight: 800;
+}
+.language-bar button[aria-pressed="true"] { background: var(--ink); color: white; }
+.language-bar button:focus-visible { outline: 2px solid #9fca00; outline-offset: 2px; }
+@media (max-width: 720px) {
+  .language-bar { top: 8px; right: 9px; }
+  .language-bar button { min-width: 58px; padding: 7px 9px; }
+}
