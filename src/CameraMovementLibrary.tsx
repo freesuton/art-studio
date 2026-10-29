@@ -6,6 +6,7 @@ import { filmReferences } from './filmReferences'
 import './cameraMovement.css'
 
 const PrevisStudio = lazy(() => import('./PrevisStudio'))
+const CardPrevis = lazy(() => import('./CardPrevis'))
 
 type Language = 'zh' | 'en'
 const INK = '#191a17'
@@ -83,7 +84,7 @@ function MovementCard({ movement, language, animate, highlighted, onPreview }: {
   const category = movementCategories.find((item) => item.id === movement.category)!
   const refs = (movement.refs ?? []).map((id) => filmReferences.find((film) => film.id === id)).filter(Boolean)
   return <article className={`camera-card ${highlighted ? 'highlighted' : ''}`} id={`camera-${movement.id}`}>
-    <div className="camera-card-visual"><Diagram kind={movement.diagram} animate={animate} /><span>{category[language]}</span></div>
+    <div className="camera-card-visual"><Suspense fallback={<Diagram kind={movement.diagram} animate={animate} />}><CardPrevis movementId={movement.id} label={t(movement.name)} /></Suspense><span>{category[language]}</span></div>
     <div className="camera-card-body">
       <p className="camera-card-meta"><span>{t(movement.speed)}</span><span>{movement.lens}</span></p>
       <h4>{t(movement.name)}<small>{language === 'en' ? movement.name.zh : movement.name.en}</small></h4>

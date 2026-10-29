@@ -111,3 +111,6 @@
   .previs-controls { grid-template-columns: 1fr; }
   .previs-rig { grid-template-columns: 1fr 1fr; }
 }
+
+.camera-card-3d { display: block; width: 100%; aspect-ratio: 200 / 120; background: #dfe7e6; }
+.camera-card-visual > span { z-index: 1; padding: 2px 6px; background: #fffdf5d9; border-radius: 4px; }
