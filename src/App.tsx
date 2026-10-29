@@ -4,6 +4,7 @@ import { ArrowRight, Bookmark, Camera, ChevronLeft, Clapperboard, ExternalLink, 
 import { Route, Routes, useNavigate, useParams } from 'react-router-dom'
 import TechniqueVisual from './TechniqueVisual'
 import MotionLibrary from './MotionLibrary'
+import CameraMovementLibrary from './CameraMovementLibrary'
 import { motions } from './motionData'
 import { sheets, stages } from './data'
 import { filmReferences } from './filmReferences'
@@ -336,6 +337,7 @@ function Home({ favorites, toggle, language, setLanguage }: { favorites: string[
             <div className="workflow-stage-tasks"><p className="eyebrow">{language === 'en' ? 'TO DO IN THIS STAGE' : '这一阶段要做'}</p><ol>{(language === 'en' ? stageEnglish[item.id].tasks : item.tasks).map((task) => <li key={task}>{task}</li>)}</ol><button onClick={() => item.id === 'concept' ? selectConceptArea('technique') : document.getElementById('library')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}>{language === 'en' ? 'View related sheets' : '查看相关卡片'} <ArrowRight size={16} /></button></div>
           </div> })() : <div className="workflow-stage-panel workflow-stage-all" id="workflow-stage-panel"><p>{language === 'en' ? 'Five stages, one clear deliverable at a time.' : '五个阶段，一份份完成主要交付物。'}</p><button onClick={() => selectStage('concept')}>{language === 'en' ? 'Start with Concept & Story' : '从创意与故事开始'} <ArrowRight size={16} /></button></div>}
           {stage === 'shoot' && <button className="motion-entry" onClick={() => selectStage('motions')}><span><span className="motion-entry-label">ON-SET QUICK ACCESS</span><strong>现场速查：人物动作与镜头引导</strong><small>{motions.length} 段场景参考 · 慢放观察，直接照着指令引导人物</small></span><ArrowRight size={22}/></button>}
+          {stage === 'prepare' && <CameraMovementLibrary language={language} />}
           {stage === 'concept' && <section className="concept-area-selector" aria-label="创意与故事内容分区">
             <div><p className="eyebrow">CONCEPT & STORY AREAS</p><h3>{language === 'en' ? 'Choose your workspace' : '选择你的工作区'}</h3></div>
             <div className="concept-area-tabs" role="tablist" aria-label="创意与故事分区">
