@@ -1,4 +1,6 @@
 import resources from './motionResources.json'
+import { buildMotionTags } from './motionTags'
+import type { MotionTags } from './motionTags'
 
 export type MotionCategory = 'stand' | 'walk' | 'sit' | 'turn' | 'gaze' | 'hands' | 'clothes' | 'environment'
 export const motionCategories: { id: MotionCategory; name: string; en: string }[] = [
@@ -10,7 +12,7 @@ export const motionCategories: { id: MotionCategory; name: string; en: string }[
 export const environments = ['树林', '海边', '街头', '室内', '草地', '窗边']
 export type Motion = typeof resources[number] & {
   id: string; title: string; category: MotionCategory; cue: string; framing: '全身' | '半身' | '近景'; lens: string;
-  angle: string; camera: string; environment: string[]; mood: string; mistake: string; watchFor: string;
+  tags: MotionTags; angle: string; camera: string; environment: string[]; mood: string; mistake: string; watchFor: string;
 }
 type Row = [number, string, MotionCategory, Motion['framing'], string[], string, string, string, string, string]
 const rows: Row[] = [
@@ -51,7 +53,7 @@ const rows: Row[] = [
 export const motions: Motion[] = rows.map(([assetId, title, category, framing, environment, mood, cue, angle, watchFor, mistake]) => {
   const resource = resources.find(r => r.assetId === String(assetId))
   if (!resource) throw new Error(`Missing verified video: ${assetId}`)
-  return { ...resource, id: `mixkit-${assetId}`, title, category, framing, environment, mood, cue, angle, watchFor, mistake,
+  return { ...resource, tags: buildMotionTags({ assetId: String(assetId), category, angle, framing, mood, duration: resource.duration }), id: `mixkit-${assetId}`, title, category, framing, environment, mood, cue, angle, watchFor, mistake,
     lens: framing === '全身' ? '28–50mm' : framing === '半身' ? '50–75mm' : '65–75mm',
     camera: category === 'walk' ? '先用固定机位拍稳一条，再尝试保持距离跟拍。需要半速时可拍 50p，在 25p 时间线上放慢至 50%。' : '固定机位优先；先排练动作、检查合焦和构图，动作前后各录两秒。',
   }
