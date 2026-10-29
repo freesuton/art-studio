@@ -120,6 +120,12 @@ export const filmReferences: FilmReference[] = [
     url: 'https://www.youtube.com/watch?v=wxvhn9cA27o', embedUrl: 'https://www.youtube.com/embed/wxvhn9cA27o', thumbnailUrl: 'https://i.ytimg.com/vi/wxvhn9cA27o/hqdefault.jpg', color: '#9fc8d0',
   },
   {
+    id: 'chanel-les-beiges-coastal-summer', collection: 'fashion', title: 'LES BEIGES Coastal Summer', titleZh: '香奈儿 LES BEIGES 海岸夏日系列', source: 'CHANEL', year: '2026', duration: '美妆短片', category: '美妆广告 / 海岸夏日',
+    synopsis: 'CHANEL 将清透妆容、海风与夏日光线结合，呈现仿佛在海边度过一天后的自然光泽与轻松状态。',
+    watchFor: '观察面部和妆容特写如何与海岸环境镜头连接，以及风、侧光和人物视线怎样让美容广告保持自然电影感。',
+    url: 'https://www.youtube.com/watch?v=wrCs9yjnKxs', embedUrl: 'https://www.youtube.com/embed/wrCs9yjnKxs', thumbnailUrl: 'https://i.ytimg.com/vi/wrCs9yjnKxs/hqdefault.jpg', color: '#e2b8a7',
+  },
+  {
     id: 'gorjana-beauty-within', collection: 'fashion', title: 'Gorjana — Beauty Within', titleZh: 'Gorjana：内在之美', source: 'Kevin Reyes', year: '—', duration: '时尚短片', category: '珠宝广告 / 女性肖像',
     synopsis: '以细腻的女性肖像、珠宝细节和柔和动作组成品牌影像，在精致感与自然状态之间保持平衡。',
     watchFor: '观察中近景如何突出珠宝但不失人物情绪，以及眼神、触碰头发和轻微转身怎样成为连续动作。',
