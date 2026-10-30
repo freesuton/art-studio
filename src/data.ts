@@ -237,7 +237,54 @@ const workflowSheets: CheatSheet[] = [
   },
 ]
 
+// Techniques added from reference breakdowns (e.g. ASTR the Label: Summer 2021).
+const referenceSheets: Omit<CheatSheet, 'accent'>[] = [
+  {
+    id: 'diffusion-vintage-glass', title: '柔光滤镜与复古镜头', titleEn: 'Diffusion Filter & Vintage Glass', stage: 'prepare', category: '镜头',
+    tags: ['黑柔', 'Pro-Mist', '柔光镜', '老镜头', 'Leica R', '光晕', '胶片感'], summary: '用柔光滤镜和老镜头让高光微微晕开，画面更柔和、更像胶片。',
+    purpose: ['压低数字画面的锐利感', '让逆光、皮肤和白色服装产生柔和光晕'], usage: ['时尚、人像和夏日自然光题材', '想要复古、梦幻质感时'],
+    steps: ['先选 1/8 或 1/4 强度的黑柔滤镜，避免过度发灰', '搭配转接的老镜头或复古镀膜镜头', '对着逆光试拍，检查高光晕开的程度', '整片使用同一组镜头与滤镜，保持统一质感'],
+    mistakes: ['滤镜强度太大，画面整体发灰', '同一支片子里混用风格差异很大的镜头'], related: ['focal-length', 'sun-flare', 'vintage-film-texture'], visual: 'lens',
+  },
+  {
+    id: 'sun-flare', title: '逆光眩光与太阳光晕', titleEn: 'Sun Flare & Halo', stage: 'prepare', category: '光影',
+    tags: ['逆光', '眩光', '光晕', '太阳', '黄昏', '剪影', 'flare'], summary: '让太阳在人物身后或画面边缘入镜，制造温暖的光晕和夏日感。',
+    purpose: ['用自然光建立品牌的夏日情绪', '把人物从背景中勾勒出来'], usage: ['上午晚些或下午的户外场景', '人物站在高处、天空作背景时'],
+    steps: ['把太阳放在人物头部后方或画面一角', '轻微移动机位，让光斑落在想要的位置', '按皮肤曝光，允许天空稍微过曝', '同一场景多拍几条不同强度的眩光'],
+    mistakes: ['眩光盖住人脸', '为了眩光让人物完全变成剪影却没有意图'], related: ['lighting-direction', 'exposure', 'diffusion-vintage-glass'], visual: 'lighting',
+  },
+  {
+    id: 'props-styling', title: '道具与场景点缀', titleEn: 'Props & Set Dressing', stage: 'prepare', category: '美术',
+    tags: ['道具', '水果', '布置', '色彩', '场景', 'styling'], summary: '在场景里放少量与服装同色系的道具，让画面有细节和记忆点。',
+    purpose: ['给静态造型镜头增加画面兴趣', '用颜色呼应服装与品牌'], usage: ['人物躺、坐或停留的镜头', '需要细节插入镜头时'],
+    steps: ['从服装里挑一个主色', '选 1–2 种同色系的小道具', '沿引导线或画面边缘排列，留出人物空间', '再拍一条只有道具的细节镜头'],
+    mistakes: ['道具太多抢走服装的注意力', '道具颜色和服装冲突'], related: ['production-design', 'color-palette', 'composition'], visual: 'production',
+  },
+  {
+    id: 'outfit-coverage', title: '每套造型的镜头组', titleEn: 'Outfit Coverage', stage: 'shoot', category: '拍摄',
+    tags: ['造型', 'lookbook', '覆盖', '全身', '细节', '面料', '时尚'], summary: '每换一套服装，都拍齐环境全景、全身、半身、近景和面料细节。',
+    purpose: ['保证剪辑时每套造型都能完整展示', '让节奏在大景和细节之间自然切换'], usage: ['时尚短片与 lookbook', '一个地点拍多套造型时'],
+    steps: ['环境全景：人物小，地点大', '全身：看清剪裁和比例', '半身或近景：表情与配饰', '面料细节：风吹、纹理、印花', '一个运动镜头：推近、横移或引领'],
+    mistakes: ['只拍全身，剪辑时缺少节奏', '忘记拍面料细节和空镜'], related: ['coverage', 'shot-size', 'scene-shot-list'], visual: 'coverage',
+  },
+  {
+    id: 'vintage-film-texture', title: '胶片质感与片框', titleEn: 'Vintage Film Texture', stage: 'edit', category: '调色',
+    tags: ['胶片', 'Super 8', '片框', '颗粒', '漏光', '黑白', '复古', '怀旧'], summary: '在少数镜头加入胶片片框、颗粒、漏光或黑白，制造回忆般的复古段落。',
+    purpose: ['在一支短片里制造质感变化', '给片头或转场一个怀旧的节奏点'], usage: ['片头、转场和情绪段落', '想要复古、手作感时'],
+    steps: ['先完成整体调色', '只在 2–4 个镜头上叠加片框或漏光', '黑白或褐色段落保持在几秒内', '颗粒强度在手机上检查'],
+    mistakes: ['整片都套滤镜，失去对比', '片框和画面比例不匹配'], related: ['color-match', 'title-cards', 'diffusion-vintage-glass'], visual: 'color-match',
+  },
+  {
+    id: 'title-cards', title: '片名字卡', titleEn: 'Title Cards', stage: 'edit', category: '字幕',
+    tags: ['片名', '字卡', '品牌', '开场', '结尾', '字体'], summary: '用简洁的品牌名和系列名做开场与结尾，首尾呼应。',
+    purpose: ['让观众第一眼知道品牌与系列', '用同一字卡收尾，形成完整感'], usage: ['品牌时尚片与作品集', '片头空镜和结尾黑场'],
+    steps: ['选一种细字重的无衬线或衬线字体', '片名叠在留白充足的空镜上', '系列名或年份放在第二个镜头', '结尾回到同样的片名，放在黑场或最后一帧上'],
+    mistakes: ['字体太多、太粗，抢走画面', '字卡停留太短，观众来不及读'], related: ['subtitles', 'vintage-film-texture', 'export-settings'], visual: 'subtitles',
+  },
+]
+
 export const sheets: CheatSheet[] = [
   ...workflowSheets,
+  ...referenceSheets.map((sheet) => ({ ...sheet, accent: stages.find((stage) => stage.id === sheet.stage)!.accent })),
   ...originalSheets.map((sheet) => ({ ...sheet, stage: stageMap[sheet.stage], accent: stages.find((stage) => stage.id === stageMap[sheet.stage])!.accent })),
 ]

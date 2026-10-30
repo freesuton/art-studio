@@ -4,6 +4,7 @@ import { cameraMovements, gearLabels, movementCategories, movementRecipe } from 
 import type { CameraMovement, MovementCategory, MovementDiagram, MovementGear } from './cameraMovementData'
 import { filmReferences } from './filmReferences'
 import './cameraMovement.css'
+import WorkspaceToggle from './WorkspaceToggle'
 
 const PrevisStudio = lazy(() => import('./PrevisStudio'))
 const CardPrevis = lazy(() => import('./CardPrevis'))
@@ -91,7 +92,7 @@ function MovementCard({ movement, language, animate, highlighted, onPreview }: {
       <p className="camera-card-purpose">{t(movement.purpose)}</p>
       <p className="camera-card-cue"><span>{language === 'en' ? 'Tell the model' : '对模特说'}</span>{t(movement.cue)}</p>
       <div className="camera-card-gear">{movement.gear.map((gear) => <span key={gear}>{gearLabels[gear][language]}</span>)}</div>
-      <button className="camera-card-previs" onClick={onPreview}><Box size={14} /> {language === 'en' ? 'Rehearse in 3D' : '3D 预演'}</button>
+      <div className="camera-card-actions"><button className="camera-card-previs" onClick={onPreview}><Box size={14} /> {language === 'en' ? 'Rehearse in 3D' : '3D 预演'}</button><WorkspaceToggle itemKey={`camera:${movement.id}`} language={language} /></div>
       <details>
         <summary>{language === 'en' ? 'How to shoot it' : '怎么拍'}</summary>
         <dl>

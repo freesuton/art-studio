@@ -1,10 +1,13 @@
 import { useEffect, useLayoutEffect, useMemo, useState } from 'react'
 import Fuse from 'fuse.js'
-import { ArrowRight, Bookmark, Camera, ChevronLeft, Clapperboard, ExternalLink, Play, Search, X } from 'lucide-react'
-import { Route, Routes, useNavigate, useParams } from 'react-router-dom'
+import { ArrowRight, Bookmark, Camera, ChevronLeft, Clapperboard, ExternalLink, LayoutGrid, Play, Search, X } from 'lucide-react'
+import { Route, Routes, useLocation, useNavigate, useParams } from 'react-router-dom'
 import TechniqueVisual from './TechniqueVisual'
 import MotionLibrary from './MotionLibrary'
 import CameraMovementLibrary from './CameraMovementLibrary'
+import WorkspaceToggle from './WorkspaceToggle'
+import Workspace from './Workspace'
+import { useWorkspace } from './workspaceStore'
 import { motions } from './motionData'
 import { sheets, stages } from './data'
 import { filmReferences } from './filmReferences'
@@ -113,6 +116,7 @@ function Card({ sheet, saved, onToggle, onOpen, language }: { sheet: CheatSheet;
       </div>
       <p className="summary">{language === 'en' ? `A practical field guide to ${sheet.titleEn.toLowerCase()}.` : sheet.summary}</p>
       <button className="read-more" onClick={onOpen}>{language === 'en' ? 'Open sheet' : '打开卡片'} <ArrowRight size={16} /></button>
+      <WorkspaceToggle itemKey={`sheet:${sheet.id}`} language={language} />
     </article>
   )
 }
@@ -159,6 +163,7 @@ function FilmCard({ film, playing, onPlay, onStop, language }: { film: FilmRefer
       <p className="film-watch-for"><strong>{language === 'en' ? 'Watch for' : '观看重点'}</strong>{language === 'en' ? 'Notice shot size changes, natural movement, transitions, and the relationship between the subject and the location.' : film.watchFor}</p>
       <button className="film-link" onClick={playing ? onStop : onPlay}>{language === 'en' ? (playing ? 'Stop' : 'Play here') : (playing ? '停止播放' : '在此播放')} {playing ? <X size={15} /> : <Play size={15} fill="currentColor" />}</button>
       <a className="film-source-link" href={film.url} target="_blank" rel="noopener noreferrer">{language === 'en' ? 'Official page' : '官方页面'} <ExternalLink size={14} /></a>
+      <WorkspaceToggle itemKey={`film:${film.id}`} language={language} />
     </div>
   </article>
 }
@@ -190,6 +195,8 @@ function StarterTemplate({ language }: { language: Language }) {
 function Detail({ favorites, toggle, language }: { favorites: string[]; toggle: (id: string) => void; language: Language }) {
   const { id } = useParams()
   const navigate = useNavigate()
+  const base = useLocation().pathname.startsWith('/workspace') ? '/workspace' : ''
+  const close = () => navigate(base || '/')
   const sheet = sheets.find((item) => item.id === id)
 
   useEffect(() => {
@@ -201,10 +208,10 @@ function Detail({ favorites, toggle, language }: { favorites: string[]; toggle: 
   const related = sheet.related.map((item) => sheets.find((candidate) => candidate.id === item)).filter(Boolean) as CheatSheet[]
 
   return (
-    <div className="detail-backdrop" role="dialog" aria-modal="true" aria-label={sheet.title} onMouseDown={() => navigate('/')}>
+    <div className="detail-backdrop" role="dialog" aria-modal="true" aria-label={sheet.title} onMouseDown={close}>
       <article className="detail-panel" onMouseDown={(event) => event.stopPropagation()}>
         <div className="detail-topbar">
-          <button className="icon-button" onClick={() => navigate('/')}><ChevronLeft size={20} /> {language === 'en' ? 'Back' : '返回'}</button>
+          <button className="icon-button" onClick={close}><ChevronLeft size={20} /> {language === 'en' ? 'Back' : '返回'}</button>
           <button className={`favorite-pill ${favorites.includes(sheet.id) ? 'active' : ''}`} onClick={() => toggle(sheet.id)}>
             <Bookmark size={17} fill={favorites.includes(sheet.id) ? 'currentColor' : 'none'} />
             {language === 'en' ? (favorites.includes(sheet.id) ? 'Saved' : 'Save') : (favorites.includes(sheet.id) ? '已收藏' : '收藏')}
@@ -225,7 +232,7 @@ function Detail({ favorites, toggle, language }: { favorites: string[]; toggle: 
           <section><p className="section-number">03</p><h3>{language === 'en' ? 'How to do it' : '怎么做'}</h3><ol>{(language === 'en' ? ['Identify the intended audience effect', 'Choose one clear visual rule', 'Test it in a simple shot before expanding'] : sheet.steps).map((item) => <li key={item}>{item}</li>)}</ol></section>
           <section className="mistakes"><p className="section-number">04</p><h3>{language === 'en' ? 'Common mistakes' : '常见错误'}</h3><ul>{(language === 'en' ? ['Applying the technique without a story reason', 'Changing several variables at once'] : sheet.mistakes).map((item) => <li key={item}>{item}</li>)}</ul></section>
         </div>
-        {related.length > 0 && <section className="related"><p className="eyebrow">RELATED SHEETS</p><h3>接着查看</h3><div>{related.map((item) => <button key={item.id} onClick={() => navigate(`/sheet/${item.id}`)}>{item.title}<ArrowRight size={15} /></button>)}</div></section>}
+        {related.length > 0 && <section className="related"><p className="eyebrow">RELATED SHEETS</p><h3>接着查看</h3><div>{related.map((item) => <button key={item.id} onClick={() => navigate(`${base}/sheet/${item.id}`)}>{item.title}<ArrowRight size={15} /></button>)}</div></section>}
       </article>
     </div>
   )
@@ -233,8 +240,10 @@ function Detail({ favorites, toggle, language }: { favorites: string[]; toggle: 
 
 function Home({ favorites, toggle, language, setLanguage }: { favorites: string[]; toggle: (id: string) => void; language: Language; setLanguage: (language: Language) => void }) {
   const navigate = useNavigate()
+  const requestedStage = (useLocation().state as { stage?: ViewId } | null)?.stage
   const [query, setQuery] = useState('')
   const [stage, setStage] = useState<ViewId>(() => {
+    if (requestedStage) return requestedStage
     try {
       const saved = JSON.parse(sessionStorage.getItem(VIEW_STATE_KEY) || '{}')
       return saved.stage === 'samples' || saved.stage === 'all' || saved.stage === 'saved' || saved.stage === 'directing' || saved.stage === 'motions' || stages.some((item) => item.id === saved.stage) ? saved.stage : 'samples'
@@ -245,12 +254,17 @@ function Home({ favorites, toggle, language, setLanguage }: { favorites: string[
     catch { return 'technique' }
   })
   const [activeFilmId, setActiveFilmId] = useState<FilmReference['id'] | null>(null)
+  const workspaceCount = useWorkspace().project.items.length
 
   useEffect(() => {
     sessionStorage.setItem(VIEW_STATE_KEY, JSON.stringify({ stage, conceptArea }))
   }, [stage, conceptArea])
 
   useLayoutEffect(() => {
+    if (requestedStage) {
+      const frame = window.requestAnimationFrame(() => document.getElementById('workflow-tabs')?.scrollIntoView({ block: 'start' }))
+      return () => window.cancelAnimationFrame(frame)
+    }
     const position = Number(sessionStorage.getItem(SCROLL_POSITION_KEY))
     if (!Number.isFinite(position) || position <= 0) return
     const restore = () => window.scrollTo({ top: position, left: 0, behavior: 'auto' })
@@ -377,6 +391,7 @@ function Home({ favorites, toggle, language, setLanguage }: { favorites: string[
         </section></div>}
       </main>
 
+      <button className="ws-fab" onClick={() => navigate('/workspace')}><LayoutGrid size={16} /> {language === 'en' ? 'Workspace' : '工作台'} <span>{workspaceCount}</span></button>
       <footer><div><span className="brand-mark"><Camera size={18} /></span><strong>{language === 'en' ? 'Short Film Field Guide' : '短片现场手册'}</strong></div><p>{language === 'en' ? 'From concept to release · A five-stage solo filmmaking workflow' : '从创意到发布 · 五阶段单人短片流程'}</p></footer>
     </div>
   )
@@ -387,5 +402,15 @@ export default function App() {
   const [language, setLanguageState] = useState<Language>(() => localStorage.getItem(LANGUAGE_KEY) === 'en' ? 'en' : 'zh')
   const setLanguage = (next: Language) => { localStorage.setItem(LANGUAGE_KEY, next); setLanguageState(next) }
   useEffect(() => { document.documentElement.lang = language === 'en' ? 'en' : 'zh-CN' }, [language])
-  return <><Routes><Route path="*" element={<Home favorites={favorites} toggle={toggle} language={language} setLanguage={setLanguage} />} /></Routes><Routes><Route path="/sheet/:id" element={<Detail favorites={favorites} toggle={toggle} language={language} />} /><Route path="*" element={null} /></Routes></>
+  return <>
+    <Routes>
+      <Route path="/workspace/*" element={<Workspace language={language} setLanguage={setLanguage} />} />
+      <Route path="*" element={<Home favorites={favorites} toggle={toggle} language={language} setLanguage={setLanguage} />} />
+    </Routes>
+    <Routes>
+      <Route path="/sheet/:id" element={<Detail favorites={favorites} toggle={toggle} language={language} />} />
+      <Route path="/workspace/sheet/:id" element={<Detail favorites={favorites} toggle={toggle} language={language} />} />
+      <Route path="*" element={null} />
+    </Routes>
+  </>
 }

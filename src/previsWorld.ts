@@ -3,7 +3,7 @@ import { cameraMovements } from './cameraMovementData'
 import type { MovementDiagram } from './cameraMovementData'
 
 export type Language = 'zh' | 'en'
-export type Kind = MovementDiagram | 'free' | 'walkin' | 'water' | 'pedestal' | 'bodyrig' | 'counter' | 'droneFollow' | 'pov' | 'spin'
+export type Kind = MovementDiagram | 'free' | 'walkin' | 'water' | 'pedestal' | 'bodyrig' | 'counter' | 'droneFollow' | 'pov' | 'spin' | 'driveby' | 'inverted' | 'lowhero'
 export type Rig = { d: number; h: number; angle: number }
 export type Pose = { cam: THREE.Vector3; target: THREE.Vector3; focal: number; roll: number; subject: THREE.Vector3; facing: number; walking: boolean; up?: THREE.Vector3 }
 
@@ -11,6 +11,7 @@ export type Pose = { cam: THREE.Vector3; target: THREE.Vector3; focal: number; r
 export const kindOverrides: Record<string, Kind> = {
   'walk-in-push': 'walkin', 'water-level': 'water', 'pedestal': 'pedestal', 'body-rig': 'bodyrig', 'counter-track': 'counter',
   'drone-follow': 'droneFollow', 'pov-walk': 'pov', 'counter-spin': 'spin', 'match-move': 'track', 'locked-tableau': 'free',
+  'drive-by-landscape': 'driveby', 'upside-down-sky': 'inverted', 'low-angle-hero': 'lowhero',
 }
 export const LENSES = [16, 24, 35, 50, 85, 135]
 export const ASPECTS = [{ id: '16:9', value: 16 / 9 }, { id: '2.39:1', value: 2.39 }, { id: '4:5', value: 4 / 5 }, { id: '9:16', value: 9 / 16 }]
@@ -96,6 +97,9 @@ export function pose(kind: Kind, t: number, sec: number, rig: Rig, focal: number
     case 'static': walk(side, -4, 4, u); break
     case 'drift': out.cam = at(lerp(rig.d, rig.d * .96, u), rig.h).add(side.clone().multiplyScalar(lerp(-.08, .08, u))); break
     case 'water': out.cam = at(lerp(rig.d, rig.d * .5, e), .55); break
+    case 'driveby': out.cam = side.clone().multiplyScalar(lerp(-9, 9, u)).add(dir.clone().multiplyScalar(rig.d * 2.5)).setY(1.3); target = out.cam.clone().add(dir.clone().multiplyScalar(-10)).setY(1.2); break
+    case 'inverted': out.cam = at(rig.d * .4, .3); target = V(0, 1.75, 0); out.roll = Math.PI; break
+    case 'lowhero': out.cam = at(lerp(rig.d * .8, rig.d * .6, e), .3); target = V(0, 1.3, 0); break
     case 'free': break
   }
   out.target = target ?? out.subject.clone().setY(1.35)

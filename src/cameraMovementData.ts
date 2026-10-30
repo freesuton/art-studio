@@ -507,6 +507,40 @@ export const cameraMovements: CameraMovement[] = [
     cue: { zh: '“保持这个姿势，只是自然呼吸。”', en: '“Hold this pose and just breathe naturally.”' },
     mistake: { zh: '移动过多变成普通推拉。', en: 'Moving too much turns it into an ordinary push.' },
   },
+  // Added from the ASTR the Label: Summer 2021 breakdown
+  {
+    id: 'drive-by-landscape', category: 'vehicle', diagram: 'track', gear: ['car', 'phone', 'gimbal'], lens: '35–85mm',
+    name: { zh: '车窗流动空镜', en: 'Drive-by Landscape' },
+    speed: { zh: '车速 20–40 km/h', en: 'Car at 20–40 km/h' },
+    purpose: { zh: '从行驶的车里横向拍窗外风景，前景快速掠过、远景缓慢移动，用来开场交代地点。', en: 'Film the landscape sideways from a moving car: the foreground streaks past while the horizon drifts slowly. A natural opener that establishes place.' },
+    fashion: { zh: '片头空镜，叠上品牌名或系列名；也可作为造型之间的转场。', en: 'An opening plate for the brand or collection title, or a transition between looks.' },
+    how: { zh: '乘客位手持或用稳定器，镜头对准侧窗外，保持水平；长焦让远景更稳，前景模糊更明显。', en: 'From the passenger seat, handheld or on a gimbal, point straight out of the side window and keep the horizon level. Longer lenses steady the distance and blur the foreground more.' },
+    cue: { zh: '“这一段不需要人物，我们先拍几条路边风景。”', en: '“No talent needed for this one, we’re just grabbing roadside landscape.”' },
+    mistake: { zh: '车窗反光或脏污入镜；司机兼任摄影。', en: 'Window reflections or dirt in frame; the driver operating the camera.' },
+    refs: ['astr-summer'],
+  },
+  {
+    id: 'upside-down-sky', category: 'vertical', diagram: 'roll', gear: ['phone', 'gimbal', 'shoulder'], lens: '24–50mm',
+    name: { zh: '倒置仰拍', en: 'Upside-down Sky Shot' },
+    speed: { zh: '静止或极慢', en: 'Still or very slow' },
+    purpose: { zh: '镜头在人物下方朝天空拍，并把画面倒过来，头发向下垂落、天空在下方，制造失重和梦境感。', en: 'Shoot up at the subject against the sky and flip the frame so the hair falls and the sky sits below: weightless and dreamlike.' },
+    fashion: { zh: '后仰的人物、飘动的头发和上衣，一两秒的惊喜镜头。', en: 'A subject leaning back with hair and top drifting, a one- or two-second surprise.' },
+    how: { zh: '人物后仰或坐在高处，镜头贴近人物下方朝上拍；在剪辑里旋转 180°，或直接倒拿稳定器拍。', en: 'Have the subject lean back or sit up high, shoot from just below looking up, then rotate 180° in the edit, or hold the gimbal upside down.' },
+    cue: { zh: '“慢慢向后仰，让头发自然垂下来，眼睛看向镜头。”', en: '“Lean back slowly, let your hair hang, and look into the lens.”' },
+    mistake: { zh: '人物后仰时用力过猛，脸部表情紧张；时长太长。', en: 'Straining while leaning back so the face tenses; holding the shot too long.' },
+    refs: ['astr-summer'],
+  },
+  {
+    id: 'low-angle-hero', category: 'vertical', diagram: 'low', gear: ['tripod', 'gimbal', 'phone'], lens: '24–50mm',
+    name: { zh: '低角度英雄镜头', en: 'Low-angle Hero' },
+    speed: { zh: '静止或微推', en: 'Static or a slight push' },
+    purpose: { zh: '镜头放在地面或膝盖以下仰拍，人物显得更高、更有力量，天空成为干净的背景。', en: 'Put the lens at ground or knee height and shoot up: the subject looks taller and stronger, with clean sky behind.' },
+    fashion: { zh: '强调腿部比例、裙摆和鞋，也适合站在矮墙或台阶上的造型。', en: 'Lengthens legs and shows hems and shoes; great for a subject on a low wall or step.' },
+    how: { zh: '镜头离地 20–40 厘米，略微上仰；广角会让比例更夸张，35–50mm 更自然。', en: 'Lens 20–40 cm off the ground, tilted up slightly. Wide lenses exaggerate proportions; 35–50mm stays natural.' },
+    cue: { zh: '“站在墙上，重心放在一条腿上，往远处看。”', en: '“Stand on the wall, weight on one leg, and look into the distance.”' },
+    mistake: { zh: '广角离得太近导致脚大头小；地平线歪斜。', en: 'A wide lens too close makes feet huge and the head tiny; a tilted horizon.' },
+    refs: ['astr-summer'],
+  },
 ]
 
 export const movementRecipe: { step: Text; ids: string[] }[] = [

@@ -180,9 +180,9 @@ export const filmReferences: FilmReference[] = [
     url: 'https://www.youtube.com/watch?v=fo4LLux-tfM', embedUrl: 'https://www.youtube.com/embed/fo4LLux-tfM', thumbnailUrl: 'https://i.ytimg.com/vi/fo4LLux-tfM/hqdefault.jpg', color: '#ddbba5',
   },
   {
-    id: 'astr-summer', collection: 'fashion', title: 'ASTR the Label: Summer 2021', titleZh: '夏日自然光时尚短片', source: 'Kevin Reyes', year: '2021', duration: '约 2 分钟', category: '时尚影像 / 自然光',
-    synopsis: '以轻盈服装、自然光和人物在户外的细微动作，组成一支接近生活片段的夏日时尚短片。',
-    watchFor: '重点看人物不要直视镜头时，行走、停下、转身和衣料随风变化如何形成自然的电影感。',
+    id: 'astr-summer', collection: 'fashion', title: 'ASTR the Label: Summer 2021', titleZh: '夏日自然光时尚短片', source: 'Kevin Reyes', year: '2021', duration: '60 秒', category: '时尚影像 / 沙漠逆光',
+    synopsis: '在约书亚树沙漠拍摄的 60 秒品牌短片：几套夏日造型、硬朗的逆光和少量复古胶片段落，没有剧情，只靠画面与节奏。',
+    watchFor: '看逆光加柔光滤镜如何让高光晕开；大量固定或缓慢推近的画面之间，用倒置仰拍、面料细节和胶片片框制造节奏变化。',
     url: 'https://www.youtube.com/watch?v=6vm56tVnqk0', embedUrl: 'https://www.youtube.com/embed/6vm56tVnqk0', thumbnailUrl: 'https://i.ytimg.com/vi/6vm56tVnqk0/hqdefault.jpg', color: '#d6b69f',
   },
   {
