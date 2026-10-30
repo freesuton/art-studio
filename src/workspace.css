@@ -122,3 +122,16 @@
 .ws-ref-actions button { display: inline-flex; align-items: center; gap: 5px; height: 36px; padding: 0 12px; font-size: 12px; font-weight: 750; color: #fff; background: var(--ink); border: 0; border-radius: 8px; cursor: pointer; }
 .ws-ref-actions a { display: inline-flex; align-items: center; gap: 4px; font-size: 12px; font-weight: 700; color: var(--ink); }
 @media (max-width: 720px) { .ws-ref { grid-template-columns: 1fr; } }
+
+/* Collapsible section panels */
+.ws-board-actions { display: flex; flex-wrap: wrap; gap: 6px; }
+.ws-section.collapsed { min-height: 0; }
+.ws-section > header h4 { flex: 1; min-width: 0; }
+.ws-section-toggle { display: flex; align-items: center; gap: 8px; width: 100%; padding: 0; font: inherit; font-size: 15px; font-weight: 700; letter-spacing: -.01em; color: var(--ink); text-align: left; background: none; border: 0; cursor: pointer; }
+.ws-section-toggle > span:first-of-type { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ws-chevron { flex-shrink: 0; color: #75766d; transition: transform .2s; }
+.ws-section.collapsed .ws-chevron { transform: rotate(-90deg); }
+.ws-section-toggle:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; border-radius: 6px; }
+.ws-section-body { display: flex; flex-direction: column; gap: 8px; }
+.ws-section-body[hidden] { display: none; }
+@media (prefers-reduced-motion: reduce) { .ws-chevron { transition: none; } }
