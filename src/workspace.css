@@ -135,3 +135,45 @@
 .ws-section-body { display: flex; flex-direction: column; gap: 8px; }
 .ws-section-body[hidden] { display: none; }
 @media (prefers-reduced-motion: reduce) { .ws-chevron { transition: none; } }
+
+/* Board view switch */
+.ws-mode { display: inline-flex; padding: 3px; background: #efeee6; border-radius: 10px; }
+.ws-mode button { display: inline-flex; align-items: center; gap: 6px; height: 34px; padding: 0 14px; font-size: 14px; font-weight: 750; color: #5a5b52; background: none; border: 0; border-radius: 8px; cursor: pointer; }
+.ws-mode button span { font-size: 11px; color: #8a8b82; }
+.ws-mode button[aria-pressed="true"] { color: var(--ink); background: #fff; box-shadow: 0 1px 3px #191a1720; }
+
+/* Shot-by-shot timeline */
+.ws-timeline { margin-top: 12px; }
+.ws-timeline-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.ws-timeline-head strong { display: block; font-size: 17px; letter-spacing: -.01em; }
+.ws-timeline-head span { font-size: 12px; color: #75766d; }
+.ws-timeline-head select { height: 36px; padding: 0 8px; font: inherit; font-size: 12px; border: 1px solid #d6d5cb; border-radius: 8px; background: #fafaf6; }
+.ws-timeline-note { margin: 6px 0 14px; font-size: 12px; line-height: 1.6; color: #75766d; }
+.ws-shots { position: relative; margin: 0; padding: 0; list-style: none; display: grid; gap: 10px; }
+.ws-shots::before { content: ''; position: absolute; top: 8px; bottom: 8px; left: 41px; width: 2px; background: #e3e2d9; }
+.ws-shot { position: relative; display: grid; grid-template-columns: 84px 1fr; gap: 14px; }
+.ws-shot-index { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; padding-top: 6px; }
+.ws-shot-index span { display: grid; place-items: center; width: 32px; height: 32px; font-size: 11px; font-weight: 850; color: #fff; background: var(--ink); border-radius: 50%; }
+.ws-shot-index time { padding: 2px 6px; font-size: 11px; font-weight: 700; font-variant-numeric: tabular-nums; text-align: center; color: #4f5049; background: var(--paper); border-radius: 6px; }
+.ws-shot-body { min-width: 0; padding: 12px 14px; background: #fff; border: 1px solid #e3e2d9; border-radius: 12px; }
+.ws-shot-title { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+.ws-shot-title p { margin: 0; font-size: 14px; font-weight: 650; line-height: 1.55; }
+.ws-shot-title button { flex-shrink: 0; display: inline-flex; align-items: center; gap: 5px; padding: 6px 10px; font-size: 11px; font-weight: 750; color: var(--ink); background: #efeee6; border: 0; border-radius: 999px; cursor: pointer; }
+.ws-shot-title button[aria-pressed="true"] { color: #fff; background: var(--ink); }
+.ws-shot-player { margin-top: 10px; aspect-ratio: 16 / 9; overflow: hidden; background: #111; border-radius: 10px; }
+.ws-shot-player iframe { display: block; width: 100%; height: 100%; border: 0; }
+.ws-capture { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 6px 16px; margin: 10px 0 0; }
+.ws-capture div { display: grid; grid-template-columns: 58px 1fr; gap: 8px; font-size: 12px; line-height: 1.55; }
+.ws-capture dt { font-weight: 800; color: #8a8b82; }
+.ws-capture dd { margin: 0; color: #3f403a; }
+.ws-shot-techniques { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; padding-top: 10px; border-top: 1px dashed #e3e2d9; }
+.ws-chip { display: inline-flex; align-items: center; gap: 6px; padding: 5px 9px; font-size: 11px; font-weight: 700; color: var(--ink); background: #fafaf6; border: 1px solid #dcdacd; border-radius: 999px; cursor: pointer; }
+.ws-chip:hover { border-color: var(--ink); }
+.ws-chip.added { color: #fff; background: var(--ink); border-color: var(--ink); }
+.ws-chip-dot { width: 8px; height: 8px; flex-shrink: 0; border: 1px solid #191a1755; border-radius: 50%; }
+@media (max-width: 720px) {
+  .ws-shots::before { left: 21px; }
+  .ws-shot { grid-template-columns: 44px 1fr; gap: 8px; }
+  .ws-shot-index time { font-size: 9px; padding: 2px 3px; }
+  .ws-shot-title { flex-direction: column; }
+}

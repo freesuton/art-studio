@@ -9,6 +9,7 @@ import type { Picks } from './workspaceAi'
 import { breakdowns } from './referenceBreakdowns'
 import type { Breakdown } from './referenceBreakdowns'
 import { filmReferences } from './filmReferences'
+import ShotTimeline from './ShotTimeline'
 import './workspace.css'
 
 type Language = 'zh' | 'en'
@@ -16,6 +17,9 @@ const KEY_STORAGE = 'art-studio-claude-key'
 const readKey = () => { try { return localStorage.getItem(KEY_STORAGE) || '' } catch { return '' } }
 // Sections start collapsed; only the ones the viewer opens are remembered.
 const EXPANDED_STORAGE = 'art-studio-workspace-expanded'
+const MODE_STORAGE = 'art-studio-workspace-mode'
+type BoardMode = 'sections' | 'shots'
+const readMode = (): BoardMode => { try { return localStorage.getItem(MODE_STORAGE) === 'shots' ? 'shots' : 'sections' } catch { return 'sections' } }
 const readExpanded = (): SectionId[] => { try { const saved = JSON.parse(localStorage.getItem(EXPANDED_STORAGE) || '[]'); return Array.isArray(saved) ? saved : [] } catch { return [] } }
 
 function ItemThumb({ item }: { item: CatalogItem }) {
@@ -84,9 +88,11 @@ export default function Workspace({ language, setLanguage }: { language: Languag
   const setExpanded = (next: SectionId[]) => { setExpandedState(next); try { localStorage.setItem(EXPANDED_STORAGE, JSON.stringify(next)) } catch { /* remembered for this visit only */ } }
   const toggleSection = (id: SectionId) => setExpanded(expanded.includes(id) ? expanded.filter((item) => item !== id) : [...expanded, id])
   const allCollapsed = expanded.length === 0
+  const [mode, setModeState] = useState<BoardMode>(readMode)
+  const setMode = (next: BoardMode) => { setModeState(next); try { localStorage.setItem(MODE_STORAGE, next) } catch { /* remembered for this visit only */ } }
   const startFrom = (breakdown: Breakdown) => {
     const timeline = breakdown.shots.map((shot) => `${shot.time}  ${shot[language]}`).join('\n')
-    workspace.createFrom(breakdown.title[language], `${breakdown.intro[language]}\n\n${t('镜头时间线', 'Shot timeline')}:\n${timeline}`, breakdown.items.map((item) => ({ key: item.key, note: item.note[language] })))
+    workspace.createFrom(breakdown.title[language], `${breakdown.intro[language]}\n\n${t('镜头时间线', 'Shot timeline')}:\n${timeline}`, breakdown.items.map((item) => ({ key: item.key, note: item.note[language] })), breakdown.id)
     setResult(null)
     window.requestAnimationFrame(() => document.querySelector('.ws-board-head')?.scrollIntoView({ behavior: 'smooth', block: 'start' }))
   }
@@ -178,14 +184,17 @@ export default function Workspace({ language, setLanguage }: { language: Languag
       </section>}
 
       <div className="ws-board-head">
-        <h3>{t('六个板块', 'Six sections')} <span>{project.items.length}</span></h3>
-        <div className="ws-board-actions">
+        <div className="ws-mode" role="group" aria-label={t('查看方式', 'View')}>
+          <button aria-pressed={mode === 'sections'} onClick={() => setMode('sections')}>{t('六个板块', 'Six sections')} <span>{project.items.length}</span></button>
+          <button aria-pressed={mode === 'shots'} onClick={() => setMode('shots')}>{t('按镜头顺序', 'Shot by shot')}</button>
+        </div>
+        {mode === 'sections' && <div className="ws-board-actions">
         <button onClick={() => setExpanded(allCollapsed ? workspaceSections.map((section) => section.id) : [])}>{allCollapsed ? <ChevronsUpDown size={14} /> : <ChevronsDownUp size={14} />} {allCollapsed ? t('全部展开', 'Expand all') : t('全部收起', 'Collapse all')}</button>
         {project.items.length > 0 && <button onClick={exportText}>{copied ? <Check size={14} /> : <ClipboardCopy size={14} />} {copied ? t('已复制', 'Copied') : t('复制为清单', 'Copy as list')}</button>}
-        </div>
+        </div>}
       </div>
 
-      <div className="ws-sections">
+      {mode === 'shots' ? <ShotTimeline key={project.id} language={language} breakdownId={project.breakdownId} /> : <div className="ws-sections">
         {sections.map((section) => { const isCollapsed = !expanded.includes(section.id); return <section key={section.id} className={`ws-section ${isCollapsed ? 'collapsed' : ''}`} style={{ '--accent': section.accent } as React.CSSProperties} aria-labelledby={`ws-section-${section.id}`}>
           <header>
             <h4 id={`ws-section-${section.id}`}>
@@ -212,7 +221,7 @@ export default function Workspace({ language, setLanguage }: { language: Languag
           </article>) : <p className="ws-section-empty">{t('还没有内容。', 'Nothing here yet.')}</p>}
           </div>
         </section> })}
-      </div>
+      </div>}
     </main>
   </div>
 }

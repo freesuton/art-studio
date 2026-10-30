@@ -4,7 +4,7 @@ import { catalogByKey } from './workspaceCatalog'
 // Projects live in this browser only. A tiny external store so every section's
 // "add to workspace" button and the workspace page stay in sync.
 export type WorkspaceItem = { key: string; note: string; addedAt: number }
-export type Project = { id: string; name: string; brief: string; items: WorkspaceItem[]; createdAt: number }
+export type Project = { id: string; name: string; brief: string; items: WorkspaceItem[]; createdAt: number; breakdownId?: string }
 type State = { projects: Project[]; activeId: string }
 
 const STORAGE_KEY = 'art-studio-workspace-v1'
@@ -44,8 +44,8 @@ export const workspace = {
   setBrief: (brief: string) => updateActive((project) => ({ ...project, brief })),
   rename: (name: string) => updateActive((project) => ({ ...project, name })),
   create: (name: string) => { const project = blankProject(name); set({ projects: [...state.projects, project], activeId: project.id }) },
-  createFrom: (name: string, brief: string, items: { key: string; note: string }[]) => {
-    const project = { ...blankProject(name), brief, items: items.filter((item) => catalogByKey.has(item.key)).map((item) => ({ ...item, addedAt: Date.now() })) }
+  createFrom: (name: string, brief: string, items: { key: string; note: string }[], breakdownId?: string) => {
+    const project = { ...blankProject(name), brief, breakdownId, items: items.filter((item) => catalogByKey.has(item.key)).map((item) => ({ ...item, addedAt: Date.now() })) }
     set({ projects: [...state.projects, project], activeId: project.id })
   },
   select: (id: string) => set({ ...state, activeId: id }),
