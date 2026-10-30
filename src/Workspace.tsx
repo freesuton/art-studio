@@ -14,8 +14,9 @@ import './workspace.css'
 type Language = 'zh' | 'en'
 const KEY_STORAGE = 'art-studio-claude-key'
 const readKey = () => { try { return localStorage.getItem(KEY_STORAGE) || '' } catch { return '' } }
-const COLLAPSED_STORAGE = 'art-studio-workspace-collapsed'
-const readCollapsed = (): SectionId[] => { try { const saved = JSON.parse(localStorage.getItem(COLLAPSED_STORAGE) || '[]'); return Array.isArray(saved) ? saved : [] } catch { return [] } }
+// Sections start collapsed; only the ones the viewer opens are remembered.
+const EXPANDED_STORAGE = 'art-studio-workspace-expanded'
+const readExpanded = (): SectionId[] => { try { const saved = JSON.parse(localStorage.getItem(EXPANDED_STORAGE) || '[]'); return Array.isArray(saved) ? saved : [] } catch { return [] } }
 
 function ItemThumb({ item }: { item: CatalogItem }) {
   return item.thumb ? <img className="ws-thumb" src={item.thumb} alt="" loading="lazy" /> : <span className={`ws-thumb ws-thumb-${item.kind}`} aria-hidden="true">{item.title.zh.slice(0, 2)}</span>
@@ -79,10 +80,10 @@ export default function Workspace({ language, setLanguage }: { language: Languag
     if (window.confirm(t(`删除「${project.name}」？此操作无法撤销。`, `Delete "${project.name}"? This cannot be undone.`))) workspace.delete(project.id)
   }
   const browse = (id: SectionId) => navigate('/', { state: { stage: id } })
-  const [collapsed, setCollapsedState] = useState<SectionId[]>(readCollapsed)
-  const setCollapsed = (next: SectionId[]) => { setCollapsedState(next); try { localStorage.setItem(COLLAPSED_STORAGE, JSON.stringify(next)) } catch { /* remembered for this visit only */ } }
-  const toggleSection = (id: SectionId) => setCollapsed(collapsed.includes(id) ? collapsed.filter((item) => item !== id) : [...collapsed, id])
-  const allCollapsed = collapsed.length === workspaceSections.length
+  const [expanded, setExpandedState] = useState<SectionId[]>(readExpanded)
+  const setExpanded = (next: SectionId[]) => { setExpandedState(next); try { localStorage.setItem(EXPANDED_STORAGE, JSON.stringify(next)) } catch { /* remembered for this visit only */ } }
+  const toggleSection = (id: SectionId) => setExpanded(expanded.includes(id) ? expanded.filter((item) => item !== id) : [...expanded, id])
+  const allCollapsed = expanded.length === 0
   const startFrom = (breakdown: Breakdown) => {
     const timeline = breakdown.shots.map((shot) => `${shot.time}  ${shot[language]}`).join('\n')
     workspace.createFrom(breakdown.title[language], `${breakdown.intro[language]}\n\n${t('镜头时间线', 'Shot timeline')}:\n${timeline}`, breakdown.items.map((item) => ({ key: item.key, note: item.note[language] })))
@@ -179,13 +180,13 @@ export default function Workspace({ language, setLanguage }: { language: Languag
       <div className="ws-board-head">
         <h3>{t('六个板块', 'Six sections')} <span>{project.items.length}</span></h3>
         <div className="ws-board-actions">
-        <button onClick={() => setCollapsed(allCollapsed ? [] : workspaceSections.map((section) => section.id))}>{allCollapsed ? <ChevronsUpDown size={14} /> : <ChevronsDownUp size={14} />} {allCollapsed ? t('全部展开', 'Expand all') : t('全部收起', 'Collapse all')}</button>
+        <button onClick={() => setExpanded(allCollapsed ? workspaceSections.map((section) => section.id) : [])}>{allCollapsed ? <ChevronsUpDown size={14} /> : <ChevronsDownUp size={14} />} {allCollapsed ? t('全部展开', 'Expand all') : t('全部收起', 'Collapse all')}</button>
         {project.items.length > 0 && <button onClick={exportText}>{copied ? <Check size={14} /> : <ClipboardCopy size={14} />} {copied ? t('已复制', 'Copied') : t('复制为清单', 'Copy as list')}</button>}
         </div>
       </div>
 
       <div className="ws-sections">
-        {sections.map((section) => { const isCollapsed = collapsed.includes(section.id); return <section key={section.id} className={`ws-section ${isCollapsed ? 'collapsed' : ''}`} style={{ '--accent': section.accent } as React.CSSProperties} aria-labelledby={`ws-section-${section.id}`}>
+        {sections.map((section) => { const isCollapsed = !expanded.includes(section.id); return <section key={section.id} className={`ws-section ${isCollapsed ? 'collapsed' : ''}`} style={{ '--accent': section.accent } as React.CSSProperties} aria-labelledby={`ws-section-${section.id}`}>
           <header>
             <h4 id={`ws-section-${section.id}`}>
               <button className="ws-section-toggle" aria-expanded={!isCollapsed} aria-controls={`ws-section-body-${section.id}`} onClick={() => toggleSection(section.id)}>
