@@ -15,7 +15,7 @@
 .ws { width: calc(100% - 2 * clamp(22px, 5vw, 86px)); max-width: 1180px; margin: 24px auto 64px; padding: clamp(18px, 3vw, 32px); background: #fff; border: 1px solid var(--ink); border-top: 5px solid var(--acid); border-radius: 16px; scroll-margin-top: 20px; }
 .ws-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; }
 .ws-header > div:first-child { min-width: 0; flex: 1; }
-.ws-name { width: 100%; margin: 4px 0 6px; padding: 2px 0; font: inherit; font-size: clamp(26px, 3vw, 40px); font-weight: 800; letter-spacing: -.04em; color: var(--ink); background: none; border: 0; border-bottom: 1px dashed transparent; }
+.ws-name { display: block; width: 100%; margin: 4px 0 6px; padding: 2px 0; font: inherit; font-size: clamp(26px, 3vw, 40px); font-weight: 800; line-height: 1.15; letter-spacing: -.04em; color: var(--ink); background: none; border: 0; border-bottom: 1px dashed transparent; border-radius: 0; resize: none; overflow: hidden; }
 .ws-name:hover, .ws-name:focus { border-bottom-color: #c9c8bd; outline: 0; }
 .ws-header p:last-child { margin: 0; max-width: 620px; font-size: 13px; line-height: 1.7; color: #5a5b52; }
 .ws-projects { display: flex; gap: 6px; flex-shrink: 0; }
@@ -74,7 +74,12 @@
 
 @media (max-width: 720px) {
   .ws { width: calc(100% - 32px); padding: 16px 14px; }
-  .ws-header { flex-direction: column; }
+  .ws-header { flex-direction: column; gap: 14px; }
+  .ws-name { font-size: 24px; letter-spacing: -.03em; }
+  .ws-projects { width: 100%; }
+  .ws-projects select { flex: 1; min-width: 0; max-width: none; }
+  .ws-projects button { white-space: nowrap; }
+  .ws-board-head { flex-wrap: wrap; gap: 10px; }
   .ws-top, .ws-sections, .ws-pick-group ul { grid-template-columns: 1fr; }
   .ws-topbar-title { display: none; }
   .ws-picks-head { flex-direction: column; }
@@ -103,7 +108,7 @@
 .ws-browse:hover { border-color: var(--ink); }
 .ws-section-empty { margin: 0; padding: 18px 6px; text-align: center; font-size: 12px; color: #8f9086; border: 1px dashed color-mix(in srgb, var(--accent) 55%, #d6d5cb); border-radius: 9px; }
 
-@media (max-width: 1000px) {
+@media (min-width: 721px) and (max-width: 1000px) {
   .ws-sections { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
@@ -163,7 +168,7 @@
 .ws-shot-player { margin-top: 10px; aspect-ratio: 16 / 9; overflow: hidden; background: #111; border-radius: 10px; }
 .ws-shot-player iframe { display: block; width: 100%; height: 100%; border: 0; }
 .ws-capture { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 6px 16px; margin: 10px 0 0; }
-.ws-capture div { display: grid; grid-template-columns: 58px 1fr; gap: 8px; font-size: 12px; line-height: 1.55; }
+.ws-capture div { display: grid; grid-template-columns: 58px 1fr; align-content: start; gap: 8px; font-size: 12px; line-height: 1.55; }
 .ws-capture dt { font-weight: 800; color: #8a8b82; }
 .ws-capture dd { margin: 0; color: #3f403a; }
 .ws-capture.wide { grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 8px 20px; }
@@ -186,10 +191,22 @@
 .ws-chip.added { color: #fff; background: var(--ink); border-color: var(--ink); }
 .ws-chip-dot { width: 8px; height: 8px; flex-shrink: 0; border: 1px solid #191a1755; border-radius: 50%; }
 @media (max-width: 720px) {
-  .ws-shots::before { left: 21px; }
-  .ws-shot { grid-template-columns: 44px 1fr; gap: 8px; }
-  .ws-shot-index time { font-size: 9px; padding: 2px 3px; }
-  .ws-shot-title { flex-direction: column; }
+  .ws-sections { grid-template-columns: 1fr; }
+  /* No side rail on phones: the shot number and time sit above each card, which gets the full width. */
+  .ws-shots { gap: 16px; }
+  .ws-shots::before { display: none; }
+  .ws-shot { grid-template-columns: 1fr; gap: 6px; }
+  .ws-shot-index { flex-direction: row; gap: 8px; padding: 0; }
+  .ws-shot-index span { width: 26px; height: 26px; font-size: 10px; }
+  .ws-shot-index time { padding: 0; font-size: 12px; background: none; }
+  .ws-shot-body { padding: 12px; }
+  .ws-shot-title { flex-direction: column; gap: 8px; }
+  .ws-shot-title p { font-size: 15px; }
+  /* Labels go above their values so long labels never crowd the text. */
+  .ws-capture { grid-template-columns: 1fr 1fr; gap: 10px 14px; }
   .ws-capture.wide, .ws-primer ol { grid-template-columns: 1fr; }
-  .ws-capture.wide div { grid-template-columns: 64px 1fr; }
+  .ws-capture div, .ws-capture.wide div { grid-template-columns: 1fr; gap: 1px; font-size: 13px; }
+  .ws-capture dt { font-size: 11px; }
+  .ws-primer summary { padding: 12px; }
+  .ws-primer ol { padding: 2px 12px 14px 30px; }
 }

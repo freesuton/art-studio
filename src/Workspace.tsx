@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { ArrowLeft, ArrowRight, Check, ChevronDown, ChevronsDownUp, ChevronsUpDown, ClipboardCopy, ExternalLink, Film, KeyRound, Plus, Sparkles, Trash2, Wand2, X } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import { catalogByKey, workspaceSections } from './workspaceCatalog'
@@ -47,6 +47,14 @@ export default function Workspace({ language, setLanguage }: { language: Languag
   const [copied, setCopied] = useState(false)
   const idea = query.trim() || project.brief.trim()
   useEffect(() => { window.scrollTo(0, 0) }, [])
+  // The project name wraps instead of being cut off on narrow screens, so its box grows to fit.
+  const nameRef = useRef<HTMLTextAreaElement>(null)
+  useLayoutEffect(() => {
+    const fit = () => { const el = nameRef.current; if (!el) return; el.style.height = 'auto'; el.style.height = `${el.scrollHeight}px` }
+    fit()
+    window.addEventListener('resize', fit)
+    return () => window.removeEventListener('resize', fit)
+  }, [project.name])
 
   const sections = useMemo(() => workspaceSections.map((section) => ({
     ...section, entries: project.items.map((entry) => ({ entry, item: catalogByKey.get(entry.key)! })).filter(({ item }) => item?.sectionId === section.id),
@@ -116,7 +124,7 @@ export default function Workspace({ language, setLanguage }: { language: Languag
       <header className="ws-header">
         <div>
           <p className="eyebrow">MY WORKSPACE / {t('我的工作台', 'PROJECT BOARD')}</p>
-          <input id="ws-title" className="ws-name" value={project.name} onChange={(event) => workspace.rename(event.target.value)} aria-label={t('作品名称', 'Project name')} />
+          <textarea ref={nameRef} id="ws-title" className="ws-name" rows={1} value={project.name} onChange={(event) => workspace.rename(event.target.value.replace(/\n/g, ' '))} onKeyDown={(event) => { if (event.key === 'Enter') { event.preventDefault(); event.currentTarget.blur() } }} aria-label={t('作品名称', 'Project name')} />
           <p>{t('按手册的六个板块整理这件作品要用的样片、技巧、运镜和动作。在各板块点「加入工作台」，或让 AI 根据你的想法帮你挑。', "Organize the films, techniques, camera moves and motions for this piece by the guide's six sections. Use \"Add to workspace\" in any section, or let AI pick from your idea.")}</p>
         </div>
         <div className="ws-projects">
