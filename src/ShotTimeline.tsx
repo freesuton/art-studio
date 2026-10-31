@@ -5,6 +5,7 @@ import type { Capture } from './referenceBreakdowns'
 import { cameraPrimer, directPrimer, gearPrimer, shotGuides } from './shotGuides'
 import type { CameraGuide, DirectGuide } from './shotGuides'
 import { filmReferences } from './filmReferences'
+import ShotPlayer from './ShotPlayer'
 import { catalogByKey, workspaceSections } from './workspaceCatalog'
 import { useWorkspace, workspace } from './workspaceStore'
 
@@ -91,9 +92,7 @@ export default function ShotTimeline({ language, breakdownId }: { language: Lang
                 {playing === index ? <><X size={13} /> {t('关闭', 'Close')}</> : <><Play size={13} fill="currentColor" /> {t('播放这个镜头', 'Play this shot')}</>}
               </button>}
             </div>
-            {playing === index && <div className="ws-shot-player">
-              <iframe src={`${film.embedUrl}?start=${shot.start}&end=${shot.end}&autoplay=1&rel=0&playsinline=1`} title={`${film.title} ${shot.time}`} allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowFullScreen referrerPolicy="strict-origin-when-cross-origin" />
-            </div>}
+            {playing === index && <ShotPlayer embedUrl={film.embedUrl} start={shot.start} end={shot.end} title={`${film.title} ${shot.time}`} />}
             <section className="ws-shot-part">
               <h4>{t('画面拍法', 'The look')}</h4>
               <Facts rows={captureRows} data={shot.capture} language={language} />
