@@ -14,7 +14,9 @@ import './workspace.css'
 
 type Language = 'zh' | 'en'
 const KEY_STORAGE = 'art-studio-claude-key'
-const readKey = () => { try { return localStorage.getItem(KEY_STORAGE) || '' } catch { return '' } }
+// Dev only: a key in .env.local is used when none is saved, and stays out of production builds.
+const ENV_KEY: string = import.meta.env.DEV ? import.meta.env.VITE_ANTHROPIC_API_KEY ?? '' : ''
+const readKey = () => { try { return localStorage.getItem(KEY_STORAGE) || ENV_KEY } catch { return ENV_KEY } }
 // Sections start collapsed; only the ones the viewer opens are remembered.
 const EXPANDED_STORAGE = 'art-studio-workspace-expanded'
 const MODE_STORAGE = 'art-studio-workspace-mode'
@@ -63,7 +65,7 @@ export default function Workspace({ language, setLanguage }: { language: Languag
     try { localStorage.setItem(KEY_STORAGE, key) } catch { /* blocked storage: keep for this session */ }
     setApiKey(key); setKeyDraft(''); setSettingsOpen(false)
   }
-  const forgetKey = () => { try { localStorage.removeItem(KEY_STORAGE) } catch { /* ignore */ } setApiKey('') }
+  const forgetKey = () => { try { localStorage.removeItem(KEY_STORAGE) } catch { /* ignore */ } setApiKey(ENV_KEY) }
 
   const exportText = () => {
     const lines = [`# ${project.name}`, '']
@@ -142,7 +144,7 @@ export default function Workspace({ language, setLanguage }: { language: Languag
           </div>
           <p className="ws-hint">{t('快速匹配：免费、即时，按关键词找。问 Claude：理解整段想法并说明理由，需要你自己的 Anthropic API Key（按次计费）。', 'Quick match is free and instant, by keyword. Ask Claude reads your whole idea and explains each pick; it uses your own Anthropic API key (billed per request).')}</p>
           {settingsOpen && <div className="ws-settings">
-            {apiKey ? <p>{t('已保存 API Key（仅存在这个浏览器）。', 'API key saved (in this browser only).')} <button className="ws-link" onClick={forgetKey}>{t('移除', 'Remove')}</button></p> : <p>{t('粘贴你的 Anthropic API Key。它只保存在这个浏览器里，直接从浏览器发送给 Anthropic。', 'Paste your Anthropic API key. It is stored only in this browser and sent straight to Anthropic.')}</p>}
+            {apiKey && apiKey === ENV_KEY ? <p>{t('正在使用 .env.local 里的 API Key（仅开发环境）。', 'Using the API key from .env.local (dev only).')}</p> : apiKey ? <p>{t('已保存 API Key（仅存在这个浏览器）。', 'API key saved (in this browser only).')} <button className="ws-link" onClick={forgetKey}>{t('移除', 'Remove')}</button></p> : <p>{t('粘贴你的 Anthropic API Key。它只保存在这个浏览器里，直接从浏览器发送给 Anthropic。', 'Paste your Anthropic API key. It is stored only in this browser and sent straight to Anthropic.')}</p>}
             <div><input type="password" value={keyDraft} onChange={(event) => setKeyDraft(event.target.value)} placeholder="sk-ant-..." autoComplete="off" /><button onClick={saveKey} disabled={!keyDraft.trim()}>{t('保存', 'Save')}</button></div>
           </div>}
           {error && <p className="ws-error" role="alert">{error}</p>}
