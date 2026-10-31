@@ -36,16 +36,6 @@ const directRows: Row<DirectGuide>[] = [
   { key: 'watch', zh: '注意', en: 'Watch out' },
 ]
 
-// Three ways to read the same shot list: what it looks like, how to run the camera, how to direct.
-type Layer = 'look' | 'camera' | 'direct'
-const LAYER_STORAGE = 'art-studio-shot-layer'
-const readLayer = (): Layer => { try { const saved = localStorage.getItem(LAYER_STORAGE); return saved === 'camera' || saved === 'direct' ? saved : 'look' } catch { return 'look' } }
-const layers: { id: Layer; zh: string; en: string }[] = [
-  { id: 'look', zh: '画面拍法', en: 'The look' },
-  { id: 'camera', zh: '相机操作', en: 'Camera' },
-  { id: 'direct', zh: '导演与模特', en: 'Directing' },
-]
-
 function Facts<T extends Record<string, Text | undefined>>({ rows, data, language, wide }: { rows: Row<T>[]; data: T; language: Language; wide?: boolean }) {
   return <dl className={`ws-capture ${wide ? 'wide' : ''}`}>
     {rows.filter((row) => data[row.key]).map((row) => <div key={row.key}><dt>{row[language]}</dt><dd>{data[row.key]![language]}</dd></div>)}
@@ -60,19 +50,14 @@ export default function ShotTimeline({ language, breakdownId }: { language: Lang
   const { has } = useWorkspace()
   const [selectedId, setSelectedId] = useState(breakdownId ?? breakdowns[0].id)
   const [playing, setPlaying] = useState<number | null>(null)
-  const [layer, setLayerState] = useState(readLayer)
   const breakdown = breakdowns.find((item) => item.id === selectedId) ?? breakdowns[0]
   const film = filmReferences.find((item) => item.id === breakdown.filmId)!
   const guides = shotGuides[breakdown.id] ?? {}
   const sectionOf = (key: string) => workspaceSections.find((section) => section.id === catalogByKey.get(key)?.sectionId)
-  const setLayer = (next: Layer) => { setLayerState(next); try { localStorage.setItem(LAYER_STORAGE, next) } catch { /* ignore */ } }
-  const primer = layer === 'camera' ? cameraPrimer : layer === 'direct' ? directPrimer : null
-
-  const note = {
-    look: t('按影片里的镜头顺序逐个分析拍法。镜头焦段与帧率是根据画面推测的，并非原片的拍摄参数。点技巧可加入或移出工作台。', 'Each shot in the order it appears, with how it was captured. Lens and frame-rate values are estimates from the footage, not the original settings. Click a technique to add it to or remove it from your workspace.'),
-    camera: t('每个镜头怎么操作相机。参数是用无反相机在晴天户外拍这种画面的起点，不是原片的设置；现场以屏幕和斑马纹为准。', 'How to run the camera for each shot. Settings are starting points for a mirrorless camera outdoors in sun, not the original settings; trust your screen and zebras on the day.'),
-    direct: t('每个镜头怎么跟模特沟通：开拍前告诉她什么、现场说什么、她要做什么、要注意什么。', 'How to work with the model on each shot: what to tell her first, what to say on set, what she does, and what to watch out for.'),
-  }[layer]
+  const primers = [
+    { items: cameraPrimer, title: t(`新手必读：相机基础（${cameraPrimer.length} 条）`, `Beginner basics: the camera (${cameraPrimer.length})`) },
+    { items: directPrimer, title: t(`新手必读：导演和模特（${directPrimer.length} 条）`, `Beginner basics: directing (${directPrimer.length})`) },
+  ]
 
   return <div className="ws-timeline">
     <div className="ws-timeline-head">
@@ -84,17 +69,14 @@ export default function ShotTimeline({ language, breakdownId }: { language: Lang
         {breakdowns.map((item) => <option key={item.id} value={item.id}>{item.title[language]}</option>)}
       </select>}
     </div>
-    <div className="ws-mode ws-layer" role="group" aria-label={t('查看内容', 'What to show')}>
-      {layers.map((item) => <button key={item.id} aria-pressed={layer === item.id} onClick={() => setLayer(item.id)}>{item[language]}</button>)}
-    </div>
-    <p className="ws-timeline-note">{note}</p>
+    <p className="ws-timeline-note">{t('按影片里的镜头顺序，逐个讲清楚画面怎么拍、相机怎么操作、模特怎么导。焦段与帧率是根据画面推测的；相机参数是用无反相机在晴天户外拍摄的起点，并非原片设置，现场以屏幕和斑马纹为准。点技巧可加入或移出工作台。', 'Each shot in the order it appears: how it looks, how to run the camera, and how to direct the model. Lens and frame rate are estimates from the footage; camera settings are starting points for a mirrorless camera outdoors in sun, not the original settings, so trust your screen and zebras on the day. Click a technique to add it to or remove it from your workspace.')}</p>
 
-    {primer && <details className="ws-primer">
-      <summary><BookOpen size={15} /> {layer === 'camera' ? t(`新手必读：相机基础（${primer.length} 条）`, `Beginner basics: the camera (${primer.length})`) : t(`新手必读：导演和模特（${primer.length} 条）`, `Beginner basics: directing (${primer.length})`)}</summary>
+    {primers.map((primer) => <details key={primer.title} className="ws-primer">
+      <summary><BookOpen size={15} /> {primer.title}</summary>
       <ol>
-        {primer.map((item) => <li key={item.title.en}><strong>{item.title[language]}</strong><p>{item.body[language]}</p></li>)}
+        {primer.items.map((item) => <li key={item.title.en}><strong>{item.title[language]}</strong><p>{item.body[language]}</p></li>)}
       </ol>
-    </details>}
+    </details>)}
 
     <ol className="ws-shots">
       {breakdown.shots.map((shot, index) => {
@@ -111,13 +93,22 @@ export default function ShotTimeline({ language, breakdownId }: { language: Lang
             {playing === index && <div className="ws-shot-player">
               <iframe src={`${film.embedUrl}?start=${shot.start}&end=${shot.end}&autoplay=1&rel=0&playsinline=1`} title={`${film.title} ${shot.time}`} allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowFullScreen referrerPolicy="strict-origin-when-cross-origin" />
             </div>}
-            {layer === 'look' && <Facts rows={captureRows} data={shot.capture} language={language} />}
-            {layer === 'camera' && (guide?.camera
-              ? <Facts rows={cameraRows} data={guide.camera} language={language} wide />
-              : <p className="ws-shot-empty">{t('剪辑时制作，不需要拍摄。', 'Made in the edit, nothing to shoot.')}</p>)}
-            {layer === 'direct' && (guide?.direct
-              ? <Facts rows={directRows} data={guide.direct} language={language} wide />
-              : <p className="ws-shot-empty">{guide?.camera ? t('没有人物，不需要导演模特。可以在模特休息或换装时拍。', 'No talent in this shot. Shoot it while the model rests or changes.') : t('剪辑时制作，不需要拍摄。', 'Made in the edit, nothing to shoot.')}</p>)}
+            <section className="ws-shot-part">
+              <h4>{t('画面拍法', 'The look')}</h4>
+              <Facts rows={captureRows} data={shot.capture} language={language} />
+            </section>
+            <section className="ws-shot-part">
+              <h4>{t('相机操作', 'Camera')}</h4>
+              {guide?.camera
+                ? <Facts rows={cameraRows} data={guide.camera} language={language} wide />
+                : <p className="ws-shot-empty">{t('剪辑时制作，不需要拍摄。', 'Made in the edit, nothing to shoot.')}</p>}
+            </section>
+            {guide?.camera && <section className="ws-shot-part">
+              <h4>{t('导演与模特', 'Directing')}</h4>
+              {guide.direct
+                ? <Facts rows={directRows} data={guide.direct} language={language} wide />
+                : <p className="ws-shot-empty">{t('没有人物，不需要导演模特。可以在模特休息或换装时拍。', 'No talent in this shot. Shoot it while the model rests or changes.')}</p>}
+            </section>}
             <div className="ws-shot-techniques" aria-label={t('用到的技巧', 'Techniques used')}>
               {shot.keys.map((key) => { const item = catalogByKey.get(key); const section = sectionOf(key); if (!item || !section) return null; const added = has(key); return <button key={key} className={`ws-chip ${added ? 'added' : ''}`} aria-pressed={added} onClick={() => workspace.toggle(key)} title={`${section.index} ${section.title[language]} · ${item.section[language]}`}>
                 <span className="ws-chip-dot" style={{ background: section.accent }} aria-hidden="true" />
