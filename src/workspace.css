@@ -166,6 +166,18 @@
 .ws-capture div { display: grid; grid-template-columns: 58px 1fr; gap: 8px; font-size: 12px; line-height: 1.55; }
 .ws-capture dt { font-weight: 800; color: #8a8b82; }
 .ws-capture dd { margin: 0; color: #3f403a; }
+.ws-capture.wide { grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 8px 20px; }
+.ws-capture.wide div { grid-template-columns: 76px 1fr; }
+.ws-shot-empty { margin: 10px 0 0; font-size: 12px; color: #8a8b82; }
+.ws-layer { margin: 12px 0 0; }
+.ws-layer button { height: 30px; padding: 0 12px; font-size: 13px; }
+.ws-primer { margin: 0 0 14px; background: #fff; border: 1px solid #e3e2d9; border-radius: 12px; }
+.ws-primer summary { display: flex; align-items: center; gap: 8px; padding: 12px 14px; font-size: 13px; font-weight: 800; cursor: pointer; }
+.ws-primer ol { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 12px 24px; margin: 0; padding: 4px 14px 16px 34px; }
+.ws-primer li { font-size: 12px; line-height: 1.6; color: #3f403a; }
+.ws-primer li::marker { font-weight: 800; color: #8a8b82; }
+.ws-primer strong { display: block; font-size: 13px; color: var(--ink); }
+.ws-primer p { margin: 2px 0 0; }
 .ws-shot-techniques { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; padding-top: 10px; border-top: 1px dashed #e3e2d9; }
 .ws-chip { display: inline-flex; align-items: center; gap: 6px; padding: 5px 9px; font-size: 11px; font-weight: 700; color: var(--ink); background: #fafaf6; border: 1px solid #dcdacd; border-radius: 999px; cursor: pointer; }
 .ws-chip:hover { border-color: var(--ink); }
@@ -176,4 +188,6 @@
   .ws-shot { grid-template-columns: 44px 1fr; gap: 8px; }
   .ws-shot-index time { font-size: 9px; padding: 2px 3px; }
   .ws-shot-title { flex-direction: column; }
+  .ws-capture.wide, .ws-primer ol { grid-template-columns: 1fr; }
+  .ws-capture.wide div { grid-template-columns: 64px 1fr; }
 }
