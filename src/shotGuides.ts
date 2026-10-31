@@ -1,7 +1,7 @@
 // Beginner how-to for each reference shot: operating the camera and directing the model.
 // Settings are starting points for a mirrorless camera, not the original production's.
 type Text = { zh: string; en: string }
-export type CameraGuide = { gear: Text; settings: Text; nd: Text; exposure: Text; focus: Text; tip?: Text }
+export type CameraGuide = { gear: Text; settings: Text; nd?: Text; exposure: Text; focus: Text; tip?: Text }
 export type DirectGuide = { brief: Text; cues: Text; pose: Text; watch?: Text }
 // Shots without talent have no direct; shots made in the edit have neither.
 export type ShotGuide = { camera?: CameraGuide; direct?: DirectGuide }
@@ -14,9 +14,8 @@ export const shotGuides: Record<string, Record<string, ShotGuide>> = {
     '0:00–0:04': {
       camera: {
         gear: tx('副驾驶座手持，或用吸盘、夹具固定在车窗边；50–85mm 镜头；打开防抖。', 'Handheld from the passenger seat, or on a suction or clamp mount at the window; 50–85mm lens; stabilization on.'),
-        settings: tx('24fps · 1/50 · f/5.6 · ISO 100 · 5600K', '24fps · 1/50 · f/5.6 · ISO 100 · 5600K'),
-        nd: tx('约 2–4 档（ND4–ND16）。别为了压亮度把快门调快：1/50 让前景草丛拖出动态模糊，流动感就来自这里。', 'About 2–4 stops (ND4–ND16). Don\'t raise the shutter speed to darken the image: at 1/50 the foreground brush smears into motion blur, and that blur is the sense of movement.'),
-        exposure: tx('按天空和地平线曝光，宁暗勿过曝。斑马纹设 95–100%，天空大片出现条纹就把 ND 转深一点。', 'Expose for the sky and horizon, and err on the dark side. With zebras at 95–100%, if stripes cover the sky, turn the ND darker.'),
+        settings: tx('24fps · 1/50 · f/8–11 · ISO 100 · 5600K', '24fps · 1/50 · f/8–11 · ISO 100 · 5600K'),
+        exposure: tx('不用 ND：风景全在远处，不需要虚化背景，直接把光圈收到 f/8–11 来压亮度。快门保持 1/50，前景草丛的动态模糊就来自这里。按天空和地平线曝光，宁暗勿过曝；斑马纹设 95–100%，天空大片出现条纹就再收一点光圈。', 'No ND: everything is far away and nothing needs a blurred background, so stop down to f/8–11 to control brightness. Keep the shutter at 1/50; that is where the foreground motion blur comes from. Expose for the sky and horizon and err on the dark side; with zebras at 95–100%, if stripes cover the sky, stop down a little more.'),
         focus: tx('手动对焦到远处地平线，锁住不动。前景虚掉没关系。', 'Manual focus on the far horizon and leave it there. A soft foreground is fine.'),
         tip: tx('让别人开车，车速 20–40 km/h。摇下车窗拍，避免玻璃反光。每遍录 15 秒以上，剪辑时挑最好的 4 秒。', 'Have someone else drive, at 20–40 km/h. Shoot with the window down to avoid reflections. Record 15+ seconds per pass and pick the best 4 in the edit.'),
       },
@@ -34,9 +33,8 @@ export const shotGuides: Record<string, Record<string, ShotGuide>> = {
     '0:12–0:17': {
       camera: {
         gear: tx('三脚架；24–35mm 广角；前景放一棵约书亚树或别的植物，框住画面。', 'Tripod; 24–35mm wide lens; put a Joshua tree or any plant in the foreground to frame the shot.'),
-        settings: tx('24fps · 1/50 · f/5.6–8 · ISO 100 · 5600K', '24fps · 1/50 · f/5.6–8 · ISO 100 · 5600K'),
-        nd: tx('光圈收小已经挡掉不少光，约 2–4 档（ND4–ND16）就够。', 'The small aperture already cuts a lot of light, so about 2–4 stops (ND4–ND16) is enough.'),
-        exposure: tx('人物很小，按整个画面曝光：天空不要大片过曝，能看出人物轮廓和裙子颜色就行。', 'The subject is tiny, so expose for the whole frame: no large blown-out sky, and her outline and dress color still readable.'),
+        settings: tx('24fps · 1/50 · f/8–11 · ISO 100 · 5600K', '24fps · 1/50 · f/8–11 · ISO 100 · 5600K'),
+        exposure: tx('不用 ND：大远景要前后都清楚，光圈本来就要收到 f/8–11，正好把亮度压下来；太阳很高还偏亮时再收到 f/16。人物很小，按整个画面曝光：天空不要大片过曝，能看出人物轮廓和裙子颜色就行。', 'No ND: a deep wide shot wants f/8–11 anyway for front-to-back sharpness, which also brings the brightness down; if a high sun is still too bright, go to f/16. The subject is tiny, so expose for the whole frame: no large blown-out sky, and her outline and dress color still readable.'),
         focus: tx('手动对焦在人物上；f/8 下前景和背景基本都清楚。', 'Manual focus on the subject; at f/8 foreground and background are mostly sharp too.'),
         tip: tx('每条录 15–20 秒，让人物在画面里自然地“待着”。太阳放在画面上沿或角落，制造眩光。', 'Record 15–20 seconds per take and let her simply exist in the frame. Put the sun at the top edge or a corner for flare.'),
       },
@@ -82,9 +80,8 @@ export const shotGuides: Record<string, Record<string, ShotGuide>> = {
     '0:28': {
       camera: {
         gear: tx('相机直接放地上，或用很矮的三脚架；24mm 广角；用翻转屏看构图。', 'Camera on the ground or on a very low tripod; 24mm wide lens; frame with the flip screen.'),
-        settings: tx('24fps · 1/50 · f/5.6 · ISO 100 · 5600K', '24fps · 1/50 · f/5.6 · ISO 100 · 5600K'),
-        nd: tx('约 3–5 档。', 'About 3–5 stops.'),
-        exposure: tx('逆光加眩光，按腿和裙子的亮度曝光，天空偏亮没关系。', 'Backlight with flare: expose for her legs and dress, and let the sky run bright.'),
+        settings: tx('24fps · 1/50 · f/8 · ISO 100 · 5600K', '24fps · 1/50 · f/8 · ISO 100 · 5600K'),
+        exposure: tx('不用 ND：广角贴地拍、要脚到裙摆都清楚，光圈收到 f/8 就够暗了；逆光下按腿和裙子的亮度曝光，天空偏亮没关系。', 'No ND: a wide lens on the ground wants feet through hem sharp, and f/8 is dark enough. In backlight, expose for her legs and dress and let the sky run bright.'),
         focus: tx('手动对焦在她脚的位置，f/5.6 让鞋子到裙摆都清楚。', 'Manual focus at her feet; f/5.6 keeps shoes through hem sharp.'),
         tip: tx('镜头微微向上倾，让天空做背景，墙显得更高，人更有力量。', 'Tilt up slightly so the sky fills the background; the wall looks taller and she looks powerful.'),
       },
@@ -178,9 +175,8 @@ export const shotGuides: Record<string, Record<string, ShotGuide>> = {
     '0:44': {
       camera: {
         gear: tx('微距镜头，或能近距离对焦的镜头；手持或三脚架。', 'Macro lens or a close-focusing lens; handheld or tripod.'),
-        settings: tx('24fps · 1/50 · f/4–5.6 · ISO 100 · 5600K', '24fps · 1/50 · f/4–5.6 · ISO 100 · 5600K'),
-        nd: tx('约 3–5 档。', 'About 3–5 stops.'),
-        exposure: tx('让印花颜色饱和，宁可略暗。', 'Keep the print colors rich; slightly dark is better than bright.'),
+        settings: tx('24fps · 1/50 · f/8 · ISO 100–400 · 5600K', '24fps · 1/50 · f/8 · ISO 100–400 · 5600K'),
+        exposure: tx('不用 ND：微距离得很近，景深薄到要收到 f/8 才够用，在阴影或天光下拍，亮度刚好；太暗就把 ISO 提到 400。让印花颜色饱和，宁可略暗。', 'No ND: this close, depth of field is so thin you need f/8 anyway, and in shade or open skylight that\'s about right; if it\'s too dark, raise ISO to 400. Keep the print colors rich; slightly dark is better than bright.'),
         focus: tx('微距景深极浅：手动对焦，然后前后移动相机来找焦点。', 'Macro depth of field is tiny: set manual focus, then move the camera in and out to find it.'),
         tip: tx('布料可以穿在模特身上，也可以单独铺开拍，模特休息时就能拍。', 'The fabric can be on the model or laid out on its own, so you can shoot it while she rests.'),
       },
@@ -239,11 +235,26 @@ export const shotGuides: Record<string, Record<string, ShotGuide>> = {
 
 type PrimerItem = { title: Text; body: Text }
 
-// General basics shown above the shot list, one set per layer.
+// General basics shown above the shot list.
+export const gearPrimer: PrimerItem[] = [
+  { title: tx('必备：相机和镜头', 'Must have: camera and lenses'), body: tx('能拍 24fps 和 60fps 以上的无反相机（60fps 用来拍慢动作）。镜头至少覆盖 24–35mm、50mm、85mm，一支 24–70mm 加一支 70–200mm 也行。印花大特写需要微距镜头，没有的话用近摄镜片代替。', 'A mirrorless camera that shoots 24fps and 60fps or higher (60fps for slow motion). Lenses covering at least 24–35mm, 50mm and 85mm, or a 24–70mm plus a 70–200mm. The print close-up needs a macro lens, or a close-up filter as a stand-in.') },
+  { title: tx('必备：滤镜', 'Must have: filters'), body: tx('一片可变 ND（约 2–5 档）；再备一片固定 ND64 或 ND1000，对着太阳拍时叠在上面。一片 1/4 或 1/8 黑柔滤镜，做出这支片子的柔光光晕。按最大的镜头口径买，再配几个转接环，所有镜头就能共用一套。', 'One variable ND (about 2–5 stops), plus a fixed ND64 or ND1000 to stack when shooting into the sun. A 1/4 or 1/8 Black Pro-Mist for this film\'s soft glow. Buy for your largest lens thread and use step-up rings so every lens shares one set.') },
+  { title: tx('必备：三脚架', 'Must have: tripod'), body: tx('选带液压云台的视频三脚架，摇镜头才顺。脚架要能放得很低，拍贴地的低机位镜头。', 'A video tripod with a fluid head so moves stay smooth. Make sure the legs splay low enough for the ground-level shots.') },
+  { title: tx('必备：电池和存储卡', 'Must have: batteries and cards'), body: tx('高温加 4K 很耗电，准备 4–6 块电池和一个充电宝。存储卡要 V30 以上，60fps 和 4K 才不会掉帧；总容量至少 256GB。', 'Heat and 4K drain batteries fast: bring 4–6 batteries and a power bank. Use V30 or faster cards so 4K and 60fps don\'t drop frames, with at least 256GB in total.') },
+  { title: tx('必备：反光板', 'Must have: reflector'), body: tx('一块 80–110cm 的五合一反光板（白、银、金），逆光时把光打回脸上。需要一个人专门拿，风大时要有人压住。', 'An 80–110cm 5-in-1 reflector (white, silver, gold) to bounce backlight into her face. Someone has to hold it full time, and hold on tight in wind.') },
+  { title: tx('推荐：稳定器和滑轨', 'Recommended: gimbal and slider'), body: tx('推近和倒退跟拍用稳定器；躺姿横移用 60–80cm 的滑轨。预算有限的话，稳定器慢慢横走也能代替滑轨。', 'A gimbal for the push-in and the backtrack; a 60–80cm slider for the lateral move past her lying down. On a budget, walking sideways slowly with the gimbal can stand in for the slider.') },
+  { title: tx('推荐：看得清屏幕', 'Recommended: seeing your screen'), body: tx('阳光下相机屏幕几乎看不清，对焦和曝光都会出错。给屏幕加遮光罩或取景放大器；预算够就用一块 5 寸高亮外接监视器。', 'In sun the camera screen is almost unreadable, and focus and exposure suffer. Add a screen hood or loupe, or a bright 5-inch external monitor if budget allows.') },
+  { title: tx('推荐：风和沟通', 'Recommended: wind and talking'), body: tx('一台充电电扇，没风时也能吹起头发和裙摆。一对对讲机，远景时跟模特说话；没有就用手机通话加耳机。', 'A rechargeable fan so hair and fabric still move on a still day. A pair of walkie-talkies to talk to the model on wide shots, or a phone call with earbuds.') },
+  { title: tx('现场小东西', 'Small things on set'), body: tx('镜头布和气吹（沙漠灰多）；遮阳伞（给模特，也防相机过热）；有颜色的胶带（在地上标模特站位）；折叠凳；便携更衣帐篷；水、防晒、急救包；道具（网兜、水果）。', 'Lens cloth and a blower (deserts are dusty); an umbrella for the model and to keep the camera from overheating; colored tape to mark her position; a folding stool; a pop-up changing tent; water, sunscreen and a first-aid kit; props (net bag, fruit).') },
+  { title: tx('不需要：录音设备', 'Not needed: sound gear'), body: tx('这支片子只有音乐，没有对白，不用外接麦克风。相机自带的麦克风开着就行，剪辑时用来对齐。', 'This film is music only with no dialogue, so you don\'t need an external mic. Leave the camera\'s built-in mic on for reference.') },
+  { title: tx('防沙和防过热', 'Sand and heat'), body: tx('换镜头时背对风，最好在车里换。相机不拍时放在伞下或盖白毛巾；过热警告出现就关机休息。部分相机可以把“自动关机温度”设成“高”。', 'Change lenses with your back to the wind, ideally inside the car. Keep the camera under an umbrella or a white towel between takes, and power down when the overheat warning appears. Some cameras let you set auto power-off temperature to "High".') },
+  { title: tx('出发前要确认', 'Before you leave'), body: tx('查好日出日落时间和太阳方位（Sun Seeker、PhotoPills 这类 App 能看到太阳会从哪边落下）；确认场地能不能拍、需不需要许可；电池全部充满、存储卡清空；跟模特签好肖像授权书。', 'Check sunrise, sunset and the sun\'s direction (apps like Sun Seeker or PhotoPills show where it will set); confirm the location allows filming and whether you need a permit; charge every battery and clear every card; sign a model release with her.') },
+]
+
 export const cameraPrimer: PrimerItem[] = [
   { title: tx('用手动模式（M）', 'Shoot in manual (M)'), body: tx('视频里亮度忽明忽暗很难看。把模式拨到 M，快门、光圈、ISO 都自己定，整条画面的亮度才稳定。', 'Brightness that pumps up and down looks bad in video. Set the mode dial to M and choose shutter, aperture and ISO yourself so exposure stays steady.') },
   { title: tx('帧率和快门：24fps 配 1/50', 'Frame rate and shutter: 24fps at 1/50'), body: tx('快门约等于帧率的两倍（“180° 快门”），动作才有自然的动态模糊。升格慢动作：60fps 配 1/125，120fps 配 1/250。', 'Shutter at about double the frame rate (the "180° rule") gives natural motion blur. For slow motion: 60fps at 1/125, 120fps at 1/250.') },
-  { title: tx('为什么一定要 ND 滤镜', 'Why you need an ND filter'), body: tx('晴天户外太亮：快门锁在 1/50、光圈开到 f/2.8 拍虚化背景、ISO 已经最低，画面还是过曝。ND 就像相机的墨镜，只减光，不改颜色。可变 ND 转一下就能调深浅，最方便。ND8 = 3 档，ND64 = 6 档，ND1000 = 10 档。顺序记住：先定快门和光圈，ISO 放最低，剩下的亮度交给 ND。', 'Sunny daylight is too bright: with the shutter at 1/50, the aperture at f/2.8 for a blurred background and ISO at its lowest, the image is still overexposed. An ND is sunglasses for the lens: it cuts light without changing color. A variable ND adjusts with a twist. ND8 = 3 stops, ND64 = 6, ND1000 = 10. The order: set shutter and aperture, ISO at minimum, then use the ND for the rest.') },
+  { title: tx('什么时候需要 ND 滤镜', 'When you need an ND filter'), body: tx('晴天户外太亮：快门锁在 1/50、光圈开到 f/2.8 拍虚化背景、ISO 已经最低，画面还是过曝。ND 就像相机的墨镜，只减光，不改颜色。可变 ND 转一下就能调深浅，最方便。ND8 = 3 档，ND64 = 6 档，ND1000 = 10 档。顺序记住：先定快门和光圈，ISO 放最低，剩下的亮度交给 ND。如果这个镜头本来就要前后都清楚（远景、风景、微距），把光圈收到 f/8–11 就够暗，不用 ND，下面的镜头里也就不显示 ND 这一行。', 'Sunny daylight is too bright: with the shutter at 1/50, the aperture at f/2.8 for a blurred background and ISO at its lowest, the image is still overexposed. An ND is sunglasses for the lens: it cuts light without changing color. A variable ND adjusts with a twist. ND8 = 3 stops, ND64 = 6, ND1000 = 10. The order: set shutter and aperture, ISO at minimum, then use the ND for the rest. If a shot should be sharp front to back anyway (wides, landscapes, macro), stopping down to f/8–11 is dark enough without ND, so those shots below have no ND row.') },
   { title: tx('逆光怎么曝光', 'Exposing in backlight'), body: tx('相机看到明亮的天空，会把整体压暗，脸就黑了。逆光时以脸为准：全手动时用 ND 调；用自动曝光时加 +1 到 +2 EV 曝光补偿。天空过曝发白可以接受，这种片子要的就是那层明亮的光晕。', 'The camera sees a bright sky and darkens everything, so the face goes black. In backlight, expose for the face: in full manual, adjust with the ND; on auto exposure, add +1 to +2 EV of exposure compensation. A blown-out white sky is fine; that bright glow is the look.') },
   { title: tx('斑马纹：看亮度的工具', 'Zebras: your brightness meter'), body: tx('在相机设置里打开斑马纹。设 95–100%：出现条纹的地方已经过曝、没有细节。设 70%：条纹刚好落在脸颊亮部，说明肤色亮度合适。只能设一个时，拍人先用 70%。', 'Turn on zebras in the camera menu. At 95–100%, stripes mean that area is clipped with no detail. At 70%, stripes just touching the bright cheek mean skin is well exposed. If you can only set one, use 70% for people.') },
   { title: tx('锁定白平衡', 'Lock the white balance'), body: tx('不要用自动白平衡，拍着拍着颜色会变。设成 5600K（日光），黄金时段的暖色会自然留下来。', 'Don\'t use auto white balance, or the color shifts mid-shot. Set 5600K (daylight) and golden-hour warmth stays in the image.') },

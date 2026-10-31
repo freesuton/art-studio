@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { BookOpen, Check, Play, Plus, X } from 'lucide-react'
 import { breakdowns } from './referenceBreakdowns'
 import type { Capture } from './referenceBreakdowns'
-import { cameraPrimer, directPrimer, shotGuides } from './shotGuides'
+import { cameraPrimer, directPrimer, gearPrimer, shotGuides } from './shotGuides'
 import type { CameraGuide, DirectGuide } from './shotGuides'
 import { filmReferences } from './filmReferences'
 import { catalogByKey, workspaceSections } from './workspaceCatalog'
@@ -55,6 +55,7 @@ export default function ShotTimeline({ language, breakdownId }: { language: Lang
   const guides = shotGuides[breakdown.id] ?? {}
   const sectionOf = (key: string) => workspaceSections.find((section) => section.id === catalogByKey.get(key)?.sectionId)
   const primers = [
+    { items: gearPrimer, title: t(`器材清单和现场准备（${gearPrimer.length} 条）`, `Gear checklist and prep (${gearPrimer.length})`) },
     { items: cameraPrimer, title: t(`新手必读：相机基础（${cameraPrimer.length} 条）`, `Beginner basics: the camera (${cameraPrimer.length})`) },
     { items: directPrimer, title: t(`新手必读：导演和模特（${directPrimer.length} 条）`, `Beginner basics: directing (${directPrimer.length})`) },
   ]
