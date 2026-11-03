@@ -23,6 +23,7 @@ const LANGUAGE_KEY = 'short-film-guide-language'
 type Language = 'zh' | 'en'
 type ViewId = StageId | 'samples' | 'all' | 'saved' | 'directing' | 'motions'
 type ConceptArea = 'technique' | 'template'
+type PrepareArea = 'field' | 'camera'
 const filmCollections: { id: FilmReference['collection']; title: string; subtitle: string }[] = [
   { id: 'everyday', title: '生活切片', subtitle: '从起居、家人和城市日常里找到电影感' },
   { id: 'womenNature', title: '女性与自然', subtitle: '海洋、旷野与人物的亲密关系' },
@@ -254,12 +255,16 @@ function Home({ favorites, toggle, language, setLanguage }: { favorites: string[
     try { return JSON.parse(sessionStorage.getItem(VIEW_STATE_KEY) || '{}').conceptArea === 'template' ? 'template' : 'technique' }
     catch { return 'technique' }
   })
+  const [prepareArea, setPrepareArea] = useState<PrepareArea>(() => {
+    try { return JSON.parse(sessionStorage.getItem(VIEW_STATE_KEY) || '{}').prepareArea === 'camera' ? 'camera' : 'field' }
+    catch { return 'field' }
+  })
   const [activeFilmId, setActiveFilmId] = useState<FilmReference['id'] | null>(null)
   const workspaceCount = useWorkspace().project.items.length
 
   useEffect(() => {
-    sessionStorage.setItem(VIEW_STATE_KEY, JSON.stringify({ stage, conceptArea }))
-  }, [stage, conceptArea])
+    sessionStorage.setItem(VIEW_STATE_KEY, JSON.stringify({ stage, conceptArea, prepareArea }))
+  }, [stage, conceptArea, prepareArea])
 
   useLayoutEffect(() => {
     if (requestedStage) {
@@ -307,6 +312,7 @@ function Home({ favorites, toggle, language, setLanguage }: { favorites: string[
   // The shoot stage links to the cheat sheet, which lives in Plan & Prepare.
   const openFieldSheet = () => {
     selectStage('prepare')
+    setPrepareArea('field')
     window.setTimeout(() => document.getElementById('field-sheet')?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 80)
   }
 
@@ -359,8 +365,20 @@ function Home({ favorites, toggle, language, setLanguage }: { favorites: string[
           </div> })() : <div className="workflow-stage-panel workflow-stage-all" id="workflow-stage-panel"><p>{language === 'en' ? 'Five stages, one clear deliverable at a time.' : '五个阶段，一份份完成主要交付物。'}</p><button onClick={() => selectStage('concept')}>{language === 'en' ? 'Start with Concept & Story' : '从创意与故事开始'} <ArrowRight size={16} /></button></div>}
           {stage === 'shoot' && <button className="motion-entry" onClick={openFieldSheet}><span><span className="motion-entry-label">FIELD CHEAT SHEET</span><strong>{language === 'en' ? 'Outdoor fashion shoot cheat sheet' : '现场速查：户外女性时尚拍摄'}</strong><small>{language === 'en' ? 'Composition, posing, light, settings and styling' : '构图 · 姿势 · 光线 · 参数 · 造型'}</small></span><ArrowRight size={22}/></button>}
           {stage === 'shoot' && <button className="motion-entry" onClick={() => selectStage('motions')}><span><span className="motion-entry-label">ON-SET QUICK ACCESS</span><strong>现场速查：人物动作与镜头引导</strong><small>{motions.length} 段场景参考 · 慢放观察，直接照着指令引导人物</small></span><ArrowRight size={22}/></button>}
-          {stage === 'prepare' && <FieldCheatSheet language={language} />}
-          {stage === 'prepare' && <CameraMovementLibrary language={language} />}
+          {stage === 'prepare' && <section className="concept-area-selector" aria-label={language === 'en' ? 'Plan & Prepare areas' : '拍摄准备内容分区'} style={{ '--area-accent': '#f5c84c', '--area-tint': '#fbf3d9' } as React.CSSProperties}>
+            <div><p className="eyebrow">PLAN & PREPARE AREAS</p><h3>{language === 'en' ? 'Choose your workspace' : '选择你的工作区'}</h3></div>
+            <div className="concept-area-tabs" role="tablist" aria-label={language === 'en' ? 'Plan & Prepare areas' : '拍摄准备分区'}>
+              <button id="prepare-area-field" role="tab" aria-controls="prepare-content" aria-selected={prepareArea === 'field'} className={prepareArea === 'field' ? 'selected' : ''} onClick={() => setPrepareArea('field')}>
+                <span>01</span><strong>{language === 'en' ? 'Field cheat sheet' : '现场速查'}<small>{language === 'en' ? 'Outdoor fashion · composition, pose, light, settings' : '户外时尚 · 构图 · 姿势 · 光线 · 参数'}</small></strong><ArrowRight size={18} />
+              </button>
+              <button id="prepare-area-camera" role="tab" aria-controls="prepare-content" aria-selected={prepareArea === 'camera'} className={prepareArea === 'camera' ? 'selected' : ''} onClick={() => setPrepareArea('camera')}>
+                <span>02</span><strong>{language === 'en' ? 'Camera movement library' : '运镜参考库'}<small>{language === 'en' ? '3D previs · seven-beat recipe · move cards' : '3D 预演 · 七段运镜配方 · 运镜卡片'}</small></strong><ArrowRight size={18} />
+              </button>
+            </div>
+          </section>}
+          {stage === 'prepare' && <div id="prepare-content" role="tabpanel" aria-labelledby={`prepare-area-${prepareArea}`}>
+            {prepareArea === 'field' ? <FieldCheatSheet language={language} /> : <CameraMovementLibrary language={language} />}
+          </div>}
           {stage === 'concept' && <section className="concept-area-selector" aria-label="创意与故事内容分区">
             <div><p className="eyebrow">CONCEPT & STORY AREAS</p><h3>{language === 'en' ? 'Choose your workspace' : '选择你的工作区'}</h3></div>
             <div className="concept-area-tabs" role="tablist" aria-label="创意与故事分区">

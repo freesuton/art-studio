@@ -96,8 +96,8 @@ main { max-width: 1540px; margin: 0 auto; }
 .concept-area-tabs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
 .concept-area-tabs button { min-width: 0; padding: 17px 18px; display: grid; grid-template-columns: 35px 1fr auto; align-items: center; gap: 12px; color: var(--ink); text-align: left; background: #eeede7; border: 1px solid #cfcec5; border-radius: 12px; cursor: pointer; transition: transform .2s, background .2s, border-color .2s; }
 .concept-area-tabs button:hover { transform: translateY(-2px); border-color: #98998f; }
-.concept-area-tabs button.selected { background: #fff1ed; border-color: var(--ink); box-shadow: inset 5px 0 0 #ff8d72; }
-.concept-area-tabs button > span { width: 32px; height: 32px; display: grid; place-items: center; background: #ff8d72; border: 1px solid var(--ink); border-radius: 50%; font-size: 10px; font-weight: 850; }
+.concept-area-tabs button.selected { background: var(--area-tint, #fff1ed); border-color: var(--ink); box-shadow: inset 5px 0 0 var(--area-accent, #ff8d72); }
+.concept-area-tabs button > span { width: 32px; height: 32px; display: grid; place-items: center; background: var(--area-accent, #ff8d72); border: 1px solid var(--ink); border-radius: 50%; font-size: 10px; font-weight: 850; }
 .concept-area-tabs strong { min-width: 0; display: flex; flex-direction: column; gap: 4px; font-size: 17px; }
 .concept-area-tabs small { overflow: hidden; color: #77786f; font-size: 10px; font-weight: 650; white-space: nowrap; text-overflow: ellipsis; }
 .concept-area-tabs svg { color: #76776f; }
@@ -456,7 +456,7 @@ footer p { margin: 0; color: #96978f; font-size: 11px; }
     border-radius: 16px;
     background: rgba(255, 255, 255, .72);
   }
-  .concept-area-tabs button.selected { box-shadow: inset 5px 0 0 #ff8d72, 0 12px 28px rgba(25, 26, 23, .07); }
+  .concept-area-tabs button.selected { box-shadow: inset 5px 0 0 var(--area-accent, #ff8d72), 0 12px 28px rgba(25, 26, 23, .07); }
 
   .starter-template {
     margin-top: 32px;
