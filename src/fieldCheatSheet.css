@@ -39,6 +39,23 @@
 .field-card-preview.diagram:hover .setup-diagram { border-color: var(--ink); }
 .field-card-badge { position: absolute; left: 8px; bottom: 8px; padding: 4px 8px; border-radius: 999px; background: rgba(17, 17, 17, .72); color: #fff; font-size: 10px; font-weight: 800; letter-spacing: .02em; }
 .field-card-play { position: absolute; inset: 0; margin: auto; width: 44px; height: 44px; display: grid; place-items: center; border-radius: 50%; background: rgba(255, 255, 255, .9); color: var(--ink); }
+.field-card-preview.photo { aspect-ratio: 400 / 172; }
+.field-card-photo { display: block; width: 100%; height: 100%; transition: transform .4s; }
+.field-card-preview:hover .field-card-photo { transform: scale(1.03); }
+.field-setup-photo-image { width: 100%; max-width: 100%; aspect-ratio: 400 / 172; border-radius: 10px; }
+.field-sheet-grid .field-why { margin-top: 6px; color: #6b5a44; font-size: 13px; }
+.field-why b { margin-right: 6px; color: var(--ink); font-size: 11px; font-weight: 800; letter-spacing: .04em; }
+.field-sheet-footer { margin-top: 12px; padding: 16px 18px; border: 1px solid #e3cfa9; border-radius: 12px; background: #fdf6ea; }
+.field-sheet-footer h5 { margin: 0 0 8px; font-size: 15px; font-weight: 800; }
+.field-sheet-footer ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 5px; }
+.field-sheet-footer li { position: relative; padding-left: 20px; color: #4f5558; font-size: 13.5px; line-height: 1.6; }
+.field-sheet-footer li::before { content: "✓"; position: absolute; left: 2px; color: #a8743c; font-weight: 800; }
+.field-sheet-footer-label { margin: 14px 0 6px; color: var(--muted); font-size: 10px; font-weight: 800; letter-spacing: .1em; }
+.field-sheet-lenses { display: flex; flex-wrap: wrap; gap: 6px; }
+.field-sheet-lenses span { display: inline-flex; align-items: baseline; gap: 7px; padding: 6px 10px; border: 1px solid #e3cfa9; border-radius: 8px; background: #fff; color: #4f5558; font-size: 12.5px; }
+.field-sheet-lenses b { color: var(--ink); font-size: 13px; }
+.field-sheet-footer-tip { margin: 12px 0 0; color: #4f5558; font-size: 13.5px; }
+.field-sheet-footer-tip b { margin-right: 8px; color: var(--ink); }
 .field-sheet-grid h5 { margin: 0; font-size: 15px; font-weight: 800; letter-spacing: -.01em; }
 .field-sheet-grid p { margin: 6px 0 0; color: #4f5558; font-size: 14px; line-height: 1.65; }
 .field-sheet-grid article.open p { max-width: 760px; }

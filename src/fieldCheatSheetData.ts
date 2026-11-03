@@ -1,11 +1,15 @@
 import type { DiagramKind } from './SetupDiagram'
+import beautyShots from './assets/beauty-shots.jpg'
 
 type Text = { zh: string; en: string }
 // A reference is either a Mixkit clip from the motion library (by asset id) or a shot of
 // the ASTR Summer 2021 breakdown (by its time label), so every video here is already verified.
 export type CheatRef = { clip: string } | { shot: string }
-export type CheatItem = { title: Text; body: Text; diagram?: DiagramKind; lens?: number; refs?: CheatRef[] }
-export type CheatSection = { id: string; accent: string; title: Text; hint: Text; items: CheatItem[] }
+// `photo` is a cell (left to right, top to bottom) of the section's photo sprite.
+export type CheatItem = { title: Text; body: Text; why?: Text; diagram?: DiagramKind; lens?: number; photo?: number; refs?: CheatRef[] }
+export type CheatPhotos = { src: string; cols: number; rows: number }
+export type CheatFooter = { title: Text; points: Text[]; lenses: { mm: string; use: Text }[]; tip: Text }
+export type CheatSection = { id: string; accent: string; title: Text; hint: Text; items: CheatItem[]; photos?: CheatPhotos; footer?: CheatFooter }
 
 // On-set quick reference for shooting outdoor fashion video with a female model.
 // Short enough to read on a phone between takes.
@@ -54,6 +58,41 @@ export const fieldCheatSheet: CheatSection[] = [
       { title: { zh: '借风', en: 'Use the wind' }, body: { zh: '让她面向风或侧对风，裙摆和头发自然飘。没风就让助手在画外抖布或用扇子。', en: 'Face her into or across the wind so hair and hem move. No wind? Have someone flap fabric or fan from off-frame.' }, diagram: 'wind', refs: [{ clip: '1117' }, { clip: '2818' }] },
       { title: { zh: '眼神', en: 'Eyes' }, body: { zh: '看镜头旁边一点、看远处、先低头再抬眼看镜头。眯眼时让她闭眼，数 3 再睁开。', en: 'Just past the lens, far away, or look down then lift the eyes to camera. If she squints, close the eyes and open on a count of 3.' }, refs: [{ clip: '5179' }] },
     ],
+  },
+  {
+    id: 'beauty', accent: '#e8b36a',
+    title: { zh: '不拍脸的美感', en: 'Beauty without the face' },
+    hint: { zh: '不用一直拍脸，也能拍出很有感觉的女性画面', en: 'Twelve shots that show her grace without always filming her face' },
+    photos: { src: beautyShots, cols: 3, rows: 4 },
+    items: [
+      { title: { zh: '触觉特写（手划过树皮）', en: 'Touch close-up: hand on bark' }, body: { zh: '特写拍手指缓缓划过树皮的纹理。', en: 'Close on her fingers slowly tracing the bark.' }, why: { zh: '通过触觉细节传递细腻情绪，含蓄又有代入感。', en: 'A tactile detail carries a delicate feeling. It is understated, and the viewer can almost feel it.' }, photo: 0 },
+      { title: { zh: '手先入画', en: 'The hand enters first' }, body: { zh: '先让手伸入画面，拨开草穗或触碰落叶，随后再带出人物。', en: 'Her hand reaches into frame first, brushing the grass or touching the leaves, then she follows.' }, why: { zh: '用"手的引导"建立期待，画面更自然、更有故事感。', en: 'The hand builds anticipation, so the shot feels natural and tells a story.' }, photo: 1 },
+      { title: { zh: '前景窥视（隔着树叶拍）', en: 'Peek through leaves' }, body: { zh: '隔着树叶或枝条拍摄人物，让前景轻微虚化。', en: 'Shoot her through leaves or branches and let the foreground blur softly.' }, why: { zh: '营造"被发现"的视角，增加层次与氛围，画面更有电影感。', en: 'It feels as if we found her. The layers add depth and mood, and it looks more cinematic.' }, photo: 2 },
+      { title: { zh: '逆光轮廓（发丝与肩线）', en: 'Backlit outline: hair and shoulders' }, body: { zh: '逆光拍摄人物的侧脸或半身，突出发丝与肩线的光边。', en: 'Shoot her profile or half body against the sun so light rims her hair and shoulders.' }, why: { zh: '柔和的光晕勾勒轮廓，让画面温暖、浪漫且富有质感。', en: 'A soft glow traces her outline, so the image feels warm, romantic and rich.' }, photo: 3 },
+      { title: { zh: '侧后跟拍（肩线与步伐）', en: 'Follow from behind: shoulders and stride' }, body: { zh: '从斜后方跟随人物行走，拍肩线与自然的步伐。', en: 'Follow her from behind at an angle, framing her shoulders and natural stride.' }, why: { zh: '既保留神秘感，又能展现轻盈的动态，富有生活气息。', en: 'It keeps some mystery while showing light, easy movement that feels like real life.' }, photo: 4 },
+      { title: { zh: '低机位步伐（靴子与落叶）', en: 'Low-angle steps: boots in the leaves' }, body: { zh: '低机位近距离拍摄她的靴子踩过落叶的步伐。', en: 'Low and close on her boots stepping through fallen leaves.' }, why: { zh: '用脚步和落叶的声音感受季节，让画面更生动、有节奏。', en: 'Her steps and the crunch of leaves bring the season in and give the edit rhythm.' }, photo: 5 },
+      { title: { zh: '半环绕（从背后到侧面 45°）', en: 'Half arc: from behind to a 45° side view' }, body: { zh: '从人物背后开始，缓慢绕到侧前 45°，展现她的侧脸与表情。', en: 'Start behind her and slowly arc round to 45° in front, revealing her profile and expression.' }, why: { zh: '运动的视角带来更强的代入感与立体感，画面层次更丰富。', en: 'The moving viewpoint draws the viewer in and gives the shot depth.' }, photo: 6 },
+      { title: { zh: '动作跟随（手拿杯子 / 书）', en: 'Follow the action: cup or book' }, body: { zh: '跟随她的手拿起杯子喝水，或翻开书页的动作。', en: 'Follow her hand as she lifts a cup to drink or opens a book.' }, why: { zh: '通过日常动作展现她的状态，自然放松，又充满生活的诗意。', en: 'Everyday actions show how she feels. It is relaxed, with a quiet poetry.' }, photo: 7, refs: [{ clip: '4897' }] },
+      { title: { zh: '背影停留（看树林或草地）', en: 'Back view: looking at the woods' }, body: { zh: '拍摄人物的背影，静止或微微前移，看向树林或草地。', en: 'Film her from behind, still or drifting slightly forward, looking at the trees or the field.' }, why: { zh: '背影留出想象空间，带来安静、沉浸的情绪，画面更有余韵。', en: 'A back view leaves room to imagine. It is quiet and absorbing, and it lingers.' }, photo: 8 },
+      { title: { zh: '环境先于人物', en: 'The place before the person' }, body: { zh: '先拍一段环境（树叶、草地、光影），再让人物从画面一侧走入。', en: 'Hold on the place first (leaves, grass, light), then let her walk in from one side.' }, why: { zh: '先建立氛围，再引入人物，画面更有铺垫与故事感。', en: 'Setting the mood before she arrives builds up to her and tells a story.' }, photo: 9 },
+      { title: { zh: '遮挡转场（经过树干）', en: 'Wipe past a tree trunk' }, body: { zh: '让镜头随着人物走动，经过一棵树干被完全遮挡，再露出新的画面。', en: 'Move with her until a tree trunk fills the frame, then come out on the next shot.' }, why: { zh: '利用遮挡实现自然转场，节奏流畅且更具电影叙事感。', en: 'The trunk gives a natural cut point, so the rhythm stays smooth and cinematic.' }, photo: 10 },
+      { title: { zh: '走出焦点（人物离开远去）', en: 'Walk away into the distance' }, body: { zh: '拍摄人物从近到远走出画面，直至成为环境中的一小点。', en: 'Film her walking from near to far until she is a small figure in the landscape.' }, why: { zh: '用"离开"收尾，留下回味空间，画面更完整、有情绪落点。', en: 'Ending on her leaving lets the feeling linger and closes the film.' }, photo: 11 },
+    ],
+    footer: {
+      title: { zh: '为什么有效', en: 'Why it works' },
+      points: [
+        { zh: '留白更多：不把情绪说满，给观众想象与共鸣的空间。', en: 'More is left unsaid, so viewers fill in the feeling themselves.' },
+        { zh: '材质感更强：树皮、落叶、毛衣、发丝等细节让画面更有质感。', en: 'Bark, leaves, knitwear and hair give the image texture.' },
+        { zh: '人与环境更有关系：把女性放在自然里，画面更和谐、有故事性。', en: 'She belongs to the place, so the frame feels harmonious and tells a story.' },
+        { zh: '比直接拍脸更高级：从动作、轮廓与氛围表达她的气质，含蓄而耐看。', en: 'Her character comes through action, outline and mood, which is subtler than filming her face.' },
+      ],
+      lenses: [
+        { mm: '35mm', use: { zh: '环境与人物关系，画面更有氛围', en: 'Her in her surroundings, more atmosphere' } },
+        { mm: '50mm', use: { zh: '自然、真实、日常感强', en: 'Natural and true to life' } },
+        { mm: '85mm', use: { zh: '突出气质与细节，画面更柔美', en: 'Her presence and details, softer look' } },
+      ],
+      tip: { zh: '少拍正脸，多拍动作、侧面、背影、手与环境。', en: 'Film her face head-on less. Film actions, profiles, back views, hands and the place more.' },
+    },
   },
   {
     id: 'direct', accent: '#c7a7ff',

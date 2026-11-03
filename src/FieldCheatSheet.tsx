@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { ChevronDown, ExternalLink, Play, Search, X } from 'lucide-react'
 import { fieldCheatSheet } from './fieldCheatSheetData'
-import type { CheatItem, CheatRef } from './fieldCheatSheetData'
+import type { CheatItem, CheatPhotos, CheatRef } from './fieldCheatSheetData'
 import { motions } from './motionData'
 import { breakdowns } from './referenceBreakdowns'
 import { filmReferences } from './filmReferences'
@@ -25,6 +25,13 @@ function resolve(ref: CheatRef) {
   return shot && { kind: 'shot' as const, key: shot.time, shot }
 }
 
+// One cell of a section's photo sprite, as a background.
+const photoStyle = (photos: CheatPhotos, cell: number): React.CSSProperties => ({
+  backgroundImage: `url(${photos.src})`,
+  backgroundSize: `${photos.cols * 100}% ${photos.rows * 100}%`,
+  backgroundPosition: `${(cell % photos.cols) / (photos.cols - 1) * 100}% ${Math.floor(cell / photos.cols) / (photos.rows - 1) * 100}%`,
+})
+
 // A muted clip that plays only while it is on screen, so a tab of cards doesn't run every video at once.
 function ClipPreview({ src, poster }: { src: string; poster: string }) {
   const videoRef = useRef<HTMLVideoElement>(null)
@@ -38,11 +45,15 @@ function ClipPreview({ src, poster }: { src: string; poster: string }) {
   return <video ref={videoRef} src={src} poster={poster} muted loop playsInline preload="none" />
 }
 
-// The top of a closed card: a live clip if the tip has one, else the ASTR shot, else the diagram.
-// Clicking it opens the full panel.
-function CardPreview({ item, accent, language, onOpen }: { item: CheatItem; accent: string; language: Language; onOpen: () => void }) {
+// The top of a closed card: the tip's photo if it has one, else a live clip, else the ASTR shot,
+// else the diagram. Clicking it opens the full panel.
+function CardPreview({ item, accent, photos, language, onOpen }: { item: CheatItem; accent: string; photos?: CheatPhotos; language: Language; onOpen: () => void }) {
   const en = language === 'en'
   const refs = (item.refs ?? []).map(resolve).filter((ref) => ref !== undefined)
+  if (item.photo !== undefined && photos) return <button className="field-card-preview photo" onClick={onOpen} aria-label={en ? `Open ${item.title.en}` : `打开${item.title.zh}`}>
+    <span className="field-card-photo" style={photoStyle(photos, item.photo)} />
+    {refs.length > 0 && <span className="field-card-badge">{en ? `+ ${refs.length} live clip` : `+ ${refs.length} 段实拍`}</span>}
+  </button>
   const ref = refs.find((entry) => entry.kind === 'clip') ?? refs[0]
   if (!ref && !item.diagram) return null
   return <button className={`field-card-preview${ref ? '' : ' diagram'}`} onClick={onOpen} aria-label={en ? `Open ${item.title.en}` : `打开${item.title.zh}`}>
@@ -54,12 +65,16 @@ function CardPreview({ item, accent, language, onOpen }: { item: CheatItem; acce
 }
 
 // The diagram and reference videos for one tip, opened under it.
-function SetupPanel({ item, accent, language }: { item: CheatItem; accent: string; language: Language }) {
+function SetupPanel({ item, accent, photos, language }: { item: CheatItem; accent: string; photos?: CheatPhotos; language: Language }) {
   const en = language === 'en'
   const refs = (item.refs ?? []).map(resolve).filter((ref) => ref !== undefined)
   const [active, setActive] = useState(0)
   const ref = refs[active]
   return <div className="field-setup">
+    {item.photo !== undefined && photos && <figure className="field-setup-photo">
+      <div className="field-setup-photo-image" role="img" aria-label={item.title[language]} style={photoStyle(photos, item.photo)} />
+      <figcaption>{en ? 'Illustration' : '图解'}</figcaption>
+    </figure>}
     {item.diagram && <figure className="field-setup-diagram">
       <SetupDiagram kind={item.diagram} accent={accent} lens={item.lens} language={language} />
       <figcaption>{en ? 'Diagram' : '示意图'}</figcaption>
@@ -90,7 +105,7 @@ export default function FieldCheatSheet({ language, view, onViewChange }: { lang
     if (!needle) return fieldCheatSheet.filter((section) => section.id === tab)
     const matches = (...texts: string[]) => texts.some((text) => text.toLowerCase().includes(needle))
     return fieldCheatSheet
-      .map((section) => matches(section.title.zh, section.title.en) ? section : { ...section, items: section.items.filter((item) => matches(item.title.zh, item.title.en, item.body.zh, item.body.en)) })
+      .map((section) => matches(section.title.zh, section.title.en) ? section : { ...section, items: section.items.filter((item) => matches(item.title.zh, item.title.en, item.body.zh, item.body.en, item.why?.zh ?? '', item.why?.en ?? '')) })
       .filter((section) => section.items.length > 0)
   }, [needle, tab])
   const total = fieldCheatSheet.reduce((sum, section) => sum + section.items.length, 0)
@@ -133,17 +148,24 @@ export default function FieldCheatSheet({ language, view, onViewChange }: { lang
     {sections.map((section) => <section key={section.id} className="field-sheet-section" role={needle ? undefined : 'tabpanel'} style={{ '--accent': section.accent } as React.CSSProperties}>
       <header><h4>{section.title[language]}</h4><small>{section.hint[language]}</small></header>
       <div className="field-sheet-grid">
-        {section.items.map((item) => { const key = `${section.id}:${item.title.en}`; const hasSetup = !!item.diagram || !!item.refs?.length; const isOpen = open === key
+        {section.items.map((item) => { const key = `${section.id}:${item.title.en}`; const hasSetup = item.photo !== undefined || !!item.diagram || !!item.refs?.length; const isOpen = open === key
           return <article key={item.title.en} className={isOpen ? 'open' : undefined}>
-            {!isOpen && <CardPreview item={item} accent={section.accent} language={language} onOpen={() => setOpen(key)} />}
-            <h5>{item.title[language]}</h5><p>{item.body[language]}</p>
+            {!isOpen && <CardPreview item={item} accent={section.accent} photos={section.photos} language={language} onOpen={() => setOpen(key)} />}
+            <h5>{item.title[language]}</h5><p>{item.body[language]}</p>{item.why && <p className="field-why"><b>{en ? 'Why it works' : '为什么有感觉'}</b>{item.why[language]}</p>}
             {hasSetup && <button className="field-setup-toggle" aria-expanded={isOpen} onClick={() => setOpen(isOpen ? null : key)}>
-              {[item.diagram && (en ? 'Diagram' : '示意图'), item.refs?.length && (en ? `Reference video${item.refs.length > 1 ? ` ×${item.refs.length}` : ''}` : `参考视频${item.refs.length > 1 ? ` ×${item.refs.length}` : ''}`)].filter(Boolean).join(' · ')}
+              {[item.photo !== undefined && (en ? 'Illustration' : '图解'), item.diagram && (en ? 'Diagram' : '示意图'), item.refs?.length && (en ? `Reference video${item.refs.length > 1 ? ` ×${item.refs.length}` : ''}` : `参考视频${item.refs.length > 1 ? ` ×${item.refs.length}` : ''}`)].filter(Boolean).join(' · ')}
               <ChevronDown size={13} />
             </button>}
-            {isOpen && <SetupPanel item={item} accent={section.accent} language={language} />}
+            {isOpen && <SetupPanel item={item} accent={section.accent} photos={section.photos} language={language} />}
           </article> })}
       </div>
+      {section.footer && <aside className="field-sheet-footer">
+        <h5>{section.footer.title[language]}</h5>
+        <ul>{section.footer.points.map((point) => <li key={point.en}>{point[language]}</li>)}</ul>
+        <p className="field-sheet-footer-label">{en ? 'Lenses' : '推荐焦段'}</p>
+        <div className="field-sheet-lenses">{section.footer.lenses.map((lens) => <span key={lens.mm}><b>{lens.mm}</b>{lens.use[language]}</span>)}</div>
+        <p className="field-sheet-footer-tip"><b>{en ? 'On set' : '拍摄提示'}</b>{section.footer.tip[language]}</p>
+      </aside>}
     </section>)}
     </>}
     </div>
