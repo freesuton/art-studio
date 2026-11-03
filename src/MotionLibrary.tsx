@@ -65,7 +65,7 @@ function MotionDetail({ motion, saved, onSave, onClose, paused, onTag }: { motio
 }
 
 export default function MotionLibrary({ onBack, language }: { onBack: () => void; language: 'zh' | 'en' }) {
-  const environmentEn: Record<string, string> = { '树林': 'Forest', '海边': 'Seaside', '街头': 'Street', '室内': 'Interior', '草地': 'Field', '窗边': 'Window' }
+  const environmentEn: Record<string, string> = { '树林': 'Forest', '海边': 'Seaside', '街头': 'Street', '室内': 'Interior', '草地': 'Field', '窗边': 'Window', '沙漠': 'Desert', '山野': 'Hills' }
   const framingEn: Record<string, string> = { '全身': 'Full body', '半身': 'Medium', '近景': 'Close-up' }
   const initial = useRef(readLocal(STORAGE))
   const [category, setCategory] = useState<MotionCategory | 'all'>(() => motionCategories.some(c => c.id === initial.current?.category) ? initial.current.category : 'all')

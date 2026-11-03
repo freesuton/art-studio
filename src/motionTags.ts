@@ -59,6 +59,19 @@ const facts: Record<string, Facts> = {
   '1300': { scene: '户外/街头/城市空间', action: '脱下外套/抬手/手臂伸展/整理衣服', pose: '站姿/抬臂姿态/动态姿态', wardrobe: '外套/叠穿', mood: '随意/自然/放松', style: '街头人像/时尚人像/生活感', composition: '动作留白/服装重点/脸与手同框', usage: '服装展示/动作连接/街头段落/人物介绍' },
   '1296': { scene: '阳台/城市空间/栏杆', light: '环境光', action: '停留/微小动作/调整重心', pose: '站姿/放松重心', gaze: '画外视线', props: '栏杆', mood: '从容/自然/放松', style: '城市人像/生活感/时尚人像', composition: '引导线/背景层次/视线留白', usage: '人物介绍/等待场景/街头段落/情绪过渡' },
   '1299': { scene: '户外/街头/城市空间', light: '环境光', action: '转头/停留/轻微转向', pose: '站姿/静态姿态', gaze: '画外视线/转回视线', mood: '亲近/自然/含蓄', style: '街头人像/生活感/时尚人像', composition: '视线留白/简化背景/脸部重点', usage: '人物介绍/等待场景/情绪过渡/街头段落' },
+  '2054': { scene: '户外/海边/沙滩/救生塔/天空', light: '自然光', time: '白天', action: '行走/走远', pose: '行进姿态', gaze: '背影', wardrobe: '深色服装/裙装/长发', mood: '自在/独处/宁静', style: '旅行感/环境人像/自然人像', composition: '环境留白/天空留白/水平线/主体与环境', usage: '片头建立/旅程段落/结尾留白' },
+  '1567': { scene: '户外/海边/水面/天空', light: '自然光/逆光/暖光', time: '日落/黄昏', action: '行走/停留', pose: '行进姿态', gaze: '看向远处', mood: '辽阔/独处/宁静', style: '航拍/环境人像/氛围人像', composition: '负空间/环境留白/水平线', usage: '片头建立/环境建立/结尾留白' },
+  '2767': { scene: '户外/山野/岩石/天空', light: '自然光/阴天', time: '白天/有风', action: '抬起手臂/伸展/停留', pose: '站姿/手臂展开', gaze: '看向远处', wardrobe: '浅色服装/长发', mood: '自由/舒展/释然', style: '旅行感/环境人像', composition: '天空留白/低机位仰拍/主体与环境', usage: '情绪高潮/旅程段落/环境建立' },
+  '2056': { scene: '户外/海边/救生塔/海浪', light: '自然光', time: '白天', action: '攀爬/坐下/看向远处', pose: '坐姿/攀爬姿态', gaze: '背影/看向远处', wardrobe: '深色服装/帽子', props: '救生塔', mood: '轻松/自在', style: '旅行感/环境人像', composition: '框架构图/对称感/主体与环境', usage: '旅程段落/环境建立/动作连接' },
+  '1104': { scene: '户外/海边/礁石/海浪', light: '自然光', time: '白天/有风', action: '停留/发丝摆动/看向远处', pose: '站姿/静态姿态', gaze: '画外视线/看向远处', wardrobe: '深色服装/吊带上衣/长发/项链', mood: '沉静/含蓄', style: '自然人像/时尚人像', composition: '简化背景/背景层次/脸部重点', usage: '人物介绍/发丝细节/情绪过渡' },
+  '32755': { scene: '户外/沙漠/天空', light: '自然光', time: '白天/有风', action: '闭眼/发丝摆动/停留', pose: '静态姿态', gaze: '闭眼/面部放松', wardrobe: '长发/面部彩绘', mood: '宁静/放松', style: '时尚人像/细节肖像', composition: '脸部重点/天空留白/简化背景', usage: '情绪特写/发丝细节/人物介绍' },
+  '32765': { scene: '户外/沙漠', light: '自然光', time: '白天/有风', action: '停留/看向远处/发丝摆动', pose: '静态姿态', gaze: '侧脸/看向远处', wardrobe: '长发/面部彩绘', mood: '平静/沉静', style: '时尚人像/细节肖像', composition: '侧脸轮廓/视线留白/简化背景', usage: '情绪特写/人物介绍/情绪过渡' },
+  '32757': { scene: '户外/沙漠', light: '自然光', time: '白天/有风', action: '眨眼/看向远处/微小动作', pose: '静态姿态', gaze: '看向远处', wardrobe: '眼妆/面部彩绘', mood: '细腻/安静', style: '美妆特写/细节肖像/时尚人像', composition: '脸部重点/大特写', usage: '细节插入/妆容展示/情绪特写' },
+  '32762': { scene: '户外/沙漠/远山', light: '自然光', time: '白天/有风', action: '合掌/低头/闭眼/发丝摆动', pose: '手部姿态/静态姿态', gaze: '闭眼/低头注视', wardrobe: '红色服装/长发', mood: '安静/宁静', style: '时尚人像/细节肖像', composition: '脸与手同框/背景层次/侧脸轮廓', usage: '手部插入/情绪特写/情绪过渡' },
+  '32750': { scene: '户外/沙漠/地面', light: '自然光', time: '白天/有风', action: '手触地面/衣摆摆动/停留', pose: '局部手部', gaze: '手部为主', wardrobe: '红色服装/纱巾', mood: '安静/细腻', style: '手部细节/时尚人像', composition: '手部重点/低机位前景/动作留白', usage: '手部插入/细节插入/服装展示' },
+  '32754': { scene: '户外/沙漠/天空', light: '自然光/阴天', time: '白天/有风', action: '静坐/闭眼/纱巾飘动', pose: '坐姿/冥想姿态', gaze: '闭眼', wardrobe: '红色服装/纱巾/长发', mood: '宁静/平静', style: '时尚人像/环境人像', composition: '水平线/色彩对比/主体与环境', usage: '人物介绍/服装展示/情绪过渡' },
+  '34404': { scene: '户外/沙漠/天空', light: '自然光', time: '白天/有风', action: '抬起手臂/衣摆摆动/调整重心', pose: '站姿/抬臂姿态', gaze: '不露脸', wardrobe: '黑色服装/纱裙/透明面料', mood: '时髦/自信', style: '时尚人像/服装细节', composition: '服装重点/局部构图/水平线', usage: '服装展示/细节插入/动作连接' },
+  '1107': { scene: '户外/海边/礁石/天空', light: '自然光/逆光', time: '白天/有风', action: '拉开纱巾/转身/衣摆摆动', pose: '站姿/手臂展开', gaze: '看向远处', wardrobe: '泳装/纱巾/长发', mood: '自由/轻盈', style: '时尚人像/旅行感', composition: '低机位仰拍/天空留白/动作留白', usage: '服装展示/情绪高潮/人物介绍' },
 }
 const split = (value?: string) => [...new Set((value || '').split('/').map(v => v.trim()).filter(Boolean))]
 type TagSource = Pick<Motion, 'assetId' | 'category' | 'angle' | 'framing' | 'mood' | 'duration'>

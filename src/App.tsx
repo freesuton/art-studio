@@ -5,6 +5,7 @@ import { Route, Routes, useLocation, useNavigate, useParams } from 'react-router
 import TechniqueVisual from './TechniqueVisual'
 import MotionLibrary from './MotionLibrary'
 import CameraMovementLibrary from './CameraMovementLibrary'
+import FieldCheatSheet from './FieldCheatSheet'
 import WorkspaceToggle from './WorkspaceToggle'
 import Workspace from './Workspace'
 import { useWorkspace } from './workspaceStore'
@@ -303,6 +304,12 @@ function Home({ favorites, toggle, language, setLanguage }: { favorites: string[
     window.requestAnimationFrame(() => document.getElementById(id === 'motions' ? 'motion-library' : id === 'all' || id === 'saved' ? 'library' : 'workflow-tabs')?.scrollIntoView({ behavior: 'smooth', block: 'start' }))
   }
 
+  // The shoot stage links to the cheat sheet, which lives in Plan & Prepare.
+  const openFieldSheet = () => {
+    selectStage('prepare')
+    window.setTimeout(() => document.getElementById('field-sheet')?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 80)
+  }
+
   const selectConceptArea = (area: ConceptArea) => {
     setConceptArea(area)
     setQuery('')
@@ -350,7 +357,9 @@ function Home({ favorites, toggle, language, setLanguage }: { favorites: string[
             <div className="workflow-stage-main"><span className="workflow-stage-number">{item.index} / 05</span><p className="eyebrow">{item.titleEn}</p><h3>{language === 'en' ? item.titleEn : item.title}</h3><p className="workflow-stage-description">{language === 'en' ? stageEnglish[item.id].subtitle : item.subtitle}</p><div className="workflow-stage-output"><span>{language === 'en' ? 'Main deliverable' : '本阶段交付物'}</span><strong>{language === 'en' ? item.outputEn : item.output}</strong><small>{language === 'en' ? item.output : item.outputEn}</small></div></div>
             <div className="workflow-stage-tasks"><p className="eyebrow">{language === 'en' ? 'TO DO IN THIS STAGE' : '这一阶段要做'}</p><ol>{(language === 'en' ? stageEnglish[item.id].tasks : item.tasks).map((task) => <li key={task}>{task}</li>)}</ol><button onClick={() => item.id === 'concept' ? selectConceptArea('technique') : document.getElementById('library')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}>{language === 'en' ? 'View related sheets' : '查看相关卡片'} <ArrowRight size={16} /></button></div>
           </div> })() : <div className="workflow-stage-panel workflow-stage-all" id="workflow-stage-panel"><p>{language === 'en' ? 'Five stages, one clear deliverable at a time.' : '五个阶段，一份份完成主要交付物。'}</p><button onClick={() => selectStage('concept')}>{language === 'en' ? 'Start with Concept & Story' : '从创意与故事开始'} <ArrowRight size={16} /></button></div>}
+          {stage === 'shoot' && <button className="motion-entry" onClick={openFieldSheet}><span><span className="motion-entry-label">FIELD CHEAT SHEET</span><strong>{language === 'en' ? 'Outdoor fashion shoot cheat sheet' : '现场速查：户外女性时尚拍摄'}</strong><small>{language === 'en' ? 'Composition, posing, light, settings and styling' : '构图 · 姿势 · 光线 · 参数 · 造型'}</small></span><ArrowRight size={22}/></button>}
           {stage === 'shoot' && <button className="motion-entry" onClick={() => selectStage('motions')}><span><span className="motion-entry-label">ON-SET QUICK ACCESS</span><strong>现场速查：人物动作与镜头引导</strong><small>{motions.length} 段场景参考 · 慢放观察，直接照着指令引导人物</small></span><ArrowRight size={22}/></button>}
+          {stage === 'prepare' && <FieldCheatSheet language={language} />}
           {stage === 'prepare' && <CameraMovementLibrary language={language} />}
           {stage === 'concept' && <section className="concept-area-selector" aria-label="创意与故事内容分区">
             <div><p className="eyebrow">CONCEPT & STORY AREAS</p><h3>{language === 'en' ? 'Choose your workspace' : '选择你的工作区'}</h3></div>
