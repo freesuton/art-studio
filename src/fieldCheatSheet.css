@@ -2,8 +2,15 @@
 .field-sheet-heading { padding-bottom: 20px; display: flex; align-items: flex-start; justify-content: space-between; gap: 18px; border-bottom: 1px solid #cfd9dc; }
 .field-sheet-heading h3 { margin: 4px 0 8px; font-size: clamp(28px, 3.2vw, 42px); line-height: 1.05; letter-spacing: -.05em; }
 .field-sheet-heading p:last-child { max-width: 650px; margin: 0; color: #5c6265; font-size: 14px; line-height: 1.65; }
-.field-sheet-heading > span { padding: 8px 10px; border: 1px solid var(--ink); border-radius: 999px; font-size: 10px; font-weight: 850; letter-spacing: .1em; white-space: nowrap; }
 
+.field-guide-switch { margin-top: 20px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; padding: 5px; border: 1px solid var(--ink); border-radius: 14px; background: #fff; }
+.field-guide-switch button { min-width: 0; padding: 11px 14px; display: flex; flex-direction: column; align-items: flex-start; gap: 2px; border: 0; border-radius: 10px; background: transparent; color: var(--ink); text-align: left; cursor: pointer; }
+.field-guide-switch button:hover { background: #eef4f6; }
+.field-guide-switch button[aria-selected="true"] { background: var(--ink); color: #fff; }
+.field-guide-switch strong { font-size: 16px; letter-spacing: -.02em; }
+.field-guide-switch small { overflow: hidden; max-width: 100%; color: var(--muted); font-size: 11px; font-weight: 650; white-space: nowrap; text-overflow: ellipsis; }
+.field-guide-switch button[aria-selected="true"] small { color: #c9cfd1; }
+#guide-panel .motion-library { width: auto; margin: 20px 0 0; }
 .field-sheet-search { margin-top: 20px; display: flex; align-items: center; gap: 10px; padding: 0 14px; height: 46px; border: 1px solid var(--ink); border-radius: 12px; background: #fff; color: var(--muted); }
 .field-sheet-search input { flex: 1; min-width: 0; border: 0; outline: 0; background: transparent; color: var(--ink); font-size: 15px; }
 .field-sheet-search button { display: grid; place-items: center; padding: 4px; border: 0; background: transparent; cursor: pointer; }
@@ -40,7 +47,6 @@
   .field-sheet { width: calc(100% - 30px); margin-top: 18px; padding: 22px 16px; border-radius: 14px; }
   .field-sheet-heading h3 { font-size: 28px; }
   .field-sheet-heading p:last-child { font-size: 13px; }
-  .field-sheet-heading > span { display: none; }
   .field-sheet-tabs { margin: 14px -16px 0; padding: 0 16px 4px; flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; }
   .field-sheet-section h4 { font-size: 20px; }
   .field-sheet-grid { grid-template-columns: 1fr; }

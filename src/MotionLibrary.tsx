@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { ArrowRight, Bookmark, Check, ChevronLeft, ExternalLink, Maximize2, Pause, Play, RotateCcw, Search, X } from 'lucide-react'
+import { ArrowRight, Bookmark, Check, ExternalLink, Maximize2, Pause, Play, RotateCcw, Search, X } from 'lucide-react'
 import { environments, motionCategories, motions } from './motionData'
 import type { Motion, MotionCategory } from './motionData'
 import './motionLibrary.css'
@@ -64,7 +64,8 @@ function MotionDetail({ motion, saved, onSave, onClose, paused, onTag }: { motio
   </dialog>
 }
 
-export default function MotionLibrary({ onBack, language }: { onBack: () => void; language: 'zh' | 'en' }) {
+// Rendered as the Actions tab of the on-set guide, which supplies the heading.
+export default function MotionLibrary({ language }: { language: 'zh' | 'en' }) {
   const environmentEn: Record<string, string> = { '树林': 'Forest', '海边': 'Seaside', '街头': 'Street', '室内': 'Interior', '草地': 'Field', '窗边': 'Window', '沙漠': 'Desert', '山野': 'Hills' }
   const framingEn: Record<string, string> = { '全身': 'Full body', '半身': 'Medium', '近景': 'Close-up' }
   const initial = useRef(readLocal(STORAGE))
@@ -104,10 +105,8 @@ export default function MotionLibrary({ onBack, language }: { onBack: () => void
   const hasFilters = category !== 'all' || !!environment || !!framing || !!query || savedOnly || Object.keys(tagSelection).length > 0
   const toggle = (id: string) => setSaved(current => { const next = current.includes(id) ? current.filter(x => x !== id) : [...current, id]; localStorage.setItem(SAVE_KEY, JSON.stringify(next)); return next })
   const reset = () => { setCategory('all'); setEnvironment(''); setFraming(''); setQuery(''); setSavedOnly(false); setTagSelection({}) }
-  return <section className="motion-library" id="motion-library" aria-labelledby="motion-library-title">
-    <button className="motion-back" onClick={onBack}><ChevronLeft size={15}/> {language === 'en' ? 'Directing knowledge base' : '导演知识库'}</button>
-    <div className="motion-library-heading"><div><p className="eyebrow">DIRECTING TOOLKIT / REAL MOTION REFERENCES</p><h2 id="motion-library-title">{language === 'en' ? 'Subject Direction & Camera Guide' : '人物动作与镜头引导库'}<span>{language === 'en' ? 'Create a natural moment from one small action.' : '从一个小动作，拍出自然的瞬间。'}</span></h2><p>{language === 'en' ? 'Observe real movement, eyeline, and rhythm in context, then bring a clear playable direction to the set.' : '观察真实人物在具体环境中的动作、视线与节奏，再把可执行的引导带到现场。'}</p></div><span className="motion-total">{motions.length}<small>{language === 'en' ? 'scene references' : '场景动作参考'}</small></span></div>
-    <div role="tabpanel" id="motion-scenes-panel">
+  return <div className="motion-library" id="motion-library">
+    <div>
     <div className="motion-category-tabs" role="group" aria-label={language === 'en' ? 'Action categories' : '动作分类'}><button aria-pressed={category === 'all'} onClick={() => setCategory('all')}>{language === 'en' ? 'All actions' : '全部动作'} <span>{motions.length}</span></button>{motionCategories.map(c => <button key={c.id} aria-pressed={category === c.id} onClick={() => setCategory(c.id)}>{language === 'en' ? c.en : c.name}<span>{String(motions.filter(m => m.category === c.id).length).padStart(2, '0')}</span></button>)}</div>
     <div className="motion-toolbar"><label className="motion-search"><Search size={17}/><input aria-label={language === 'en' ? 'Search actions' : '搜索动作'} value={query} onChange={e => setQuery(e.target.value)} placeholder={language === 'en' ? 'Search: seaside backlight silhouette / 75mm…' : '搜索多个词：海边 逆光 背影 / 75mm…'}/>{query && <button onClick={() => setQuery('')} aria-label={language === 'en' ? 'Clear action search' : '清空动作搜索'}><X size={15}/></button>}</label><label className="motion-select"><span>{language === 'en' ? 'Environment' : '适用环境'}</span><select aria-label={language === 'en' ? 'Filter environment' : '筛选环境'} value={environment} onChange={e => setEnvironment(e.target.value)}><option value="">{language === 'en' ? 'All environments' : '全部环境'}</option>{environments.map(e => <option key={e} value={e}>{language === 'en' ? environmentEn[e] : e}</option>)}</select></label><label className="motion-select"><span>{language === 'en' ? 'Framing' : '复拍景别'}</span><select aria-label={language === 'en' ? 'Filter framing' : '筛选景别'} value={framing} onChange={e => setFraming(e.target.value)}><option value="">{language === 'en' ? 'All framing' : '全部景别'}</option>{['全身', '半身', '近景'].map(e => <option key={e} value={e}>{language === 'en' ? framingEn[e] : e}</option>)}</select></label></div>
     {language === 'zh' && <MotionTagFilters all={motions} base={baseResults} selection={tagSelection} active={activeTagGroup} open={tagsOpen} onActive={setActiveTagGroup} onOpen={() => setTagsOpen(!tagsOpen)} onToggle={toggleTag} onClear={() => setTagSelection({})}/>}
@@ -120,5 +119,5 @@ export default function MotionLibrary({ onBack, language }: { onBack: () => void
     <p className="motion-library-note">{language === 'en' ? 'Use these real videos to study movement, expression, and rhythm. Videos come from Mixkit Free License listings; each card links to the source, creator, and license. Reproduction notes are prepared by this site, and bookmarks stay in this browser.' : '真实视频用于观察人物动作、表情与节奏。视频来自 Mixkit 的 Free License 条目；每条均附原片、作者和授权链接。复拍建议由本网站整理，收藏保存在当前浏览器。'}</p>
     </div>
     {selected && <MotionDetail motion={selected} saved={saved.includes(selected.id)} onSave={() => toggle(selected.id)} onClose={() => setSelected(null)} paused={paused} onTag={exploreTag}/>}
-  </section>
+  </div>
 }

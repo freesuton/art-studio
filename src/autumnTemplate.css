@@ -1,0 +1,75 @@
+/* Autumn Afternoon storyboard template. Shares the starter-template shell and brief fields. */
+.autumn-template { --autumn-paper: #f6f0e4; --autumn-line: #e1d6c2; --autumn-brown: #6b4a2b; }
+.autumn-template .starter-template-change strong { white-space: normal; line-height: 1.5; }
+.autumn-label { margin: 0 0 8px; color: #77786f; font-size: 10px; font-weight: 800; letter-spacing: .1em; }
+
+.autumn-overview { margin-bottom: 26px; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 24px; align-items: end; }
+.autumn-timeline { margin: 0; padding: 0; list-style: none; display: flex; gap: 3px; }
+.autumn-timeline li { flex-basis: 0; min-width: 0; padding: 9px 10px 9px 14px; display: flex; flex-direction: column; gap: 2px; background: #efe2cc; clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 50%, calc(100% - 10px) 100%, 0 100%, 10px 50%); }
+.autumn-timeline li:first-child { clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 50%, calc(100% - 10px) 100%, 0 100%); }
+.autumn-timeline li:nth-child(2) { background: #ead6bd; }
+.autumn-timeline li:nth-child(3) { background: #e8cdb3; }
+.autumn-timeline li:nth-child(4) { background: #e4c2aa; }
+.autumn-timeline li:nth-child(5) { background: #dfb7a0; }
+.autumn-timeline strong { overflow: hidden; font-size: 13px; white-space: nowrap; text-overflow: ellipsis; }
+.autumn-timeline span { color: #6a5a48; font-size: 11px; font-variant-numeric: tabular-nums; }
+.autumn-palette { margin: 0; padding: 0; list-style: none; display: flex; flex-wrap: wrap; gap: 10px; }
+.autumn-palette li { display: flex; flex-direction: column; align-items: center; gap: 5px; color: #6a5a48; font-size: 10px; font-weight: 700; }
+.autumn-palette i { width: 34px; height: 34px; border-radius: 50%; box-shadow: inset 0 0 0 1px rgba(27, 28, 25, .15); }
+
+.autumn-parts { display: grid; gap: 12px; }
+.autumn-part { display: grid; grid-template-columns: 132px minmax(0, 1fr); gap: 12px; }
+.autumn-part > header { padding: 14px; background: var(--autumn-paper); border: 1px solid var(--autumn-line); border-radius: 12px; }
+.autumn-part h4 { margin: 0; display: flex; align-items: baseline; gap: 6px; font-size: 17px; letter-spacing: -.02em; }
+.autumn-part h4 span { color: var(--autumn-brown); font-size: 13px; }
+.autumn-part-time { margin: 4px 0 8px; color: #6a5a48; font-size: 12px; font-variant-numeric: tabular-nums; }
+.autumn-part header ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 3px; color: #55564f; font-size: 12px; }
+.autumn-part header li::before { content: "· "; }
+.autumn-shots { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 14px 12px; }
+.autumn-shot { min-width: 0; margin: 0; }
+.autumn-shot-image { width: 100%; max-width: 100%; aspect-ratio: 12 / 5; background-size: 400% 500%; background-repeat: no-repeat; border-radius: 9px; box-shadow: inset 0 0 0 1px rgba(27, 28, 25, .12); }
+.autumn-shot figcaption { margin-top: 8px; display: grid; gap: 3px; }
+.autumn-shot figcaption p { margin: 0; color: #4f5049; font-size: 12.5px; line-height: 1.55; }
+.autumn-shot-spec { display: flex; flex-wrap: wrap; align-items: center; gap: 2px 8px; }
+.autumn-shot .autumn-shot-spec { color: #6a5a48; font-size: 11.5px; }
+.autumn-shot-spec strong { color: var(--ink); font-size: 12.5px; }
+.autumn-shot-spec span + span::before, .autumn-shot-spec strong + span::before { content: "| "; color: #b9ab95; }
+.autumn-move-icon { width: 24px; height: 15px; margin-left: auto; fill: none; stroke: var(--autumn-brown); stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+
+.autumn-reference { margin-top: 26px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr); gap: 12px; }
+.autumn-reference > section { padding: 18px; background: var(--autumn-paper); border: 1px solid var(--autumn-line); border-radius: 12px; }
+.autumn-reference h4 { margin: 0 0 12px; font-size: 16px; letter-spacing: -.02em; }
+.autumn-moves { margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 14px; font-size: 12.5px; }
+.autumn-moves li { display: flex; align-items: center; gap: 8px; }
+.autumn-moves .autumn-move-icon { margin-left: 0; flex: none; }
+.autumn-camera { margin: 0; display: grid; gap: 7px; }
+.autumn-camera div { display: grid; grid-template-columns: 76px minmax(0, 1fr); gap: 10px; font-size: 12.5px; }
+.autumn-camera dt { color: var(--autumn-brown); font-weight: 800; }
+.autumn-camera dd { margin: 0; color: #4f5049; }
+
+/* Picking between templates in the Template area. */
+.template-picker { width: calc(100% - 2 * clamp(22px, 5vw, 86px)); max-width: 1080px; margin: 28px auto 0; display: flex; flex-wrap: wrap; gap: 8px; }
+.template-picker button { min-width: 0; padding: 10px 16px; display: flex; flex-direction: column; align-items: flex-start; gap: 2px; border: 1px solid #cfcec5; border-radius: 12px; background: #eeede7; color: var(--ink); text-align: left; cursor: pointer; }
+.template-picker button:hover { border-color: #98998f; }
+.template-picker button[aria-selected="true"] { background: #fff; border-color: var(--ink); box-shadow: inset 4px 0 0 #ff8d72; }
+.template-picker small { color: #77786f; font-size: 10px; font-weight: 750; letter-spacing: .08em; }
+.template-picker strong { font-size: 15px; }
+.template-picker + .starter-template { margin-top: 14px; }
+
+@media (max-width: 760px) {
+  .autumn-overview { grid-template-columns: minmax(0, 1fr); }
+  .autumn-part { grid-template-columns: minmax(0, 1fr); gap: 8px; }
+  .autumn-part > header { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; padding: 11px 13px; }
+  .autumn-part-time { margin: 0; }
+  .autumn-part header ul { display: flex; flex-wrap: wrap; gap: 2px 10px; }
+  .autumn-reference { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 620px) {
+  .template-picker { width: calc(100% - 30px); margin-top: 18px; }
+  .template-picker button { flex: 1 1 140px; }
+  .autumn-timeline { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); }
+  .autumn-timeline li { padding: 8px 6px 8px 12px; }
+  .autumn-timeline strong { font-size: 11px; }
+  .autumn-shots { grid-template-columns: minmax(0, 1fr); }
+  .autumn-moves { grid-template-columns: minmax(0, 1fr); }
+}

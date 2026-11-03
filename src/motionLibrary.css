@@ -1,5 +1,4 @@
 .motion-library { width: min(1280px, calc(100% - 44px)); margin: 36px auto 0; scroll-margin-top: 145px; }
-.motion-back { display: inline-flex; align-items: center; gap: 5px; padding: 7px 0; background: none; border: 0; color: #66695e; cursor: pointer; font-size: 13px; }
 .motion-library-heading { display: flex; align-items: center; justify-content: space-between; gap: 24px; margin: 18px 0 28px; }
 .motion-library-heading h2 { font-size: clamp(27px, 3vw, 43px); line-height: 1.2; letter-spacing: -.045em; margin: 0; }
 .motion-library-heading h2 span { display: block; margin-top: 9px; font-size: 16px; line-height: 1.5; letter-spacing: 0; font-weight: 500; color: #555b4f; }

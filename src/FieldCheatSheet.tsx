@@ -5,11 +5,13 @@ import type { CheatItem, CheatRef } from './fieldCheatSheetData'
 import { motions } from './motionData'
 import { breakdowns } from './referenceBreakdowns'
 import { filmReferences } from './filmReferences'
+import MotionLibrary from './MotionLibrary'
 import SetupDiagram from './SetupDiagram'
 import ShotPlayer from './ShotPlayer'
 import './fieldCheatSheet.css'
 
 type Language = 'zh' | 'en'
+export type GuideView = 'tips' | 'actions'
 
 const astr = breakdowns.find((item) => item.id === 'astr-summer-2021')!
 const astrFilm = filmReferences.find((film) => film.id === astr.filmId)!
@@ -76,9 +78,9 @@ function SetupPanel({ item, accent, language }: { item: CheatItem; accent: strin
   </div>
 }
 
-// Searchable on-set cheat sheet for outdoor fashion video. One category shows at a time;
-// search matches both languages across every category, so "ND", "逆光" or "85mm" all work.
-export default function FieldCheatSheet({ language }: { language: Language }) {
+// The on-set guide for outdoor fashion video: tips by category, and the real action clips.
+// Tip search matches both languages across every category, so "ND", "逆光" or "85mm" all work.
+export default function FieldCheatSheet({ language, view, onViewChange }: { language: Language; view: GuideView; onViewChange: (view: GuideView) => void }) {
   const en = language === 'en'
   const [query, setQuery] = useState('')
   const [tab, setTab] = useState(fieldCheatSheet[0].id)
@@ -98,13 +100,23 @@ export default function FieldCheatSheet({ language }: { language: Language }) {
   return <section className="field-sheet" id="field-sheet" aria-labelledby="field-sheet-title">
     <div className="field-sheet-heading">
       <div>
-        <p className="eyebrow">FIELD CHEAT SHEET / OUTDOOR FASHION</p>
-        <h3 id="field-sheet-title">{en ? 'Outdoor fashion shoot, at a glance' : '户外女性时尚拍摄速查'}</h3>
-        <p>{en ? 'Composition, posing, light, settings and styling for shooting a female model outdoors. Pick a category, or search for what you need on set.' : '户外拍女性模特时的构图、姿势、光线、参数和造型。选一个分类看，或者现场直接搜。'}</p>
+        <p className="eyebrow">ON-SET GUIDE / OUTDOOR FASHION</p>
+        <h3 id="field-sheet-title">{en ? 'Outdoor fashion shoot, on set' : '户外女性时尚拍摄现场指南'}</h3>
+        <p>{en ? 'Tips for composition, posing, light, settings and styling, plus real action clips with a line to say to the model. Search for what you need on set.' : '构图、姿势、光线、参数和造型的技巧，加上可以照着引导模特的真实动作视频。现场需要什么，直接搜。'}</p>
       </div>
-      <span>{total} {en ? 'tips' : '条'}</span>
     </div>
 
+    <div className="field-guide-switch" role="tablist" aria-label={en ? 'Guide sections' : '指南内容'}>
+      <button id="guide-tab-tips" role="tab" aria-controls="guide-panel" aria-selected={view === 'tips'} onClick={() => onViewChange('tips')}>
+        <strong>{en ? 'Tips' : '技巧速查'}</strong><small>{total} {en ? 'tips · diagrams' : '条 · 示意图'}</small>
+      </button>
+      <button id="guide-tab-actions" role="tab" aria-controls="guide-panel" aria-selected={view === 'actions'} onClick={() => onViewChange('actions')}>
+        <strong>{en ? 'Actions' : '动作参考'}</strong><small>{motions.length} {en ? 'real clips · direction lines' : '段实拍 · 引导指令'}</small>
+      </button>
+    </div>
+
+    <div id="guide-panel" role="tabpanel" aria-labelledby={`guide-tab-${view}`}>
+    {view === 'actions' ? <MotionLibrary language={language} /> : <>
     <label className="field-sheet-search">
       <Search size={18} />
       <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder={en ? 'Search all tips: backlight, ND, 85mm, hands, crop…' : '搜索全部：逆光、ND、85mm、手、构图……'} />
@@ -133,5 +145,7 @@ export default function FieldCheatSheet({ language }: { language: Language }) {
           </article> })}
       </div>
     </section>)}
+    </>}
+    </div>
   </section>
 }
