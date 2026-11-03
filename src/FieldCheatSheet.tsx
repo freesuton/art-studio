@@ -1,5 +1,5 @@
-import { useMemo, useState } from 'react'
-import { ChevronDown, ExternalLink, Search, X } from 'lucide-react'
+import { useEffect, useMemo, useRef, useState } from 'react'
+import { ChevronDown, ExternalLink, Play, Search, X } from 'lucide-react'
 import { fieldCheatSheet } from './fieldCheatSheetData'
 import type { CheatItem, CheatRef } from './fieldCheatSheetData'
 import { motions } from './motionData'
@@ -21,6 +21,34 @@ function resolve(ref: CheatRef) {
   }
   const shot = astr.shots.find((item) => item.time === ref.shot)
   return shot && { kind: 'shot' as const, key: shot.time, shot }
+}
+
+// A muted clip that plays only while it is on screen, so a tab of cards doesn't run every video at once.
+function ClipPreview({ src, poster }: { src: string; poster: string }) {
+  const videoRef = useRef<HTMLVideoElement>(null)
+  useEffect(() => {
+    const video = videoRef.current
+    if (!video || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+    const observer = new IntersectionObserver(([entry]) => { if (entry.isIntersecting) video.play().catch(() => {}); else video.pause() }, { threshold: .6 })
+    observer.observe(video)
+    return () => observer.disconnect()
+  }, [])
+  return <video ref={videoRef} src={src} poster={poster} muted loop playsInline preload="none" />
+}
+
+// The top of a closed card: a live clip if the tip has one, else the ASTR shot, else the diagram.
+// Clicking it opens the full panel.
+function CardPreview({ item, accent, language, onOpen }: { item: CheatItem; accent: string; language: Language; onOpen: () => void }) {
+  const en = language === 'en'
+  const refs = (item.refs ?? []).map(resolve).filter((ref) => ref !== undefined)
+  const ref = refs.find((entry) => entry.kind === 'clip') ?? refs[0]
+  if (!ref && !item.diagram) return null
+  return <button className={`field-card-preview${ref ? '' : ' diagram'}`} onClick={onOpen} aria-label={en ? `Open ${item.title.en}` : `打开${item.title.zh}`}>
+    {!ref ? <SetupDiagram kind={item.diagram!} accent={accent} lens={item.lens} language={language} />
+      : ref.kind === 'clip' ? <ClipPreview src={ref.motion.videoUrl} poster={ref.motion.poster} />
+      : <><img src={astrFilm.thumbnailUrl} alt="" loading="lazy" /><span className="field-card-play"><Play size={18} fill="currentColor" /></span></>}
+    {ref && <span className="field-card-badge">{ref.kind === 'clip' ? (en ? 'Live action' : '实拍参考') : `ASTR ${ref.shot.time}`}{refs.length > 1 && ` · ${refs.length}`}</span>}
+  </button>
 }
 
 // The diagram and reference videos for one tip, opened under it.
@@ -95,6 +123,7 @@ export default function FieldCheatSheet({ language }: { language: Language }) {
       <div className="field-sheet-grid">
         {section.items.map((item) => { const key = `${section.id}:${item.title.en}`; const hasSetup = !!item.diagram || !!item.refs?.length; const isOpen = open === key
           return <article key={item.title.en} className={isOpen ? 'open' : undefined}>
+            {!isOpen && <CardPreview item={item} accent={section.accent} language={language} onOpen={() => setOpen(key)} />}
             <h5>{item.title[language]}</h5><p>{item.body[language]}</p>
             {hasSetup && <button className="field-setup-toggle" aria-expanded={isOpen} onClick={() => setOpen(isOpen ? null : key)}>
               {[item.diagram && (en ? 'Diagram' : '示意图'), item.refs?.length && (en ? `Reference video${item.refs.length > 1 ? ` ×${item.refs.length}` : ''}` : `参考视频${item.refs.length > 1 ? ` ×${item.refs.length}` : ''}`)].filter(Boolean).join(' · ')}
