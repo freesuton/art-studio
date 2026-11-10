@@ -180,6 +180,12 @@ export const filmReferences: FilmReference[] = [
     url: 'https://www.youtube.com/watch?v=fo4LLux-tfM', embedUrl: 'https://www.youtube.com/embed/fo4LLux-tfM', thumbnailUrl: 'https://i.ytimg.com/vi/fo4LLux-tfM/hqdefault.jpg', color: '#ddbba5',
   },
   {
+    id: 'chanel-25-dua-lipa', collection: 'fashion', title: 'The CHANEL 25 Handbag', titleZh: '香奈儿 CHANEL 25 手袋', source: 'CHANEL', year: '2025', duration: '1 分 18 秒', category: '品牌短片 / 城市街头',
+    synopsis: 'Dua Lipa 在纽约街头自在穿行，Gordon von Steiner 导演，用行走和随性的动作呈现 CHANEL 25 手袋。',
+    watchFor: '留意长焦压缩下的街头行走、逆光吹起的头发，以及前景路人的虚影如何让画面像被偶然撞见。',
+    url: 'https://www.youtube.com/watch?v=wcqpvAbdLII', embedUrl: 'https://www.youtube.com/embed/wcqpvAbdLII', thumbnailUrl: 'https://i.ytimg.com/vi/wcqpvAbdLII/hqdefault.jpg', color: '#8d8f99',
+  },
+  {
     id: 'astr-summer', collection: 'fashion', title: 'ASTR the Label: Summer 2021', titleZh: '夏日自然光时尚短片', source: 'Kevin Reyes', year: '2021', duration: '60 秒', category: '时尚影像 / 沙漠逆光',
     synopsis: '在约书亚树沙漠拍摄的 60 秒品牌短片：几套夏日造型、硬朗的逆光和少量复古胶片段落，没有剧情，只靠画面与节奏。',
     watchFor: '看逆光加柔光滤镜如何让高光晕开；大量固定或缓慢推近的画面之间，用倒置仰拍、面料细节和胶片片框制造节奏变化。',
