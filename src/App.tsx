@@ -1,6 +1,6 @@
 import { useEffect, useLayoutEffect, useMemo, useState } from 'react'
 import Fuse from 'fuse.js'
-import { ArrowRight, Bookmark, Camera, ChevronLeft, Clapperboard, ExternalLink, LayoutGrid, Play, Search, X } from 'lucide-react'
+import { Aperture, ArrowRight, Bookmark, Camera, ChevronLeft, Clapperboard, ExternalLink, LayoutGrid, Play, Search, X } from 'lucide-react'
 import { Route, Routes, useLocation, useNavigate, useParams } from 'react-router-dom'
 import TechniqueVisual from './TechniqueVisual'
 import CameraMovementLibrary from './CameraMovementLibrary'
@@ -10,6 +10,7 @@ import type { GuideView } from './FieldCheatSheet'
 import { fieldCheatSheet } from './fieldCheatSheetData'
 import WorkspaceToggle from './WorkspaceToggle'
 import Workspace from './Workspace'
+import PhotoCoach from './PhotoCoach'
 import { useWorkspace } from './workspaceStore'
 import { motions } from './motionData'
 import { sheets, stages } from './data'
@@ -389,6 +390,7 @@ function Home({ favorites, toggle, language, setLanguage }: { favorites: string[
             <div className="workflow-stage-tasks"><p className="eyebrow">{language === 'en' ? 'TO DO IN THIS STAGE' : '这一阶段要做'}</p><ol>{(language === 'en' ? stageEnglish[item.id].tasks : item.tasks).map((task) => <li key={task}>{task}</li>)}</ol><button onClick={() => item.id === 'concept' ? selectConceptArea('technique') : document.getElementById('library')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}>{language === 'en' ? 'View related sheets' : '查看相关卡片'} <ArrowRight size={16} /></button></div>
           </div> })() : <div className="workflow-stage-panel workflow-stage-all" id="workflow-stage-panel"><p>{language === 'en' ? 'Five stages, one clear deliverable at a time.' : '五个阶段，一份份完成主要交付物。'}</p><button onClick={() => selectStage('concept')}>{language === 'en' ? 'Start with Concept & Story' : '从创意与故事开始'} <ArrowRight size={16} /></button></div>}
           {stage === 'shoot' && <button className="motion-entry" onClick={() => openGuide('tips')}><span><span className="motion-entry-label">ON-SET GUIDE</span><strong>{language === 'en' ? 'On-set guide: outdoor fashion shoot' : '现场指南：户外女性时尚拍摄'}</strong><small>{language === 'en' ? `${fieldTipCount} tips with diagrams · ${motions.length} real action clips with direction lines` : `${fieldTipCount} 条技巧与示意图 · ${motions.length} 段实拍动作与引导指令`}</small></span><ArrowRight size={22}/></button>}
+          {stage === 'shoot' && <button className="motion-entry" onClick={() => navigate('/coach')}><span><span className="motion-entry-label">AI PHOTO COACH</span><strong>{language === 'en' ? 'AI photo coach: show the location, get the shot' : 'AI 拍摄教练：拍下现场，告诉你怎么拍'}</strong><small>{language === 'en' ? 'Light and composition read · 3–5 shots with spot, lens and settings · feedback on each take' : '读光线与构图 · 3–5 个镜头的站位、焦段与参数 · 每条成片的修改建议'}</small></span><ArrowRight size={22}/></button>}
           {stage === 'prepare' && <section className="concept-area-selector" aria-label={language === 'en' ? 'Plan & Prepare areas' : '拍摄准备内容分区'} style={{ '--area-accent': '#f5c84c', '--area-tint': '#fbf3d9' } as React.CSSProperties}>
             <div><p className="eyebrow">PLAN & PREPARE AREAS</p><h3>{language === 'en' ? 'Choose your workspace' : '选择你的工作区'}</h3></div>
             <div className="concept-area-tabs" role="tablist" aria-label={language === 'en' ? 'Plan & Prepare areas' : '拍摄准备分区'}>
@@ -442,7 +444,10 @@ function Home({ favorites, toggle, language, setLanguage }: { favorites: string[
         </section></div>}
       </main>
 
-      <button className="ws-fab" onClick={() => navigate('/workspace')}><LayoutGrid size={16} /> {language === 'en' ? 'Workspace' : '工作台'} <span>{workspaceCount}</span></button>
+      <div className="fab-dock">
+        <button className="ws-fab coach-fab" onClick={() => navigate('/coach')}><Aperture size={16} /> {language === 'en' ? 'Photo coach' : '拍摄教练'}</button>
+        <button className="ws-fab" onClick={() => navigate('/workspace')}><LayoutGrid size={16} /> {language === 'en' ? 'Workspace' : '工作台'} <span>{workspaceCount}</span></button>
+      </div>
       <footer><div><span className="brand-mark"><Camera size={18} /></span><strong>{language === 'en' ? 'Short Film Field Guide' : '短片现场手册'}</strong></div><p>{language === 'en' ? 'From concept to release · A five-stage solo filmmaking workflow' : '从创意到发布 · 五阶段单人短片流程'}</p></footer>
     </div>
   )
@@ -456,6 +461,7 @@ export default function App() {
   return <>
     <Routes>
       <Route path="/workspace/*" element={<Workspace language={language} setLanguage={setLanguage} />} />
+      <Route path="/coach" element={<PhotoCoach language={language} setLanguage={setLanguage} />} />
       <Route path="*" element={<Home favorites={favorites} toggle={toggle} language={language} setLanguage={setLanguage} />} />
     </Routes>
     <Routes>

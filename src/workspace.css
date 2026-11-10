@@ -10,6 +10,10 @@
 .ws-fab { position: fixed; right: 18px; bottom: 18px; z-index: 40; display: inline-flex; align-items: center; gap: 8px; padding: 11px 15px; font-size: 13px; font-weight: 800; color: #fff; background: var(--ink); border: 0; border-radius: 999px; box-shadow: 0 8px 24px #191a1740; cursor: pointer; }
 .ws-fab span { display: grid; place-items: center; min-width: 22px; height: 22px; padding: 0 6px; font-size: 11px; color: var(--ink); background: var(--acid); border-radius: 999px; }
 .ws-fab:hover { transform: translateY(-1px); }
+/* The photo coach button sits beside the workspace button. */
+.fab-dock { position: fixed; right: 18px; bottom: 18px; z-index: 40; display: flex; gap: 8px; }
+.fab-dock .ws-fab { position: static; }
+.ws-fab.coach-fab { color: var(--ink); background: #82d8ff; }
 
 /* Workspace page */
 .ws { width: calc(100% - 2 * clamp(22px, 5vw, 86px)); max-width: 1180px; margin: 24px auto 64px; padding: clamp(18px, 3vw, 32px); background: #fff; border: 1px solid var(--ink); border-top: 5px solid var(--acid); border-radius: 16px; scroll-margin-top: 20px; }
@@ -84,6 +88,7 @@
   .ws-topbar-title { display: none; }
   .ws-picks-head { flex-direction: column; }
   .ws-fab { right: 12px; bottom: 12px; }
+  .fab-dock { right: 12px; bottom: 12px; }
 }
 
 /* Standalone page */
